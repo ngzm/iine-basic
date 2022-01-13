@@ -21,6 +21,27 @@
             <li>
               <nuxt-link to="/information">お知らせ</nuxt-link>
             </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/information">お知らせ</nuxt-link>
+            </li>
           </ul>
         </nav>
       </div>
