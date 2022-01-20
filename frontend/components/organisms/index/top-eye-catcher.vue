@@ -21,7 +21,7 @@ export default defineComponent({
     const backgroundImage = ref('');
 
     onMounted(() => {
-      backgroundImage.value = 'https://longlivenet.com//static/images/top01.jpg';
+      backgroundImage.value = 'https://longlivenet.com/static/images/top01.jpg';
     })
 
     return {
@@ -31,6 +31,8 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
+@import '@/assets/scss/style.scss';
+
 #top-eye-catcher-section {
   .top-eye-catcher {
     height: 100vh;
@@ -41,7 +43,7 @@ export default defineComponent({
     div {
       position: absolute;
       display: inline-block;
-      bottom: 20%;
+      bottom: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
       h2,p {
@@ -61,17 +63,17 @@ export default defineComponent({
   }
 }
 
-@media only screen and (max-width:734px) {
+@media only screen and (max-width: $grid-breakpoint-md) {
   #top-eye-catcher-section {
     .top-eye-catcher {
       height: 50vh;
       div {
         h2 {
-          font-size: 1.2em;
+          font-size: 1.8em;
           font-weight: bolder;
         }
         p {
-          font-size: 1em;
+          font-size: 1.2em;
           font-weight: bolder;
         }
       }

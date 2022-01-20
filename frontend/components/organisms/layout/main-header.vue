@@ -1,9 +1,6 @@
 <template>
 <div>
-  <b-navbar
-    toggleable="md"
-    class="main-header-nav"
-  >
+  <b-navbar toggleable="md" class="main-header-nav">
     <b-navbar-brand href="/">ロングリブネット</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

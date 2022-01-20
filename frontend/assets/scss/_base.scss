@@ -1,0 +1,25 @@
+// base color
+$base-background-color: #d3d3d3;
+$base-color: black;
+
+// grid system
+$grid-breakpoint-sm: map-get($grid-breakpoints, sm);
+$grid-breakpoint-md: map-get($grid-breakpoints, md);
+$grid-breakpoint-lg: map-get($grid-breakpoints, lg);
+$grid-breakpoint-xl: map-get($grid-breakpoints, xl);
+
+html {
+  color: $base-color;
+  font-size: 100%;
+}
+
+@media print, screen and (max-width: $grid-breakpoint-md) {
+  html {
+    font-size: 80%;
+  }
+}
+
+body {
+  font-family: Ubuntu, 'Noto Sans JP', sans-serif;
+  background-color: $base-background-color;
+}
