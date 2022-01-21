@@ -1,6 +1,6 @@
 <template>
   <div
-    class="contents-eye-catcher"
+    class="section-eye-catcher"
     :style="{ 'background-image': `url(${backgroundImage})` }"
   >
     <h3>{{ title }}</h3>
@@ -31,7 +31,7 @@ export default defineComponent({
 $eye-catcher-height: 380px;
 $eye-catcher-height-sm: 240px;
 
-.contents-eye-catcher {
+.section-eye-catcher {
   line-height: $eye-catcher-height;
   text-align: center;
   background-position: center center;
@@ -50,7 +50,7 @@ $eye-catcher-height-sm: 240px;
 }
 
 @media only screen and (max-width: $grid-breakpoint-md) {
-  .pr_eyecatch {
+  .section-eye-catcher {
     line-height: $eye-catcher-height-sm;
   }
 }

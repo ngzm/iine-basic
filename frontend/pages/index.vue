@@ -2,7 +2,7 @@
   <div>
     <top-eye-catcher />
     <nav-bread-brumb />
-    <top-information />
+    <top-information class="section-margin"/>
   </div>
 </template>
 
@@ -21,3 +21,10 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.section-margin {
+  margin-top: 6em;
+  margin-bottom: 6em;
+}
+</style>
