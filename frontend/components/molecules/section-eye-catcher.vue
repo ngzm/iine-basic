@@ -3,7 +3,10 @@
     class="section-eye-catcher"
     :style="{ 'background-image': `url(${backgroundImage})` }"
   >
-    <h3>{{ title }}</h3>
+    <div>
+      <h4><slot /></h4>
+      <p v-if="$slots.subtitle"><slot name="subtitle" /></p>
+    </div>
   </div>
 </template>
 
@@ -17,10 +20,6 @@ export default defineComponent({
       type: String,
       required: true
     },
-    title: {
-      type: String,
-      required: true
-    }
   },
 })
 </script>
@@ -36,16 +35,25 @@ $eye-catcher-height-sm: 240px;
   text-align: center;
   background-position: center center;
   background-size: cover;
-  h2,h3,h4 {
+  div {
     display: inline-block;
-    line-height: normal;
-    vertical-align: middle;
-    padding: 14px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 6px black; 
     background-color: rgba(0,0,0,0.5);
+    line-height: normal;
+    padding: 1em;
+    vertical-align: middle;
+    h4,p {
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 6px black; 
+      margin: 0;
+    }
+    h4 {
+      font-size: 1.25em;
+    }
+    p {
+      font-size: 1.0em;
+      margin-top: 0.5em;
+    }
   }
 }
 

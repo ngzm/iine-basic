@@ -1,12 +1,12 @@
 <template>
   <div class="contents-card">
-    <div v-if="!noHeader" class="contents-card__header">
+    <div v-if="$slots.header" class="contents-card__header">
       <slot name="header" />
     </div>
     <div class="contents-card__text">
       <slot />
     </div>
-    <div v-if="!noFooter" class="contents-card__footer">
+    <div v-if="$slots.footer" class="contents-card__footer">
       <slot name="footer" />
     </div>
   </div>
@@ -17,16 +17,6 @@ import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'ContentsCard',
-  props: {
-    noHeader: {
-      type: Boolean,
-      default: false 
-    },
-    noFooter: {
-      type: Boolean,
-      default: false
-    }
-  },
 })
 </script>
 

@@ -1,7 +1,7 @@
 <template>
-  <section id="top-eye-catcher-section">
+  <section id="home-eye-catcher-section">
     <div
-      class="top-eye-catcher"
+      class="home-eye-catcher"
       :style="{ 'background-image': `url(${backgroundImage})` }"
     >
       <div>
@@ -16,7 +16,7 @@
 import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'TopEyeCatcher',
+  name: 'HomeEyeCatcher',
   setup() {
     const backgroundImage = ref('');
 
@@ -33,8 +33,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-#top-eye-catcher-section {
-  .top-eye-catcher {
+#home-eye-catcher-section {
+  .home-eye-catcher {
     height: 100vh;
     min-height: 500px;
     position: relative;
@@ -64,8 +64,8 @@ export default defineComponent({
 }
 
 @media only screen and (max-width: $grid-breakpoint-md) {
-  #top-eye-catcher-section {
-    .top-eye-catcher {
+  #home-eye-catcher-section {
+    .home-eye-catcher {
       height: 50vh;
       div {
         h2 {
