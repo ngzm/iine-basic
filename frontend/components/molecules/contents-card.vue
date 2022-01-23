@@ -32,7 +32,7 @@ export default defineComponent({
     margin: 0 auto;
   }
   &__text {
-    max-width: 780px;
+    max-width: $content-base-max-width;
     margin: 0 auto;
     padding: 2.5em;
   }
@@ -44,7 +44,7 @@ export default defineComponent({
 @media only screen and (min-width: $grid-breakpoint-md) {
   .contents-card {
     width: 80%;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
   }
 }

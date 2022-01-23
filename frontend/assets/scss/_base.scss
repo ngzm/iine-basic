@@ -28,3 +28,16 @@ div {
   margin: 0;
   padding: 0;
 }
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: hotpink;
+}
+a:active {
+  color: hotpink;
+}
+
+// content-base-max-width
+$content-base-max-width: 54em;

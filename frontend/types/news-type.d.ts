@@ -1,4 +1,4 @@
-export interface News {
+export interface NewsType {
   id: number;
   category: string;
   title: string;
@@ -8,4 +8,4 @@ export interface News {
   publishOn: Date;
 }
 
-type NewsListItem = Pick<News, 'id' | 'category'|'title'|'publishOn'>;
+type NewsListItem = Pick<NewsType, 'id' | 'category'|'title'|'publishOn'>;
