@@ -1,25 +1,22 @@
 <template>
-  <section id="home-services-section">
-    <section-title>Services</section-title>
-    <div>
-      <features-grid :category="category" :features-list="servicesList" />
-    </div>
+  <section>
+    <h4 class="section-title">
+      <span>{{ title }}</span>
+    </h4>
+    <features-grid :category="category" :features-list="servicesList" />
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 import { FeatureListItem } from '~/types/feature-type'
-import SectionTitle from '@/components/molecules/section-title.vue'
 import FeaturesGrid from '@/components/molecules/features-grid.vue'
 
 export default defineComponent({
   name: 'HomeServices',
-  components: {
-    SectionTitle,
-    FeaturesGrid
-  },
+  components: { FeaturesGrid },
   setup() {
+    const title = computed(() => 'Services')
     const category = 'service'
     const servicesList: FeatureListItem[] = [
       {
@@ -67,6 +64,7 @@ export default defineComponent({
     ]
 
     return {
+      title,
       category,
       servicesList
     }
@@ -75,5 +73,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/style.scss';
 
+.section-title {
+  @include index-section-title;
+}
 </style>

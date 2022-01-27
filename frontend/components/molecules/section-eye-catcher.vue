@@ -3,10 +3,10 @@
     class="section-eye-catcher"
     :style="{ 'background-image': `url(${backgroundImage})` }"
   >
-    <div>
+    <section class="section-eye-catcher__titles">
       <h4><slot /></h4>
       <p v-if="$slots.subtitle"><slot name="subtitle" /></p>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -35,7 +35,7 @@ $eye-catcher-height-sm: 240px;
   text-align: center;
   background-position: center center;
   background-size: cover;
-  div {
+  &__titles {
     display: inline-block;
     background-color: rgba(0,0,0,0.5);
     line-height: normal;

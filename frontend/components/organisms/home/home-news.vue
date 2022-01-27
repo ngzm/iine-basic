@@ -1,6 +1,8 @@
 <template>
-  <section id="home-news-section">
-    <section-title>What's New</section-title>
+  <section>
+    <h4 class="section-title">
+      <span>{{ title }}</span>
+    </h4>
     <contents-card>
       <template #default>
         <news-list :news-list="newsList" />
@@ -16,17 +18,13 @@
 import { defineComponent, computed } from '@vue/composition-api'
 import { NewsListItem } from '~/types/news-type'
 import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionTitle from '@/components/molecules/section-title.vue'
 import NewsList from '@/components/molecules/news-list.vue'
 
 export default defineComponent({
   name: 'HomeNews',
-  components: {
-    ContentsCard,
-    SectionTitle,
-    NewsList
-  },
+  components: { ContentsCard, NewsList },
   setup() {
+    const title = computed(() => 'What\'s new')
     const newsList = computed((): NewsListItem[] => {
       return [
         { id: 1, category: 'I', title: '当事業所のホームページを作成いたしました', publishOn: new Date('2020-02-23 10:00:00') },
@@ -36,12 +34,21 @@ export default defineComponent({
         { id: 5, category: 'N', title: 'テストテストこれはテスト、少し長い文字列ですが', publishOn: new Date('2020-02-25 00:00:00') },
       ]
     })
-    return { newsList }
+    return {
+      title,
+      newsList
+    }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/style.scss';
+
+.section-title {
+  @include index-section-title;
+}
+
 .home-news-nav {
   text-align: center;
   margin-top: 1.5em;

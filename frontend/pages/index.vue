@@ -1,12 +1,24 @@
 <template>
-  <div>
+  <article>
     <home-eye-catcher />
     <nav-bread-brumb />
-    <home-information class="section-margin"/>
-    <home-news class="section-margin"/>
-    <home-services class="section-margin"/>
-    <home-contact class="section-margin"/>
-  </div>
+
+    <article id="index-information-article">
+      <home-information class="article-margin" />
+    </article>
+
+    <article id="index-news-article">
+      <home-news class="article-margin" />
+    </article>
+
+    <article id="index-services-article">
+      <home-services class="article-margin" />
+    </article>
+
+    <article id="index-contact-article">
+      <home-contact class="article-margin" />
+    </article>
+  </article>
 </template>
 
 <script lang="ts">
@@ -32,8 +44,25 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.section-margin {
-  margin-top: 6em;
-  margin-bottom: 6em;
+@import '@/assets/scss/style.scss';
+
+#index-information-article {
+  @include nav-header-fixed-gap;
+}
+
+#index-news-article {
+  @include nav-header-fixed-gap;
+}
+
+#index-services-article {
+  @include nav-header-fixed-gap;
+}
+
+#index-contact-article {
+  @include nav-header-fixed-gap;
+}
+
+.article-margin {
+  @include index-article-margin;
 }
 </style>

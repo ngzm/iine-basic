@@ -1,6 +1,8 @@
 <template>
-  <section id="home-information-section">
-    <section-title>{{ title }}</section-title>
+  <section>
+    <h4 class="section-title">
+      <span>{{ title }}</span>
+    </h4>
     <contents-card>
       <template #header>
         <section-eye-catcher :background-image="eyeCatcherImage">
@@ -21,16 +23,11 @@
 <script lang='ts'>
 import { defineComponent, computed } from '@vue/composition-api'
 import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionTitle from '~/components/molecules/section-title.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
 
 export default defineComponent({
   name: 'HomeInformation',
-  components: {
-    ContentsCard,
-    SectionTitle,
-    SectionEyeCatcher
-  },
+  components: { ContentsCard, SectionEyeCatcher },
   setup() {
     const title = computed(() => 'Message')
 
@@ -66,6 +63,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/style.scss';
+
+.section-title {
+  @include index-section-title;
+}
+
 .home-information-nav {
   text-align: center;
   margin-top: 1.5em;

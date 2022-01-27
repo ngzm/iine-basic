@@ -1,16 +1,14 @@
 <template>
   <div class="feature-grid-container">
-    <p
+    <section
       v-for="feature in featuresList"
       :key="feature.id"
       class="grid-box"
     >
-      <ul>
-        <li class="feature-title">{{ feature.title }}</li>
-        <li class="feature-image" :style="`background-image: url(${feature.listImage})`"></li>
-        <li class="feature-comment">{{ feature.listComment }}</li>
-      </ul>
-    </p>
+      <h5 class="feature-title">{{ feature.title }}</h5>
+      <div class="feature-image" :style="`background-image: url(${feature.listImage})`"></div>
+      <p class="feature-comment">{{ feature.listComment }}</p>
+    </section>
   </div>
 </template>
 
@@ -39,39 +37,37 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: space-around;
   margin: 0 auto;
-  padding: 0 2em;
-  max-width: 95em;
+  padding: 0 1.5em;
+  max-width: 90em;
   .grid-box {
-    margin: 1em 2em;
+    margin: 1.8em 1.5em 0 1.5em;
     padding: 0;
+    max-width: 20em;
+    min-width: 16em;
     text-align: center;
-    ul {
+    h4,h5.feature-title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin: 0 0 0.5em 0;
+      padding: 0;
+    }
+    .feature-image {
+      height: 16em;
+      border-radius: 50%;
+      overflow:hidden;
+      background-position: center center;
+      background-size: cover;
       margin: 0;
       padding: 0;
-      list-style: none;
-      li {
-        margin: 0.8em 0;
-        padding: 0;
-        max-width: 20em;
-        min-width: 16em;
-      }
-      li.feature-title {
-        text-align: center;
-        font-weight: bold;
-      }
-      li.feature-image {
-        height: 16em;
-        border-radius: 50%;
-        overflow:hidden;
-        background-position: center center;
-        background-size: cover;
-      }
-      li.feature-image:hover {
-        opacity: 0.6;
-      }
-      li.feature-comment {
-        text-align: left;
-      }
+    }
+    .feature-image:hover {
+      opacity: 0.6;
+    }
+    .feature-comment {
+      margin: 0.8em 0 0 0;
+      padding: 0;
+      text-align: left;
     }
   }
 }

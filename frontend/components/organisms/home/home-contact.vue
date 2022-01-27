@@ -1,6 +1,8 @@
 <template>
-  <section id="home-contact-section">
-    <section-title>Contact</section-title>
+  <section>
+    <h4 class="section-title">
+      <span>Contact</span>
+    </h4>
     <contents-card no-footer>
       <template #header>
         <section-eye-catcher background-image="https://longlivenet.com/static/images/contact01.jpg">
@@ -35,20 +37,21 @@
 <script lang='ts'>
 import { defineComponent } from '@vue/composition-api'
 import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionTitle from '~/components/molecules/section-title.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
 
 export default defineComponent({
   name: 'HomeContact',
-  components: {
-    ContentsCard,
-    SectionTitle,
-    SectionEyeCatcher
-  },
+  components: { ContentsCard, SectionEyeCatcher },
 })
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/style.scss';
+
+.section-title {
+  @include index-section-title;
+}
+
 .home-contact-nav {
   margin-top: 1.5em;
 }
