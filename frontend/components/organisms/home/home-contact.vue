@@ -53,6 +53,6 @@ export default defineComponent({
 }
 
 .home-contact-nav {
-  margin-top: 1.5em;
+  margin-top: 1.5rem;
 }
 </style>

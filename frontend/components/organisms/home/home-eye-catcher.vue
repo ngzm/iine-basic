@@ -51,10 +51,10 @@ export default defineComponent({
       text-shadow: 1px 1px 6px black; 
     }
     h2 {
-      font-size: 2em;
+      font-size: 2rem;
     }
     p {
-      font-size: 1.4em;
+      font-size: 1.4rem;
     }
   }
 }
@@ -64,11 +64,11 @@ export default defineComponent({
     height: 50vh;
     div {
       h2 {
-        font-size: 1.8em;
+        font-size: 1.8rem;
         font-weight: bolder;
       }
       p {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: bolder;
       }
     }

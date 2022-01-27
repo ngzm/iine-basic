@@ -71,6 +71,6 @@ export default defineComponent({
 
 .home-information-nav {
   text-align: center;
-  margin-top: 1.5em;
+  margin-top: 1.5rem;
 }
 </style>

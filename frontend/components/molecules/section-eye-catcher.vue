@@ -39,7 +39,7 @@ $eye-catcher-height-sm: 240px;
     display: inline-block;
     background-color: rgba(0,0,0,0.5);
     line-height: normal;
-    padding: 1em;
+    padding: 1rem;
     vertical-align: middle;
     h4,p {
       color: white;
@@ -48,11 +48,11 @@ $eye-catcher-height-sm: 240px;
       margin: 0;
     }
     h4 {
-      font-size: 1.25em;
+      font-size: 1.25rem;
     }
     p {
-      font-size: 1.0em;
-      margin-top: 0.5em;
+      font-size: 1.0rem;
+      margin-top: 0.5rem;
     }
   }
 }

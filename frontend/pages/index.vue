@@ -1,7 +1,9 @@
 <template>
   <article>
-    <home-eye-catcher />
-    <nav-bread-brumb />
+    <div  id="index-top-position">
+      <home-eye-catcher />
+      <nav-bread-brumb />
+    </div>
 
     <article id="index-information-article">
       <home-information class="article-margin" />
@@ -46,21 +48,21 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-#index-information-article {
-  @include nav-header-fixed-gap;
-}
+// #index-information-article {
+//   @include nav-header-fixed-gap;
+// }
 
-#index-news-article {
-  @include nav-header-fixed-gap;
-}
+// #index-news-article {
+//   @include nav-header-fixed-gap;
+// }
 
-#index-services-article {
-  @include nav-header-fixed-gap;
-}
+// #index-services-article {
+//   @include nav-header-fixed-gap;
+// }
 
-#index-contact-article {
-  @include nav-header-fixed-gap;
-}
+// #index-contact-article {
+//   @include nav-header-fixed-gap;
+// }
 
 .article-margin {
   @include index-article-margin;

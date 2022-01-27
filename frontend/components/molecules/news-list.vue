@@ -51,11 +51,11 @@ ul.news-list-wrapper {
     p {
       text-align: left;
       margin: 2px;
-      padding: 0.4em; 
+      padding: 0.4rem; 
     }
     p.news-header {
-      width: 13em;
-      min-width: 13em;
+      width: 13rem;
+      min-width: 13rem;
       background-color: #ccccff;
     }
     p.news-title {
@@ -73,7 +73,7 @@ ul.news-list-wrapper {
       flex-flow: column;
       align-items: stretch;
       p.news-title {
-        margin: 0 0 0.6em 0;
+        margin: 0 0 0.6rem 0;
       }
     }
   }

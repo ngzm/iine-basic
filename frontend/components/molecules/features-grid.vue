@@ -37,23 +37,23 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: space-around;
   margin: 0 auto;
-  padding: 0 1.5em;
-  max-width: 90em;
+  padding: 0 1.5rem;
+  max-width: 90rem;
   .grid-box {
-    margin: 1.8em 1.5em 0 1.5em;
+    margin: 1.8rem 1.5rem 0 1.5rem;
     padding: 0;
-    max-width: 20em;
-    min-width: 16em;
+    max-width: 20rem;
+    min-width: 16rem;
     text-align: center;
     h4,h5.feature-title {
       text-align: center;
       font-weight: bold;
-      font-size: 1.1em;
-      margin: 0 0 0.5em 0;
+      font-size: 1.1rem;
+      margin: 0 0 0.5rem 0;
       padding: 0;
     }
     .feature-image {
-      height: 16em;
+      height: 16rem;
       border-radius: 50%;
       overflow:hidden;
       background-position: center center;
@@ -65,7 +65,7 @@ export default defineComponent({
       opacity: 0.6;
     }
     .feature-comment {
-      margin: 0.8em 0 0 0;
+      margin: 0.8rem 0 0 0;
       padding: 0;
       text-align: left;
     }

@@ -25,16 +25,16 @@ export default defineComponent({
 
 .contents-card {
   width: 100%;
-  min-width: 300px;
+  min-width: 18rem;
   margin: 0 auto;
   background-color: white;
   &__header {
     margin: 0 auto;
   }
   &__text {
-    max-width: $content-base-max-width;
+    max-width: 54rem;
     margin: 0 auto;
-    padding: 2.5em;
+    padding: 2.5rem;
   }
   &__footer {
     margin: 0 auto;

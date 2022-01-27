@@ -10,17 +10,19 @@ $grid-breakpoint-xl: map-get($grid-breakpoints, xl);
 
 html {
   color: $base-color;
-  font-size: 100%;
+  // font-size: 62.5%; // 16 * 62.5 = 10px
+  font-size: 100%;  // 16px
 }
 
 @media print, screen and (max-width: $grid-breakpoint-md) {
   html {
-    font-size: 80%;
+    font-size: 87.5%; // 14px
   }
 }
 
 body {
   font-family: Ubuntu, 'Noto Sans JP', sans-serif;
+  font-size: 1em;
   background-color: $base-background-color;
 }
 
@@ -46,6 +48,3 @@ $nav-header-height: 120px;
   margin-top: $nav-header-height * -1;
   padding-top: $nav-header-height;
 }
-
-// content base max width
-$content-base-max-width: 54em;
