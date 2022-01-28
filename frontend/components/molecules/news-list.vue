@@ -49,16 +49,17 @@ ul.news-list-wrapper {
     flex-flow: row nowrap;
     align-items: center;
     p {
-      text-align: left;
       margin: 2px;
       padding: 0.4rem; 
     }
     p.news-header {
-      width: 13rem;
-      min-width: 13rem;
+      text-align: center;
+      width: 14rem;
+      min-width: 14rem;
       background-color: #ccccff;
     }
     p.news-title {
+      text-align: left;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

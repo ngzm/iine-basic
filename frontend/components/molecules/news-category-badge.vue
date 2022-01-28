@@ -34,6 +34,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .news-badge {
-  width: 6rem;
+  width: 5rem;
 }
 </style>

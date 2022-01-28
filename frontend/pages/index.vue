@@ -33,7 +33,7 @@ import HomeServices from '~/components/organisms/home/home-services.vue'
 import HomeContact from '~/components/organisms/home/home-contact.vue'
 
 export default defineComponent({
-  name: 'MyIndex',
+  name: 'HomeIndex',
   components: {
     HomeEyeCatcher,
     NavBreadBrumb,
@@ -47,22 +47,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
-
-// #index-information-article {
-//   @include nav-header-fixed-gap;
-// }
-
-// #index-news-article {
-//   @include nav-header-fixed-gap;
-// }
-
-// #index-services-article {
-//   @include nav-header-fixed-gap;
-// }
-
-// #index-contact-article {
-//   @include nav-header-fixed-gap;
-// }
 
 .article-margin {
   @include index-article-margin;

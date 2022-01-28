@@ -7,7 +7,7 @@
       <template #default>
         <news-list :news-list="newsList" />
         <div class="home-news-nav">
-          <b-link href="/news">and more ...</b-link>
+          <b-link to="/news">and more ...</b-link>
         </div>
       </template>
     </contents-card>

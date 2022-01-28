@@ -1,8 +1,5 @@
 <template>
   <b-navbar type="dark" toggleable="md" class="main-header-nav">
-    <!-- <nuxt-link v-scroll-to="{ el:'#index-top-article' }" to="/">
-      Scroll to TOP
-    </nuxt-link> -->
     <b-navbar-brand v-scroll-to="'#index-top-position'" to="/">
       <span class="nav-brand">ロングリブネット</span>
     </b-navbar-brand>

@@ -32,7 +32,7 @@ export default defineComponent({
     margin: 0 auto;
   }
   &__text {
-    max-width: 54rem;
+    // max-width: 54rem;
     margin: 0 auto;
     padding: 2.5rem;
   }

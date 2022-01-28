@@ -43,8 +43,3 @@ a:active {
 
 // nav header height
 $nav-header-height: 120px;
-
-@mixin nav-header-fixed-gap {
-  margin-top: $nav-header-height * -1;
-  padding-top: $nav-header-height;
-}
