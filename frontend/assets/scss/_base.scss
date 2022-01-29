@@ -1,0 +1,45 @@
+// base color
+$base-background-color: #d3d3d3;
+$base-color: black;
+
+// grid system
+$grid-breakpoint-sm: map-get($grid-breakpoints, sm);
+$grid-breakpoint-md: map-get($grid-breakpoints, md);
+$grid-breakpoint-lg: map-get($grid-breakpoints, lg);
+$grid-breakpoint-xl: map-get($grid-breakpoints, xl);
+
+html {
+  color: $base-color;
+  // font-size: 62.5%; // 16 * 62.5 = 10px
+  font-size: 100%;  // 16px
+}
+
+@media print, screen and (max-width: $grid-breakpoint-md) {
+  html {
+    font-size: 87.5%; // 14px
+  }
+}
+
+body {
+  font-family: Ubuntu, 'Noto Sans JP', sans-serif;
+  font-size: 1em;
+  background-color: $base-background-color;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: hotpink;
+}
+a:active {
+  color: hotpink;
+}
+
+// nav header height
+$nav-header-height: 120px;

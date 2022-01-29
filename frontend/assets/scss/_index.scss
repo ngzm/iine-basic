@@ -1,0 +1,15 @@
+
+@mixin index-article-margin {
+  margin-top: 2rem;
+  margin-bottom: 8rem;
+}
+
+@mixin index-section-title {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  span {
+    background: linear-gradient(transparent 75%, orange 75%);
+    font-weight: bold;
+  }
+}
