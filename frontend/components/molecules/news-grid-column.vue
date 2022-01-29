@@ -8,7 +8,9 @@
       v-show="!isHover"
       class="news-image"
       :style="`background-image: url(${news.image})`"
-    />
+    >
+      <h5 class="news-title">{{ news.title }}</h5>
+    </div>
     <div 
       v-show="isHover"
       class="news-information"
@@ -58,11 +60,24 @@ export default defineComponent({
 .grid-box {
   margin: 0;
   padding: 0.2rem;
+  h4,h5.news-title {
+    font-size: small;
+    font-weight: bold;
+    color: white;
+    background-color: rgba($color: black, $alpha: 1.00);
+    text-shadow: 1px 1px 4px black; 
+    margin: 0;
+    padding: 0.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
   .news-image {
     overflow:hidden;
     background-position: center center;
     background-size: cover;
-    height: 14rem;
+    height: 15rem;
     margin: 0;
     padding: 0;
   }
@@ -70,16 +85,10 @@ export default defineComponent({
     overflow:hidden;
     color: white;
     background-color: black;
-    height: 14rem;
+    height: 15rem;
     margin: 0;
-    padding: 1em;
+    padding: 0;
     text-align: left;
-    h4,h5.news-title {
-      font-weight: bold;
-      font-size: 1rem;
-      margin: 0;
-      padding: 0;
-    }
     .feature-comment {
       margin: 0.8rem 0 0 0;
       padding: 0;

@@ -4,8 +4,8 @@
       cols="1"
       cols-sm="1"
       cols-md="2"
-      cols-lg="3"
-      cols-xl="4"
+      cols-lg="2"
+      cols-xl="3"
     >
       <template v-for="news in newses">
         <news-grid-column
