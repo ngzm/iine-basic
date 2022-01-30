@@ -1,31 +1,27 @@
 <template>
   <header
     class="home-eye-catcher"
-    :style="{ 'background-image': `url(${backgroundImage})` }"
+    :style="{ 'background-image': `url(${eyeCatch.image || ''})` }"
   >
     <section class="home-eye-catcher__titles">
-      <h2>情報技術をチカラにしたい！</h2>
-      <p>ロングリブネットがサポートいたします</p>
+      <h2>{{ eyeCatch.title || '' }}</h2>
+      <p>{{ eyeCatch.subtitle || '' }}</p>
     </section>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { EyeCatchType } from '@/types/content-type'
 
 export default defineComponent({
-  name: 'HomeEyeCatcher',
-  setup() {
-    const backgroundImage = ref('');
-
-    onMounted(() => {
-      backgroundImage.value = 'https://longlivenet.com/static/images/top01.jpg';
-    })
-
-    return {
-      backgroundImage
+  name: 'LongLivenetHomeEyeCatcher',
+  props: {
+    eyeCatch: {
+      type: Object as PropType<EyeCatchType>,
+      required: true
     }
-  },
+  }
 })
 </script>
 <style lang="scss" scoped>

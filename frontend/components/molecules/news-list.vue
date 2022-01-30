@@ -1,7 +1,7 @@
 <template>
   <ul class="news-list-wrapper">
     <li
-      v-for="news in newsList"
+      v-for="news in newses"
       :key="news.id"
     >
       <p class="news-header">
@@ -17,16 +17,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api'
+import { NewsType } from '@/types/content-type'
 import { formatLocalDates } from '@/plugins/common-utils'
-import { NewsListItem } from '~/types/news-type'
 import NewsCategoryBadge from '@/components/molecules/news-category-badge.vue'
 
 export default defineComponent({
   name: 'NewsList',
   components: { NewsCategoryBadge },
   props: {
-    newsList: {
-      type: Array as PropType<NewsListItem[]>,
+    newses: {
+      type: Array as PropType<NewsType[]>,
       required: true
     }
   },

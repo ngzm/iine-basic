@@ -5,27 +5,18 @@
     </h4>
     <contents-card no-footer>
       <template #header>
-        <section-eye-catcher background-image="https://longlivenet.com/static/images/contact01.jpg">
+        <section-eye-catcher :background-image="contact.image">
           <template #default>
-            ご連絡はこちらまで
+            {{ contact.title }}
           </template>
           <template #subtitle>
-            お気軽にご相談ください
+            {{ contact.subtitle }}
           </template>
         </section-eye-catcher>
       </template>
       <template #default>
-        <div>
-          <p>
-            〒210-0007<br />
-            神奈川県川崎市川崎区駅前本町11番地2 川崎フロンティアビル4階<br />
-            ロングリブネット 長住直樹
-          </p>
-          <p>
-            TEL: 050-5241-3096<br />
-            URL: https://www.longlivenet.com/
-          </p>
-        </div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="contact.body" />
         <div class="home-contact-nav">
           <b-button variant="primary" href="/contact">メールでのお問い合せ（お問い合せフォーム）</b-button>
         </div>
@@ -35,13 +26,20 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, PropType } from '@vue/composition-api'
+import { ContactType } from '@/types/content-type'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
 
 export default defineComponent({
-  name: 'HomeContact',
+  name: 'LongLivenetHomeContact',
   components: { ContentsCard, SectionEyeCatcher },
+  props: {
+    contact: {
+      type: Object as PropType<ContactType>,
+      required: true
+    }
+  }
 })
 </script>
 

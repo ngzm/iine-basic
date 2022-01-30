@@ -3,6 +3,7 @@
     <div>
       <nav-bread-brumb />
     </div>
+    <div>{{ cter }}</div>
 
     <section id="news-grid-section">
       <h4 class="section-title">
@@ -24,11 +25,18 @@ export default defineComponent({
     NavBreadBrumb,
     NewsCatalog
   },
-  setup() {
+  setup(_props, ctx) {
     const title = computed(() => 'NEWS')
+    const getters = ctx.root.$store.getters
+
+    const cter = computed(() => {
+      console.log(ctx.root.$store)
+      return getters['test/show']
+    })
 
     return {
-      title
+      title,
+      cter
     }
     
   },

@@ -1,30 +1,26 @@
 <template>
-  <div class="feature-grid-container">
+  <div class="contents-grid-container">
     <section
-      v-for="feature in featuresList"
-      :key="feature.id"
+      v-for="content in contentsList"
+      :key="content.id"
       class="grid-box"
     >
-      <h5 class="feature-title">{{ feature.title }}</h5>
-      <div class="feature-image" :style="`background-image: url(${feature.listImage})`"></div>
-      <p class="feature-comment">{{ feature.listComment }}</p>
+      <h5 class="content-title">{{ content.title }}</h5>
+      <div class="content-image" :style="`background-image: url(${content.image || ''})`"></div>
+      <p class="content-comment">{{ content.comment || content.body || '' }}</p>
     </section>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api'
-import { FeatureListItem } from '~/types/feature-type'
+import { ContentType } from '~/types/content-type'
 
 export default defineComponent({
-  name: 'FeatureGrid',
+  name: 'ContentsGrid',
   props: {
-    category: {
-      type: String,
-      required: true
-    },
-    featuresList: {
-      type: Array as PropType<FeatureListItem[]>,
+    contentsList: {
+      type: Array as PropType<ContentType[]>,
       required: true
     }
   },
@@ -32,7 +28,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.feature-grid-container {
+.contents-grid-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -45,14 +41,14 @@ export default defineComponent({
     max-width: 20rem;
     min-width: 16rem;
     text-align: center;
-    h4,h5.feature-title {
+    h4,h5.content-title {
       text-align: center;
       font-weight: bold;
       font-size: 1.1rem;
       margin: 0 0 0.5rem 0;
       padding: 0;
     }
-    .feature-image {
+    .content-image {
       height: 16rem;
       border-radius: 50%;
       overflow:hidden;
@@ -61,10 +57,10 @@ export default defineComponent({
       margin: 0;
       padding: 0;
     }
-    .feature-image:hover {
+    .content-image:hover {
       opacity: 0.6;
     }
-    .feature-comment {
+    .content-comment {
       margin: 0.8rem 0 0 0;
       padding: 0;
       text-align: left;
