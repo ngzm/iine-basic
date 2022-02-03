@@ -1,23 +1,18 @@
 <template>
-  <section>
-    <h4 class="section-title">
-      <span>{{ title }}</span>
-    </h4>
-    <contents-card>
-      <template #header>
-        <section-eye-catcher :background-image="eyeCatcherImage">
-          {{ eyeCatcherTitle }}
-        </section-eye-catcher>
-      </template>
-      <template #default>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-html="informationHtml" />
-        <div class="home-information-nav">
-          <b-button variant="primary" href="#contact">{{ navLabel }}</b-button>
-        </div>
-      </template>
-    </contents-card>
-  </section>
+  <contents-card>
+    <template #header>
+      <section-eye-catcher :background-image="eyeCatcherImage">
+        {{ eyeCatcherTitle }}
+      </section-eye-catcher>
+    </template>
+    <template #default>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-html="informationHtml" />
+      <div class="home-information-nav">
+        <b-button variant="primary" href="#contact">{{ navLabel }}</b-button>
+      </div>
+    </template>
+  </contents-card>
 </template>
 
 <script lang='ts'>
@@ -27,7 +22,7 @@ import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
 import { InformationType } from '@/types/content-type'
 
 export default defineComponent({
-  name: 'LongLivenetHomeInformations',
+  name: 'Type1Iformations',
   components: { ContentsCard, SectionEyeCatcher },
   props: {
     informations: {
@@ -47,11 +42,9 @@ export default defineComponent({
     // TODO: need sanitize!
     const informationHtml = computed(() => information.value.body)
 
-    const title = computed(() => 'Message')
     const navLabel = 'お問い合せ'
 
     return {
-      title,
       navLabel,
       information,
       eyeCatcherImage,
@@ -63,12 +56,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/style.scss';
-
-.section-title {
-  @include index-section-title;
-}
-
 .home-information-nav {
   text-align: center;
   margin-top: 1.5rem;

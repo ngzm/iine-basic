@@ -9,9 +9,6 @@ export interface ContentType {
   link?: string
 }
 
-
-export type EyeCatchType = Pick<ContentType, 'id'|'title'|'subtitle'|'image'>
-
 export interface InformationType extends ContentType {}
 
 export interface NewsType extends ContentType {
@@ -30,3 +27,10 @@ export interface AboutType extends ContentType {}
 export interface ReasonType extends ContentType {}
 
 export interface ContactType extends ContentType {}
+
+export interface EyeCatchType {
+  id: number
+  title?: string
+  subtitle?: string
+  image?: string
+}

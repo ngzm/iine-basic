@@ -1,5 +1,5 @@
 <template>
-  <long-livenet-home-index />
+  <component :is="templateName" />
 </template>
 
 <script lang="ts">
@@ -11,5 +11,11 @@ export default defineComponent({
   components: {
     LongLivenetHomeIndex,
   },
+  setup() {
+    const templateName = 'LongLivenetHomeIndex'
+    return {
+      templateName
+    }
+  }
 })
 </script>

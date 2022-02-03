@@ -15,7 +15,7 @@ import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { EyeCatchType } from '@/types/content-type'
 
 export default defineComponent({
-  name: 'LongLivenetHomeEyeCatcher',
+  name: 'TopEyeCatcher',
   props: {
     eyeCatch: {
       type: Object as PropType<EyeCatchType>,
@@ -29,7 +29,7 @@ export default defineComponent({
 
 .home-eye-catcher {
   height: 100vh;
-  min-height: 500px;
+  min-height: 400px;
   position: relative;
   background-position: center center;
   background-size: cover;
