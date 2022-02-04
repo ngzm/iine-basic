@@ -3,7 +3,7 @@ import { ContactType } from '@/types/content-type'
 import { initContent } from '@/composable/content'
 
 export default ( /* userId */ ) => {
-  const contact: ContactType = reactive(initContact())
+  const contact = reactive(initContact())
   const loadContact = (/* id: number */) => {
     Object.assign(contact, fetchContact())
   }
@@ -21,7 +21,7 @@ export default ( /* userId */ ) => {
   }
 }
 
-const initContact = (): ContactType => ({ ...initContent() })
+const initContact = (): ContactType => ({ ...initContent() } as ContactType)
 const fetchContact = (): ContactType => ({
   id: 1,
   title: 'ご連絡はこちらまで',

@@ -3,7 +3,7 @@ import { InformationType } from '@/types/content-type'
 import { initContent } from '@/composable/content'
 
 export default ( /* userId */ ) => {
-  const information: InformationType = reactive(initInformation())
+  const information = reactive(initInformation())
   const loadInformation = (/* id: number */) => {
     /* not implimented */
   }
@@ -23,7 +23,7 @@ export default ( /* userId */ ) => {
   }
 }
 
-const initInformation = (): InformationType => ({ ...initContent() })
+const initInformation = (): InformationType => ({ ...initContent() } as InformationType)
 const fetchInformations = (): InformationType[] => ([
   {
     id: 1,

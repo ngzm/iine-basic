@@ -18,7 +18,11 @@
         <h4 class="section-title">
           <span>What's New</span>
         </h4>
-        <newses :newses="newses" />
+        <newses :newses="newses">
+          <template #nav>
+            <b-link to="/news">and more ...</b-link>
+          </template>
+        </newses>
       </section>
     </article>
 
@@ -58,7 +62,7 @@ import serviceHandler from '@/composable/service-handler'
 import contactHandler from '@/composable/contact-handler'
 
 export default defineComponent({
-  name: 'LongLivenetHomeIndex',
+  name: 'LongLivenetIndex',
   components: {
     TopEyeCatcher,
     Informations,

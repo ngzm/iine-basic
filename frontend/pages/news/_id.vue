@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, useContext } from '@nuxtjs/composition-api'
 import LongLivenetNewsIndex from '~/components/templates/longlivenet/news-index.vue'
 
 export default defineComponent({
@@ -12,7 +12,15 @@ export default defineComponent({
     LongLivenetNewsIndex,
   },
   setup() {
+    const { route } = useContext()
+
     const templateName = 'LongLivenetNewsIndex'
+
+    onMounted(() => {
+      const id = route.value.params.id
+      console.log('params', route.value.params)
+      console.log('id', id)
+    })
     return {
       templateName
     }

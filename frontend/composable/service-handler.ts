@@ -3,7 +3,7 @@ import { ServiceType } from '@/types/content-type'
 import { initContent } from '@/composable/content'
 
 export default ( /* userId */ ) => {
-  const service: ServiceType = reactive(initService())
+  const service = reactive(initService())
   const loadService = (/* id: number */) => {
     /* not implimented */
   }
@@ -23,7 +23,7 @@ export default ( /* userId */ ) => {
   }
 }
 
-const initService = (): ServiceType => ({ ...initContent() })
+const initService = (): ServiceType => ({ ...initContent() } as ServiceType)
 const fetchServices = (): ServiceType[] => ([
   {
     id: 1,

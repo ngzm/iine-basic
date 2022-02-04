@@ -4,15 +4,15 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import LongLivenetHomeIndex from '@/components/templates/longlivenet/home/index.vue'
+import LongLivenetIndex from '~/components/templates/longlivenet/index.vue'
 
 export default defineComponent({
   name: 'HomeIndex',
   components: {
-    LongLivenetHomeIndex,
+    LongLivenetIndex,
   },
   setup() {
-    const templateName = 'LongLivenetHomeIndex'
+    const templateName = 'LongLivenetIndex'
     return {
       templateName
     }

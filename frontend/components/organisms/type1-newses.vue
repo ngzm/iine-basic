@@ -2,8 +2,8 @@
   <contents-card>
     <template #default>
       <news-list :newses="newses" />
-      <div class="home-news-nav">
-        <b-link to="/news">and more ...</b-link>
+      <div v-if="$slots.nav" class="home-news-nav">
+        <slot name="nav" />
       </div>
     </template>
   </contents-card>

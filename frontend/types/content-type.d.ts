@@ -12,8 +12,8 @@ export interface ContentType {
 export interface InformationType extends ContentType {}
 
 export interface NewsType extends ContentType {
-  category: string;
-  publishOn: Date;
+  category: string
+  publishOn: Date
 }
 
 export interface ServiceType extends ContentType {}

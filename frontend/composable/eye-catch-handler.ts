@@ -2,7 +2,7 @@ import { reactive } from '@nuxtjs/composition-api'
 import { EyeCatchType } from '@/types/content-type'
 
 export default ( /* userId */ ) => {
-  const eyeCatch: EyeCatchType = reactive(initEyeCatch())
+  const eyeCatch = reactive(initEyeCatch())
   const loadEyeCatch = () => {
     Object.assign(eyeCatch, fetchEyeCatch())
   }

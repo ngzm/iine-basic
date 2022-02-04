@@ -9,7 +9,7 @@
         <news-category-badge :category="news.category" class="ml-2" />
       </p>
       <p class="news-title">
-        <a href="">{{news.title}}</a>
+        <a href="" @click.prevent.stop="$router.push(`/news/${news.id}`)">{{news.title}}</a>
       </p>
     </li>
   </ul> 
@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api'
 import { NewsType } from '@/types/content-type'
-import { formatLocalDates } from '@/plugins/common-utils'
+import { formatLocalDates } from '@/utils/common-utils'
 import NewsCategoryBadge from '@/components/molecules/news-category-badge.vue'
 
 export default defineComponent({
