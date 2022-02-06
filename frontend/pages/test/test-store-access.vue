@@ -9,21 +9,18 @@
       <h4 class="section-title">
         <span>{{ title }}</span>
       </h4>
-      <news-catalog />
     </section>
   </article>
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 import NavBreadBrumb from '@/components/organisms/layout/nav-bread-crumb.vue'
-import NewsCatalog from '@/components/organisms/news/news-catalog.vue'
 
 export default defineComponent({
   name: 'NewsIndex',
   components: {
     NavBreadBrumb,
-    NewsCatalog
   },
   setup(_props, ctx) {
     const title = computed(() => 'NEWS')

@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api'
-import { NewsType } from '@/types/news-type'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { NewsType } from '@/types/content-type'
 import NewsGridColumn from '@/components/molecules/news-grid-column.vue'
 
 export default defineComponent({

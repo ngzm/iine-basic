@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { ServiceType } from '~/types/content-type'
 import ContentsGrid from '@/components/molecules/contents-grid.vue'
 

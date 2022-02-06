@@ -21,7 +21,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, PropType, computed } from '@vue/composition-api'
+import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
 import { ContactType } from '@/types/content-type'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'

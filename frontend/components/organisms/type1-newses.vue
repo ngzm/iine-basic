@@ -10,7 +10,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, PropType } from '@vue/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import NewsList from '@/components/molecules/news-list.vue'
