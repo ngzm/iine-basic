@@ -2011,6 +2011,11 @@
   dependencies:
     tslib "^2.3.1"
 
+"@vue/devtools-api@^6.0.0-beta.19":
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.0.6.tgz#4bf8bfe8f14f73c614d9baeaa275fe3cd1c799d6"
+  integrity sha512-QxGATXEuANiVhnc+8PrddyZsyOjMa8ftBXJohl9X7fG0CnlUK2kmKaRfHsKagmkfEpBg74xMkqrkVTEMJYdAWQ==
+
 "@vue/ref-transform@^3.2.23":
   version "3.2.24"
   resolved "https://registry.yarnpkg.com/@vue/ref-transform/-/ref-transform-3.2.24.tgz#335bf06e0b25be16e7056cc4117c51a79f0c9122"
@@ -9098,6 +9103,13 @@ vue-client-only@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.1.0.tgz#1a67a47b8ecacfa86d75830173fffee3bf8a4ee3"
   integrity sha512-vKl1skEKn8EK9f8P2ZzhRnuaRHLHrlt1sbRmazlvsx6EiC3A8oWF8YCBrMJzoN+W3OnElwIGbVjsx6/xelY1AA==
+
+vue-composable@^1.0.0-beta.24:
+  version "1.0.0-beta.24"
+  resolved "https://registry.yarnpkg.com/vue-composable/-/vue-composable-1.0.0-beta.24.tgz#04032163fb90adfb4c1f0f5d962f9bca00398341"
+  integrity sha512-rVxqIk+CCBDNlu7MK59FB6hIHbjpaNszSZ3o1fReXiDKpdw2AAnSWx5vqUpJgC4yGlUzBMJ2eUQIjij5/wr8Kg==
+  dependencies:
+    "@vue/devtools-api" "^6.0.0-beta.19"
 
 vue-eslint-parser@^8.0.1:
   version "8.0.1"

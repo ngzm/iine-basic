@@ -5,12 +5,13 @@ import { initContent } from '@/composable/content'
 export default ( /* userId */ ) => {
   const news = reactive(initNews())
   const loadNews = (id: number) => {
+    newses.value.push(...fetchNewses())
     Object.assign(news, newses.value.find((news) => news.id === id) || initNews())
   }
 
   const newses = ref([] as NewsType[])
-  const loadNewses = (ln?: number) => {
-    if (ln) {
+  const loadNewses = (limit?: number) => {
+    if (limit) {
       const fetchData = fetchNewses()
       newses.value.push(...fetchData)
     } else {
@@ -34,8 +35,10 @@ const initNews = (): NewsType => ({
   publishOn: new Date(),
 })
 
-let idSeq = 0;
- const fetchNewses = (): NewsType[] => ([
+ const fetchNewses = (): NewsType[] => {
+
+  let idSeq = 0;
+  return [
   {
     id: ++idSeq,
     category: 'I',
@@ -107,4 +110,5 @@ let idSeq = 0;
     image: 'https://longlivenet.com/media/tphotos/technology-3406895_1280.jpg',
     publishOn: new Date('2020-02-25 00:00:00'.replace(/-/g, '/'))
   },
-])
+]
+}

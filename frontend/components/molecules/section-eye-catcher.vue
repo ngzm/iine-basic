@@ -3,8 +3,11 @@
     class="section-eye-catcher"
     :style="{ 'background-image': `url(${backgroundImage})` }"
   >
-    <section class="section-eye-catcher__titles">
-      <h4><slot /></h4>
+    <section
+      class="section-eye-catcher__titles"
+      :class="{ trans: !$slots.default }"
+    >
+      <h4 v-if="$slots.default"><slot /></h4>
       <p v-if="$slots.subtitle"><slot name="subtitle" /></p>
     </section>
   </div>
@@ -54,6 +57,9 @@ $eye-catcher-height-sm: 240px;
       font-size: 1.0rem;
       margin-top: 0.5rem;
     }
+  }
+  .trans {
+    background-color: transparent;
   }
 }
 

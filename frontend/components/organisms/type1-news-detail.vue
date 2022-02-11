@@ -1,14 +1,13 @@
 <template>
   <contents-card>
     <template #header>
-      <section-eye-catcher :background-image="eyeCatcherImage">
-        {{ eyeCatcherTitle }}
-      </section-eye-catcher>
+      <section-eye-catcher :background-image="newsImage" />
     </template>
     <template #default>
+      <h5 class="news-detail__title"><span>{{ newsTitle }}</span></h5>
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="bodyHtml" />
-      <div v-if="$slots.nav" class="news-detail-nav">
+      <div v-html="newsBodyHtml" />
+      <div v-if="$slots.nav" class="news-detail__nav">
         <slot name="nav" />
       </div>
     </template>
@@ -31,27 +30,38 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const eyeCatcherImage = computed(() => props.news.image)
-    const eyeCatcherTitle = computed(() => props.news.title)
+    const newsImage = computed(() => props.news.image)
+    const newsTitle = computed(() => props.news.title)
 
     // TODO: need sanitize!
-    const bodyHtml = computed(() => {
-      console.log(props.news)
+    const newsBodyHtml = computed(() => {
       return props.news.body
     })
 
     return {
-      eyeCatcherImage,
-      eyeCatcherTitle,
-      bodyHtml
+      newsImage,
+      newsTitle,
+      newsBodyHtml
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-.news-detail-nav {
-  text-align: center;
-  margin-top: 1.5rem;
+
+.news-detail {
+  &__title {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    span {
+      // background: linear-gradient(transparent 75%, orange 75%);
+      font-weight: bold;
+    }
+  }
+  &__nav {
+    margin-top: 1.5rem;
+  }
 }
+
 </style>

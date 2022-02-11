@@ -54,6 +54,11 @@ export default {
     baseURL: '/',
   },
 
+  // BootstrapVUe icons
+  bootstrapVue: {
+    icons: true
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }
