@@ -1,5 +1,5 @@
 <template>
-  <contents-card no-footer>
+  <contents-card>
     <template #header>
       <section-eye-catcher :background-image="contact.image">
         <template #default>

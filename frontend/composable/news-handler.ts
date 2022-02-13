@@ -2,15 +2,28 @@ import { reactive, ref } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
 import { initContent } from '@/composable/content'
 
+const isLoading = ref(false)
+
 export default ( /* userId */ ) => {
   const news = reactive(initNews())
+
   const loadNews = (id: number) => {
-    newses.value.push(...fetchNewses())
-    Object.assign(news, newses.value.find((news) => news.id === id) || initNews())
+    isLoading.value = true;
+    console.log(isLoading)
+
+    setTimeout(() => {
+      newses.value.push(...fetchNewses())
+      Object.assign(news, newses.value.find((news) => news.id === id) || initNews())
+      isLoading.value = false;
+    }, 500)
+
   }
 
   const newses = ref([] as NewsType[])
+
   const loadNewses = (limit?: number) => {
+    isLoading.value = true;
+
     if (limit) {
       const fetchData = fetchNewses()
       newses.value.push(...fetchData)
@@ -18,6 +31,8 @@ export default ( /* userId */ ) => {
       const fetchData = fetchNewses()
       newses.value.push(...fetchData)
     }
+
+    isLoading.value = false;
   }
 
   return {
@@ -26,6 +41,7 @@ export default ( /* userId */ ) => {
     loadNews,
     newses,
     loadNewses,
+    isLoadingNews: isLoading
   }
 }
 

@@ -1,10 +1,10 @@
 <template>
   <contents-card>
     <template #header>
-      <section-eye-catcher :background-image="newsImage" />
+      <section-eye-catcher :background-image="news.image" />
     </template>
     <template #default>
-      <h5 class="news-detail__title"><span>{{ newsTitle }}</span></h5>
+      <h5 class="news-detail__title"><span>{{ news.title }}</span></h5>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="newsBodyHtml" />
       <div v-if="$slots.nav" class="news-detail__nav">
@@ -15,32 +15,34 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
-import { NewsType } from '@/types/content-type'
+import newsHandler from '@/composable/news-handler'
 
 export default defineComponent({
   name: 'Type1Iformations',
   components: { ContentsCard, SectionEyeCatcher },
   props: {
-    news: {
-      type: Object as PropType<NewsType>,
+    newsId: {
+      type: Number,
       required: true
-    }
+    },
   },
   setup(props) {
-    const newsImage = computed(() => props.news.image)
-    const newsTitle = computed(() => props.news.title)
+    const { news, loadNews } = newsHandler()
 
     // TODO: need sanitize!
     const newsBodyHtml = computed(() => {
-      return props.news.body
+      return news.body
+    })
+
+    onMounted(() => {
+      loadNews(props.newsId)
     })
 
     return {
-      newsImage,
-      newsTitle,
+      news,
       newsBodyHtml
     }
   }
