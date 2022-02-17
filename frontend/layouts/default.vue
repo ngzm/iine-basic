@@ -1,34 +1,48 @@
 <template>
-  <div>
+  <div id="application-base-body">
     <header>
       <main-header />
     </header>
     <main>
       <nuxt />
     </main>
+    <footer>
+      <p>Copyright © 2022 ロングリブネット</p>
+    </footer>
+    <contact-sidebar />
   </div>
 </template>
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 import MainHeader from '@/components/organisms/layout/main-header.vue'
+import ContactSidebar from '~/components/organisms/layout/contact-form-sidebar.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
-  components: { MainHeader },
+  components: {
+    MainHeader,
+    ContactSidebar
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-header {
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  z-index: 10;
-}
-main {
-  position: relative;
-  margin: 0;
-  padding: 0;
+#application-base-body {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  header {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 10;
+  }
+  main {
+    flex-grow: 1;
+    position: relative;
+    margin: 0;
+    padding: 0;
+  }
 }
 </style>

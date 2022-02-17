@@ -36,7 +36,7 @@
 <script lang='ts'>
 import { defineComponent, PropType, ref, computed } from '@nuxtjs/composition-api'
 import { ContactType } from '@/types/content-type'
-import ContentsCardInfo from '@/components/molecules/contents-card-info.vue'
+import ContentsCardInfo from '~/components/molecules/KOUJI-CHU/contents-card-info.vue'
 import ContactForm from '@/components/molecules/contact-form.vue'
 // import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
 

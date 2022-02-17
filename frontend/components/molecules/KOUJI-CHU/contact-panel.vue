@@ -2,11 +2,11 @@
   <div class="contact-panel">
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-html="contactBody" />
-    <div class="contact-panel__form-activator">
+    <!-- <div class="contact-panel__form-activator">
       <b-button variant="primary" @click="contactFormModal = !contactFormModal">
         {{ formActivatorLabel }}
       </b-button>
-    </div>
+    </div> -->
     <b-modal
       v-model="contactFormModal"
       title="お問い合せフォーム"

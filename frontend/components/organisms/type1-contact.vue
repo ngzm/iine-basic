@@ -11,10 +11,8 @@
       </section-eye-catcher>
     </template>
     <template #default>
-      <contact-panel
-        :contact="contact"
-        form-activator-label="メールでのお問い合せ（お問い合せフォーム）"
-      />
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-html="contactBody" />
     </template>
   </contents-card>
 </template>
@@ -24,14 +22,12 @@ import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { ContactType } from '@/types/content-type'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
-import ContactPanel from '@/components/molecules/contact-panel.vue'
 
 export default defineComponent({
   name: 'Type1Contact',
   components: {
     ContentsCard,
     SectionEyeCatcher,
-    ContactPanel
   },
   props: {
     contact: {

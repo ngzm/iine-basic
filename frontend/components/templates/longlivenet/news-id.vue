@@ -7,50 +7,40 @@
       <h4 class="news-id-detail__header"><span>News</span></h4>
       <news-detail :news-id="newsId">
         <template #nav>
+          <div class="news-id-detail__action">
+            <b-button v-b-toggle="sidebarIdName" variant="primary">
+              <b-icon icon="hand-index" />
+              お問い合せ
+            </b-button>
+          </div>
         </template>
       </news-detail>
     </section>
-
-    <aside class="news-id-aside">
-      <h5 class="news-id-aside__header">
-        お問い合せ
-        <b-icon icon="hand-index" />
-      </h5>
-      <nav-contact :contact="contact" />
-    </aside>
   </article>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import NavBreadBrumb from '@/components/organisms/layout/nav-bread-crumb.vue'
 import NewsDetail from '@/components/organisms/type1-news-detail.vue'
-import NavContact from '~/components/organisms/type2-nav-contact.vue'
 import newsHandler from '@/composable/news-handler'
-import contactHandler from '@/composable/contact-handler'
-
+// import contactHandler from '@/composable/contact-handler'
+import { sidebarIdName } from '~/components/organisms/layout/contact-form-sidebar.vue'
 
 export default defineComponent({
   name: 'LongLivenetNewsId',
   components: {
     NavBreadBrumb,
     NewsDetail,
-    NavContact
   },
   setup() {
     const newsId = parseInt(useRoute().value.params.id)
-
     const { isLoadingNews } = newsHandler()
-    const { contact, loadContact } = contactHandler()
-
-    onMounted(() => {
-      loadContact()
-    })
 
     return {
+      sidebarIdName,
       newsId,
       isLoadingNews,
-      contact
     }
   }
 })
@@ -67,13 +57,8 @@ export default defineComponent({
   &__header {
     @include index-section-title;
   }
-}
-
-.news-id-aside {
-  margin-top: 8rem;
-  &__header {
+  &__action {
     text-align: center;
-    font-weight: bold;
   }
 }
 </style>

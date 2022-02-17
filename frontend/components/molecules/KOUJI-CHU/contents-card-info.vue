@@ -54,6 +54,11 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   margin: 0 auto;
+  color: dimgray;
+  background-color: white;
+  width: 90%;
+  border-radius: 12px;
+  overflow: hidden;
   &__header {
     margin: 0 auto;
     padding: 0;
@@ -89,6 +94,8 @@ export default defineComponent({
 
 @media only screen and (max-width: $grid-breakpoint-md) {
   .contents-card-info {
+    width: 100%;
+    border-radius: 0;
     &__content {
       &--image{
         min-width: 8rem;
