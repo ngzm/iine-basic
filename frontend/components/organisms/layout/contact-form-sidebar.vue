@@ -25,7 +25,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
-import { ContactType } from '@/types/content-type'
+import { ToastParams, toastHandler } from '@/components/atoms/toast.vue'
+import { ContactFormType } from '@/types/contact-form'
 import contactHandler from '@/composable/contact-handler'
 import ContactForm from '@/components/molecules/contact-form.vue'
 import ContactFormResult from '@/components/molecules/contact-form-result.vue'
@@ -39,6 +40,8 @@ export default defineComponent({
     ContactFormResult,
   },
   setup() {
+    const { addToast } = toastHandler()
+
     const { contact, loadContact } = contactHandler()
 
     onMounted(() => {
@@ -46,20 +49,26 @@ export default defineComponent({
     })
 
     // TODO: need sanitize!
-    const contactBody: ContactType = computed(() => contact.body)
+    const contactBody = computed(() => contact.body || '')
 
-    const sendContactMail = (data) => {
+    const sendContactMail = (data: ContactFormType) => {
       console.log(data)
 
       setResultMode()
+      addToast({
+        title: '送信完了',
+        message: 'お問合せメールを送信しました',
+        variant: 'success'
+      } as ToastParams)
     }
 
-    enum MODE { form, result }
-    const mode = ref(MODE.form)
-    const isFormMode = computed(() => mode.value === MODE.form)
-    const setFormMode = () => { mode.value = MODE.form }
-    const setResultMode = () => {  mode.value = MODE.result }
-      
+    // enum MODE { form, result }
+    // const mode = ref(MODE.form)
+    // const isFormMode = computed(() => mode.value === MODE.form)
+    // const setFormMode = () => { mode.value = MODE.form }
+    // const setResultMode = () => {  mode.value = MODE.result }
+    const { isFormMode, setFormMode, setResultMode } = formMode()
+
     return {
       sidebarIdName,
       contact,
@@ -71,6 +80,21 @@ export default defineComponent({
     }
   },
 })
+
+const formMode = () => {
+  enum MODE { form, result }
+  const mode = ref(MODE.form)
+
+  // const isFormMode = computed(() => mode.value === MODE.form)
+  // const setFormMode = () => { mode.value = MODE.form }
+  // const setResultMode = () => {  mode.value = MODE.result }
+
+  return {
+    isFormMode: computed(() => mode.value === MODE.form),
+    setFormMode: () => { mode.value = MODE.form },
+    setResultMode: () => {  mode.value = MODE.result }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

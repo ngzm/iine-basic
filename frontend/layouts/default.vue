@@ -10,19 +10,22 @@
       <p>Copyright © 2022 ロングリブネット</p>
     </footer>
     <contact-sidebar />
+    <toast />
   </div>
 </template>
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 import MainHeader from '@/components/organisms/layout/main-header.vue'
-import ContactSidebar from '~/components/organisms/layout/contact-form-sidebar.vue'
+import ContactSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
+import Toast from '~/components/atoms/toast.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
   components: {
     MainHeader,
-    ContactSidebar
+    ContactSidebar,
+    Toast
   },
 })
 </script>

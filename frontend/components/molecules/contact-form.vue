@@ -72,6 +72,7 @@
 <script lang='ts'>
 import { defineComponent, ref, computed  } from '@nuxtjs/composition-api'
 import { useValidation } from "vue-composable"
+import { ContactFormType } from '@/types/contact-form'
 
 const required = (x: any) => !!x
 
@@ -89,21 +90,16 @@ const phoneValidator = (x: string) => {
 export default defineComponent({
   name: 'ContactForm',
   setup(_props, { emit }) {
-    const name = ref('');
-    const email = ref('');
-    const phone = ref('');
-    const inquiry = ref('');
-
     const contactForm = useValidation({
       name: {
-        $value: name,
+        $value: ref(''),
         required: {
           $validator: required,
           $message: ref('お名前を入力してください'),
         },
       },
       email: {
-        $value: email,
+        $value: ref(''),
         required: {
           $validator: required,
           $message: ref('メールアドレスを入力してください'),
@@ -114,14 +110,14 @@ export default defineComponent({
         },
       },
       phone: {
-        $value: phone,
+        $value: ref(''),
         phoneFormat: {
           $validator: phoneValidator,
           $message: ref('0000-0000-0000 の形式で入力してください'),
         },
       },
       inquiry: {
-        $value: inquiry,
+        $value: ref(''),
         required: {
           $validator: required,
           $message: ref('お問い合わせ内容を入力してください'),
@@ -147,7 +143,7 @@ export default defineComponent({
       contactForm.$touch()
       if (contactForm.$anyInvalid) return
 
-      const contactData = contactForm.toObject();
+      const contactData: ContactFormType = contactForm.toObject();
       emit('submit', contactData)
       onReset()
     }

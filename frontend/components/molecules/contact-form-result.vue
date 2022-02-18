@@ -4,7 +4,7 @@
     <p>お問い合せを受け付けました</p>
     <div class="contact-form-result__action">
       <b-button @click="$emit('ok')">
-        戻る
+        入力フォームに戻る
       </b-button>
     </div>
   </div>
