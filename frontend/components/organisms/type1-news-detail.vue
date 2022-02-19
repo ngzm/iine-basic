@@ -4,11 +4,17 @@
       <section-eye-catcher :background-image="news.image" />
     </template>
     <template #default>
-      <h5 class="news-detail__title"><span>{{ news.title }}</span></h5>
+      <h5 class="type1-news-detail__title"><span>{{ news.title }}</span></h5>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="newsBodyHtml" />
-      <div v-if="$slots.nav" class="news-detail__nav">
-        <slot name="nav" />
+
+      <div class="type1-news-detail__action">
+        <slot name="action">
+          <b-button v-b-toggle="sidebarIdName" variant="primary">
+            <b-icon icon="hand-index" />
+            お問い合せ
+          </b-button>
+        </slot>
       </div>
     </template>
   </contents-card>
@@ -19,6 +25,7 @@ import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
 import newsHandler from '@/composable/news-handler'
+import { sidebarIdName } from '~/components/organisms/layout/contact-form-sidebar.vue'
 
 export default defineComponent({
   name: 'Type1Iformations',
@@ -42,6 +49,7 @@ export default defineComponent({
     })
 
     return {
+      sidebarIdName,
       news,
       newsBodyHtml
     }
@@ -51,19 +59,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 
-.news-detail {
+.type1-news-detail {
   &__title {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
     text-align: center;
     span {
-      // background: linear-gradient(transparent 75%, orange 75%);
       font-weight: bold;
     }
   }
-  &__nav {
+  &__action {
+    text-align: center;
     margin-top: 1.5rem;
   }
 }
-
 </style>

@@ -9,14 +9,12 @@ export default ( /* userId */ ) => {
 
   const loadNews = (id: number) => {
     isLoading.value = true;
-    console.log(isLoading)
 
     setTimeout(() => {
       newses.value.push(...fetchNewses())
       Object.assign(news, newses.value.find((news) => news.id === id) || initNews())
       isLoading.value = false;
-    }, 500)
-
+    }, 300)
   }
 
   const newses = ref([] as NewsType[])

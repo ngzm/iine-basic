@@ -3,19 +3,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { ServiceType } from '~/types/content-type'
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import ContentsGrid from '@/components/molecules/contents-grid.vue'
+import serviceHandler from '@/composable/service-handler'
 
 export default defineComponent({
   name: 'Type1Services',
   components: { ContentsGrid },
-  props: {
-    services: {
-      type: Array as PropType<ServiceType[]>,
-      required: true
+  setup() {
+    const { services, loadServices } = serviceHandler()
+
+    onMounted(() => {
+      loadServices()
+    })
+
+    return {
+      services,
     }
-  },
+  }
 })
 </script>
 

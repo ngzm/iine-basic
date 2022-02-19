@@ -12,16 +12,25 @@
     </template>
     <template #default>
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="contactBody" />
+      <div v-html="contactHtml" />
+
+      <div class="type1-contact__action">
+        <slot name="action">
+          <b-button v-b-toggle="sidebarIdName" variant="primary">
+            メールで問合せる（お問合せフォーム）
+          </b-button>
+        </slot>
+      </div>
     </template>
   </contents-card>
 </template>
 
 <script lang='ts'>
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { ContactType } from '@/types/content-type'
+import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
+import contactHandler from '@/composable/contact-handler'
+import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 
 export default defineComponent({
   name: 'Type1Contact',
@@ -29,14 +38,30 @@ export default defineComponent({
     ContentsCard,
     SectionEyeCatcher,
   },
-  props: {
-    contact: {
-      type: Object as PropType<ContactType>,
-      required: true
+  setup() {
+    const { contact, loadContact } = contactHandler()
+
+    onMounted(() => {
+      loadContact()
+    })
+
+    // TODO: need sanitize!
+    const contactHtml = computed(() => contact.body)
+
+    return {
+      sidebarIdName,
+      contact,
+      contactHtml
     }
-  },
+  }
 })
 </script>
 
 <style lang="scss" scoped>
+.type1-contact {
+  &__action {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+}
 </style>

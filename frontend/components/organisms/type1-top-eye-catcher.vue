@@ -1,9 +1,9 @@
 <template>
   <header
-    class="home-eye-catcher"
+    class="type1-top-eye-catcher"
     :style="{ 'background-image': `url(${eyeCatch.image || ''})` }"
   >
-    <section class="home-eye-catcher__titles">
+    <section class="type1-top-eye-catcher__titles">
       <h2>{{ eyeCatch.title || '' }}</h2>
       <p>{{ eyeCatch.subtitle || '' }}</p>
     </section>
@@ -11,23 +11,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { EyeCatchType } from '@/types/content-type'
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import eyeCatchHandler from '@/composable/eye-catch-handler'
 
 export default defineComponent({
   name: 'TopEyeCatcher',
-  props: {
-    eyeCatch: {
-      type: Object as PropType<EyeCatchType>,
-      required: true
-    }
+  setup() {
+    const { eyeCatch, loadEyeCatch } = eyeCatchHandler()
+    onMounted(() => {
+      loadEyeCatch()
+    })
+    return { eyeCatch }
   }
 })
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-.home-eye-catcher {
+.type1-top-eye-catcher {
   height: 100vh;
   min-height: 400px;
   position: relative;
@@ -40,6 +41,7 @@ export default defineComponent({
     left: 50%;
     transform: translate(-50%, -50%);
     h2,p {
+      padding: 0;
       text-align: center;
       white-space: nowrap;
       font-weight: bold;
@@ -56,7 +58,7 @@ export default defineComponent({
 }
 
 @media only screen and (max-width: $grid-breakpoint-md) {
-  .home-eye-catcher {
+  .type1-top-eye-catcher {
     height: 50vh;
     div {
       h2 {

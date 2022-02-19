@@ -9,13 +9,13 @@
     <div class="px-3 py-3">
       <div
         :style="{ 'background-image': `url(${contact.image})` }"
-        class="contact-sidebar__eyecatch"
+        class="contact-form-sidebar__eyecatch"
       />
-      <div class="contact-sidebar__address">
+      <div class="contact-form-sidebar__address">
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="contactBody" />
       </div>
-      <div class="contact-sidebar__form">
+      <div class="contact-form-sidebar__form">
         <contact-form v-if="isFormMode" @submit="sendContactMail" />
         <contact-form-result v-else @ok="setFormMode" />
       </div>
@@ -25,8 +25,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
-import { ToastParams, toastHandler } from '@/components/atoms/toast.vue'
 import { ContactFormType } from '@/types/contact-form'
+import { ToastParams, toastHandler } from '@/components/organisms/layout/make-toast.vue'
 import contactHandler from '@/composable/contact-handler'
 import ContactForm from '@/components/molecules/contact-form.vue'
 import ContactFormResult from '@/components/molecules/contact-form-result.vue'
@@ -40,8 +40,6 @@ export default defineComponent({
     ContactFormResult,
   },
   setup() {
-    const { addToast } = toastHandler()
-
     const { contact, loadContact } = contactHandler()
 
     onMounted(() => {
@@ -62,11 +60,7 @@ export default defineComponent({
       } as ToastParams)
     }
 
-    // enum MODE { form, result }
-    // const mode = ref(MODE.form)
-    // const isFormMode = computed(() => mode.value === MODE.form)
-    // const setFormMode = () => { mode.value = MODE.form }
-    // const setResultMode = () => {  mode.value = MODE.result }
+    const { addToast } = toastHandler()
     const { isFormMode, setFormMode, setResultMode } = formMode()
 
     return {
@@ -84,11 +78,6 @@ export default defineComponent({
 const formMode = () => {
   enum MODE { form, result }
   const mode = ref(MODE.form)
-
-  // const isFormMode = computed(() => mode.value === MODE.form)
-  // const setFormMode = () => { mode.value = MODE.form }
-  // const setResultMode = () => {  mode.value = MODE.result }
-
   return {
     isFormMode: computed(() => mode.value === MODE.form),
     setFormMode: () => { mode.value = MODE.form },
@@ -98,7 +87,7 @@ const formMode = () => {
 </script>
 
 <style lang="scss" scoped>
-.contact-sidebar {
+.contact-form-sidebar {
   &__eyecatch {
     width: 100%;
     height: 10rem;

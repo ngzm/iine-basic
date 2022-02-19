@@ -34,21 +34,22 @@ $eye-catcher-height: 380px;
 $eye-catcher-height-sm: 240px;
 
 .section-eye-catcher {
-  line-height: $eye-catcher-height;
-  text-align: center;
-  background-position: center center;
+  height: $eye-catcher-height;
+  display: flex;
+  justify-content: center;
+  align-content:center;
+  align-items:center;
+  background-position: center;
   background-size: cover;
   &__titles {
-    display: inline-block;
     background-color: rgba(0,0,0,0.5);
-    line-height: normal;
     padding: 1rem;
-    vertical-align: middle;
     h4,p {
       color: white;
       font-weight: bold;
       text-shadow: 1px 1px 6px black; 
       margin: 0;
+      padding: 0;
     }
     h4 {
       font-size: 1.25rem;
@@ -65,7 +66,7 @@ $eye-catcher-height-sm: 240px;
 
 @media only screen and (max-width: $grid-breakpoint-md) {
   .section-eye-catcher {
-    line-height: $eye-catcher-height-sm;
+    height: $eye-catcher-height-sm;
   }
 }
 </style>

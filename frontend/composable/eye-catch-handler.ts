@@ -3,7 +3,8 @@ import { EyeCatchType } from '@/types/content-type'
 
 export default ( /* userId */ ) => {
   const eyeCatch = reactive(initEyeCatch())
-  const loadEyeCatch = () => {
+  const loadEyeCatch = (id: number = 1) => {
+    console.log(id)
     Object.assign(eyeCatch, fetchEyeCatch())
   }
 

@@ -1,3 +1,7 @@
+<template>
+  <span :style="{ display: 'none'}" />
+</template>
+
 <script lang="ts">
 import { defineComponent, ref, reactive } from '@nuxtjs/composition-api'
 
@@ -32,7 +36,7 @@ const toastHandler = () => {
 }
 
 const toastComponent = defineComponent({
-  name: 'ToastComponent',
+  name: 'MakeToast',
   setup() {
     const { addTrriger, toastParams, setAddTrriger } = toastHandler()
     return {

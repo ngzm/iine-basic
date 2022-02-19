@@ -4,8 +4,9 @@ import { initContent } from '@/composable/content'
 
 export default ( /* userId */ ) => {
   const service = reactive(initService())
-  const loadService = (/* id: number */) => {
-    /* not implimented */
+  const loadService = (id: number = 1) => {
+    services.value.push(...fetchServices())
+    Object.assign(service, services.value.find((sv) => sv.id === id) || initService())
   }
 
   const services = ref([] as ServiceType[])

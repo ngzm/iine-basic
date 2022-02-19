@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import LongLivenetNewsIndex from '~/components/templates/longlivenet/news-index.vue'
+import LongLivenetNewsIndex from '~/components/templates/longlivenet/news/index.vue'
 
 export default defineComponent({
   name: 'NewsIndex',

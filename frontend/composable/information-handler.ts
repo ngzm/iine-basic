@@ -4,8 +4,9 @@ import { initContent } from '@/composable/content'
 
 export default ( /* userId */ ) => {
   const information = reactive(initInformation())
-  const loadInformation = (/* id: number */) => {
-    /* not implimented */
+  const loadInformation = (id: number = 1) => {
+    informations.value.push(...fetchInformations())
+    Object.assign(information, informations.value.find((i) => i.id === id) || initInformation())
   }
 
   const informations = ref([] as InformationType[])

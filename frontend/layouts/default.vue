@@ -10,7 +10,7 @@
       <p>Copyright © 2022 ロングリブネット</p>
     </footer>
     <contact-sidebar />
-    <toast />
+    <make-toast />
   </div>
 </template>
 
@@ -18,14 +18,14 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import MainHeader from '@/components/organisms/layout/main-header.vue'
 import ContactSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
-import Toast from '~/components/atoms/toast.vue'
+import MakeToast from '@/components/organisms/layout/make-toast.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
   components: {
     MainHeader,
     ContactSidebar,
-    Toast
+    MakeToast
   },
 })
 </script>
