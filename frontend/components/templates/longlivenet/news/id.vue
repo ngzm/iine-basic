@@ -1,6 +1,6 @@
 <template>
   <article id="news-id-article-top">
-    <nav-bread-brumb />
+    <bread-crumb-nav />
     <section class="news-id-detail">
       <h4 class="news-id-detail__header"><span>News</span></h4>
       <news-detail :news-id="newsId" />
@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import { defineComponent, ref, readonly, useRoute } from '@nuxtjs/composition-api'
-import NavBreadBrumb from '@/components/organisms/layout/nav-bread-crumb.vue'
+import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import NewsDetail from '@/components/organisms/type1-news-detail.vue'
 
 export default defineComponent({
   name: 'LongLivenetNewsId',
   components: {
-    NavBreadBrumb,
+    BreadCrumbNav,
     NewsDetail,
   },
   setup() {

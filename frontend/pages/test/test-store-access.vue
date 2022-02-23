@@ -1,7 +1,7 @@
 <template>
   <article id="news-index-top-position">
     <div>
-      <nav-bread-brumb />
+      <bread-crumb-nav />
     </div>
     <div>{{ cter }}</div>
 
@@ -15,12 +15,12 @@
 
 <script>
 import { defineComponent, computed } from '@nuxtjs/composition-api'
-import NavBreadBrumb from '@/components/organisms/layout/nav-bread-crumb.vue'
+import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 
 export default defineComponent({
   name: 'NewsIndex',
   components: {
-    NavBreadBrumb,
+    BreadCrumbNav,
   },
   setup(_props, ctx) {
     const title = computed(() => 'NEWS')

@@ -1,13 +1,13 @@
 <template>
   <div id="application-base-body">
     <header>
-      <main-header />
+      <default-header />
     </header>
     <main>
       <nuxt />
     </main>
     <footer>
-      <p>Copyright © 2022 ロングリブネット</p>
+      <default-footer />
     </footer>
     <contact-sidebar />
     <make-toast />
@@ -16,14 +16,16 @@
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
-import MainHeader from '@/components/organisms/layout/main-header.vue'
+import DefaultHeader from '@/components/organisms/layout/default-header.vue'
+import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import ContactSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
-import MakeToast from '@/components/organisms/layout/make-toast.vue'
+import MakeToast from '@/components/molecules/make-toast.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
   components: {
-    MainHeader,
+    DefaultHeader,
+    DefaultFooter,
     ContactSidebar,
     MakeToast
   },
@@ -46,6 +48,10 @@ export default defineComponent({
     position: relative;
     margin: 0;
     padding: 0;
+  }
+  footer {
+    padding: 0;
+    margin: 0;
   }
 }
 </style>

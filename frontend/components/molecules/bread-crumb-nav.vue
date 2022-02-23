@@ -1,6 +1,6 @@
 <template>
-  <div id="nav-bread-crumb-wrap">
-      <b-breadcrumb :items="items" class="nav-bread-crumb" />
+  <div class="bread-crumb-nav">
+      <b-breadcrumb :items="items" class="bread-crumb-nav__items" />
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
 import { UiComponentOptions } from '@/types/ui-types'
 
 export default defineComponent({
-  name: 'NavBreadBrumb',
+  name: 'BreadCrumbNav',
   setup() {
     const route = useRoute()
     const detailId = computed(() => route.value.params && route.value.params.id ? route.value.params.id : '')
@@ -32,7 +32,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-.nav-bread-crumb {
-  background-color: $base-background-color;
+.bread-crumb-nav {
+  &__items {
+    background-color: $base-background-color;
+  }
 }
 </style>

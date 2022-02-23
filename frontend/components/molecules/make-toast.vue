@@ -17,28 +17,17 @@ const toastParams: ToastParams = reactive({
   variant: 'default'
 })
 
-const addTrriger = ref(false)
-
-const toastHandler = () => {
-  const addToast = (params: ToastParams) => {
-    Object.assign(toastParams, params)
-    setAddTrriger(true)
-  }
-
-  const setAddTrriger = (v: boolean) => { addTrriger.value = v }
-
-  return {
-    toastParams,
-    addToast,
-    addTrriger,
-    setAddTrriger,
-  }
+const addToast = (params: ToastParams) => {
+  Object.assign(toastParams, params)
+  setAddTrriger(true)
 }
 
-const toastComponent = defineComponent({
+const addTrriger = ref(false)
+const setAddTrriger = (v: boolean) => { addTrriger.value = v }
+
+const MakeToast = defineComponent({
   name: 'MakeToast',
   setup() {
-    const { addTrriger, toastParams, setAddTrriger } = toastHandler()
     return {
       addTrriger,
       toastParams,
@@ -62,6 +51,6 @@ const toastComponent = defineComponent({
   }
 })
 
-export default toastComponent;
-export { ToastParams, toastHandler }
+export default MakeToast
+export { ToastParams, addToast }
 </script>

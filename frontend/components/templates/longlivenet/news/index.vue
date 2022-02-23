@@ -1,6 +1,6 @@
 <template>
   <article id="news-index-top-position">
-    <nav-bread-brumb />
+    <bread-crumb-nav />
     <section>
       <h4 class="section-title"><span>News</span></h4>
       <newses />
@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import NavBreadBrumb from '@/components/organisms/layout/nav-bread-crumb.vue'
+import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import Newses from '@/components/organisms/type1-newses.vue'
 
 export default defineComponent({
   name: 'LongLivenetNewsIndex',
   components: {
-    NavBreadBrumb,
+    BreadCrumbNav,
     Newses
   },
 })

@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { ContactFormType } from '@/types/contact-form'
-import { ToastParams, toastHandler } from '@/components/organisms/layout/make-toast.vue'
+import { ToastParams, addToast } from '@/components/molecules/make-toast.vue'
 import contactHandler from '@/composable/contact-handler'
 import ContactForm from '@/components/molecules/contact-form.vue'
 import ContactFormResult from '@/components/molecules/contact-form-result.vue'
@@ -60,7 +60,6 @@ export default defineComponent({
       } as ToastParams)
     }
 
-    const { addToast } = toastHandler()
     const { isFormMode, setFormMode, setResultMode } = formMode()
 
     return {
