@@ -26,7 +26,7 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 #news-index-top-position {
-  padding-top: calc($nav-header-height + 0.4rem);
+  @include page-article-gap;
 }
 
 .section-title {

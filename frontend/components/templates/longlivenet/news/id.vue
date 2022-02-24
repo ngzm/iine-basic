@@ -5,6 +5,7 @@
       <h4 class="news-id-detail__header"><span>News</span></h4>
       <news-detail :news-id="newsId" />
     </section>
+    <bread-crumb-nav />
   </article>
 </template>
 
@@ -30,7 +31,7 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 #news-id-article-top {
-  padding-top: calc($nav-header-height + 0.4rem);
+  @include page-article-gap;
 }
 
 .news-id-detail {

@@ -25,39 +25,76 @@
     </template>
     <template #narrow>
       <div>
-        <b-button v-b-toggle.default-header-sidebar variant="light">
-          <b-icon icon="list" variant="primary" style="width: 1.5rem; height: 1.5rem;" />
+        <b-button variant="light" @click="openSidebar">
+          <b-icon icon="list" variant="dark" style="width: 1.5rem; height: 1.5rem;" />
         </b-button>
       </div>
       <b-sidebar
-        id="default-header-sidebar"
-        title="ロングリブネット"
+        v-model="sidebar"
         bg-variant="dark"
         text-variant="light"
         shadow
         backdrop
       >
-        <p>
-        <nav-link :scroll-to="toInformation.scrollTo" :to="toInformation.to" class="default-header__nav-link mr-2">
-          Message
-        </nav-link>
-        </p>
-        <nav-link :scroll-to="toNews.scrollTo" :to="toNews.to" class="default-header__nav-link mr-2">
-          News
-        </nav-link>
-        <nav-link :scroll-to="toServices.scrollTo" :to="toServices.to" class="default-header__nav-link mr-2">
-          Services
-        </nav-link>
-        <nav-link :scroll-to="toContact.scrollTo" :to="toContact.to" class="default-header__nav-link mr-2">
-          Contact
-        </nav-link>
+        <div class="default-header__sidebar">
+          <h4 class="default-header__sidebar--title">
+            <nav-link
+              :scroll-to="toTop.scrollTo"
+              :to="toTop.to"
+              class="default-header__title-link"
+              @click.native="closeSidebar"
+            >
+              ロングリブネット
+            </nav-link>
+          </h4>
+          <p class="default-header__sidebar--item">
+            <nav-link
+              :scroll-to="toInformation.scrollTo"
+              :to="toInformation.to"
+              class="default-header__nav-link mr-2"
+              @click.native="closeSidebar"
+            >
+              Message
+            </nav-link>
+          </p>
+          <p class="default-header__sidebar--item">
+            <nav-link
+              :scroll-to="toNews.scrollTo"
+              :to="toNews.to"
+              class="default-header__nav-link mr-2"
+              @click.native="closeSidebar"
+            >
+              News
+            </nav-link>
+          </p>
+          <p class="default-header__sidebar--item">
+            <nav-link
+              :scroll-to="toServices.scrollTo"
+              :to="toServices.to"
+              class="default-header__nav-link mr-2"
+              @click.native="closeSidebar"
+            >
+              Services
+            </nav-link>
+          </p>
+          <p class="default-header__sidebar--item">
+            <nav-link
+              :scroll-to="toContact.scrollTo"
+              :to="toContact.to"
+              class="default-header__nav-link mr-2"
+              @click.native="closeSidebar"
+            >
+              Contact
+            </nav-link>
+          </p>
+        </div>
       </b-sidebar>
     </template>
   </nav-bar>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, useRoute } from '@nuxtjs/composition-api'
 import NavBar from '@/components/atoms/nav-bar.vue'
 import NavLink from '@/components/atoms/nav-link.vue'
 
@@ -83,12 +120,19 @@ export default defineComponent({
     const toServices = computed(() => indexLinkTo('#index-services-article'))
     const toContact = computed(() => indexLinkTo('#index-contact-article'))
 
+    const sidebar = ref(false)
+    const openSidebar = () => { sidebar.value = true }
+    const closeSidebar = () => { sidebar.value = false }
+
     return {
       toTop,
       toInformation,
       toNews,
       toServices,
-      toContact
+      toContact,
+      sidebar,
+      openSidebar,
+      closeSidebar
     }
   }
 })
@@ -120,6 +164,15 @@ export default defineComponent({
     }
     ::v-deep a:hover {
       color: orange;
+    }
+  }
+  &__sidebar {
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    &--title {
+      margin-bottom: 2rem;
+    }
+    &--item {
+      margin-top: 1rem;
     }
   }
 }

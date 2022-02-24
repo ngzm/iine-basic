@@ -1,5 +1,7 @@
 // base color
 $base-background-color: #d3d3d3;
+$base-background-linear1: #ffffff;
+$base-background-linear2: #787878;
 $base-color: black;
 
 // grid system
@@ -28,6 +30,7 @@ body {
   font-family: Ubuntu, 'Noto Sans JP', sans-serif;
   font-size: 1em;
   background-color: $base-background-color;
+  // background: linear-gradient($base-background-linear1, $base-background-linear2);
   overflow-y: scroll;
 }
 
@@ -54,3 +57,8 @@ a:active,:focus {
 
 // nav header height
 $nav-header-height: 120px;
+
+@mixin page-article-gap {
+  padding-top: calc($nav-header-height + 0.4rem);
+  margin-bottom: 4rem;
+}

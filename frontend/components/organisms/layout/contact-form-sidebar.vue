@@ -6,7 +6,7 @@
     shadow
     backdrop
   >
-    <div class="px-3 py-3">
+    <div class="px-3 py-2">
       <div
         :style="{ 'background-image': `url(${contact.image})` }"
         class="contact-form-sidebar__eyecatch"
@@ -94,11 +94,11 @@ const formMode = () => {
     background-size: cover;
     border-radius: 8px;
     overflow: hidden;
-    margin: 0 auto 2rem auto;
+    margin: 0 auto 1rem auto;
   }
   &__address {
     padding: 1rem 0;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   &__form {
     border-top: 2px solid lightgray;

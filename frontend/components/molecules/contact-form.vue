@@ -163,7 +163,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .contact-form {
+  p {
+    margin-bottom: 1rem;
+  }
   &__action {
+    margin-top: 1.5rem;
     text-align: right;
   }
 }

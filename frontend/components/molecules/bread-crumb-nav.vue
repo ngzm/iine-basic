@@ -34,7 +34,7 @@ export default defineComponent({
 
 .bread-crumb-nav {
   &__items {
-    background-color: $base-background-color;
+    background-color: transparent;
   }
 }
 </style>
