@@ -1,5 +1,6 @@
 import { GetterTree, MutationTree } from 'vuex'
 import { RootState } from '@/types/store-types'
+
 interface CounterState {
   count: number
 }

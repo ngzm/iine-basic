@@ -3,6 +3,8 @@
     class="type1-top-eye-catcher"
     :style="{ 'background-image': `url(${eyeCatch.image || ''})` }"
   >
+    <top-eyecatch-to-edit class="type1-top-eye-catcher__to-edit" />
+
     <section class="type1-top-eye-catcher__titles">
       <h2>{{ eyeCatch.title || '' }}</h2>
       <p>{{ eyeCatch.subtitle || '' }}</p>
@@ -13,9 +15,11 @@
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import eyeCatchHandler from '@/composable/eye-catch-handler'
+import TopEyecatchToEdit from '~/components/organisms/top-eyecatch-to-edit.vue'
 
 export default defineComponent({
   name: 'TopEyeCatcher',
+  components: { TopEyecatchToEdit },
   setup() {
     const { eyeCatch, loadEyeCatch } = eyeCatchHandler()
     onMounted(() => {
@@ -34,6 +38,11 @@ export default defineComponent({
   position: relative;
   background-position: center center;
   background-size: cover;
+  &__to-edit {
+    position: absolute;
+    top: calc($nav-header-height + 1rem);
+    right: 1rem;
+  }
   &__titles {
     position: absolute;
     display: inline-block;

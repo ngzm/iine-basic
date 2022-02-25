@@ -11,15 +11,22 @@
     </footer>
     <contact-sidebar />
     <make-toast />
+
+    <top-eyecatch-editor />
+    <news-editor />
+    <information-editor />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import DefaultHeader from '@/components/organisms/layout/default-header.vue'
 import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import ContactSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
+import TopEyecatchEditor from '~/components/organisms/top-eyecatch-editor.vue'
+import NewsEditor from '~/components/organisms/news-editor.vue'
+import InformationEditor from '~/components/organisms/information-editor.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
@@ -27,7 +34,10 @@ export default defineComponent({
     DefaultHeader,
     DefaultFooter,
     ContactSidebar,
-    MakeToast
+    MakeToast,
+    TopEyecatchEditor,
+    NewsEditor,
+    InformationEditor,
   },
 })
 </script>

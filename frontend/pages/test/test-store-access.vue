@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 
 export default defineComponent({
@@ -22,12 +22,13 @@ export default defineComponent({
   components: {
     BreadCrumbNav,
   },
-  setup(_props, ctx) {
+  setup() {
     const title = computed(() => 'NEWS')
-    const getters = ctx.root.$store.getters
+    const store = useStore()
+    const getters = store.getters
 
     const cter = computed(() => {
-      console.log(ctx.root.$store)
+      console.log(store)
       return getters['test/show']
     })
 

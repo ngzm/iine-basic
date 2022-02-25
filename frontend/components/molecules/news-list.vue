@@ -4,6 +4,9 @@
       v-for="news in newses"
       :key="news.id"
     >
+      <p class="to-edit">
+        <news-to-edit :id="news.id" size="1.6rem" />
+      </p>
       <p class="news-header">
         <span>{{ jstDateString(news.publishOn) }}</span>
         <news-category-badge :category="news.category" class="ml-2" />
@@ -21,9 +24,14 @@ import { NewsType } from '@/types/content-type'
 import { formatLocalDates } from '@/utils/common-utils'
 import NewsCategoryBadge from '@/components/molecules/news-category-badge.vue'
 
+import NewsToEdit from '~/components/organisms/news-to-edit.vue'
+
 export default defineComponent({
   name: 'NewsList',
-  components: { NewsCategoryBadge },
+  components: {
+    NewsCategoryBadge,
+    NewsToEdit
+  },
   props: {
     newses: {
       type: Array as PropType<NewsType[]>,
@@ -51,6 +59,10 @@ ul.news-list-wrapper {
     p {
       margin: 2px;
       padding: 0.4rem; 
+    }
+    p.to-edit {
+      margin-right: 0.5rem;
+      padding: 0;
     }
     p.news-header {
       text-align: center;

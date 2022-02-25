@@ -9,6 +9,9 @@
     <div v-if="$slots.footer" class="contents-card__footer">
       <slot name="footer" />
     </div>
+    <div v-if="$slots.toEdit" class="contents-card__to-edit">
+      <slot name="toEdit" />
+    </div>
   </div>
 </template>
 
@@ -24,6 +27,7 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 .contents-card {
+  position: relative;
   width: 100%;
   min-width: 18rem;
   margin: 0 auto;
@@ -38,6 +42,12 @@ export default defineComponent({
   }
   &__footer {
     margin: 0 auto;
+  }
+  &__to-edit {
+    position: absolute;
+    background-color: brown;
+    top: 1rem;
+    right: 1rem;
   }
 }
 
