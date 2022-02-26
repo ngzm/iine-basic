@@ -17,19 +17,28 @@
         </slot>
       </div>
     </template>
+
+    <template #editActivator>
+      <content-edit-activator type="news" :content-id="news.id" />
+    </template>
   </contents-card>
 </template>
 
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
-import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
+import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import newsHandler from '@/composable/news-handler'
-import { sidebarIdName } from '~/components/organisms/layout/contact-form-sidebar.vue'
+import ContentsCard from '@/components/molecules/contents-card.vue'
+import SectionEyeCatcher from '@/components/molecules/section-eye-catcher.vue'
+import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Iformations',
-  components: { ContentsCard, SectionEyeCatcher },
+  components: {
+    ContentsCard,
+    SectionEyeCatcher,
+    ContentEditActivator
+  },
   props: {
     newsId: {
       type: Number,

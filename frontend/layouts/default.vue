@@ -11,10 +11,7 @@
     </footer>
     <contact-sidebar />
     <make-toast />
-
-    <top-eyecatch-editor />
-    <news-editor />
-    <information-editor />
+    <content-edit-modal />
   </div>
 </template>
 
@@ -24,9 +21,7 @@ import DefaultHeader from '@/components/organisms/layout/default-header.vue'
 import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import ContactSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
-import TopEyecatchEditor from '~/components/organisms/top-eyecatch-editor.vue'
-import NewsEditor from '~/components/organisms/news-editor.vue'
-import InformationEditor from '~/components/organisms/information-editor.vue'
+import ContentEditModal from '@/components/organisms/layout/content-edit-modal.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
@@ -35,9 +30,7 @@ export default defineComponent({
     DefaultFooter,
     ContactSidebar,
     MakeToast,
-    TopEyecatchEditor,
-    NewsEditor,
-    InformationEditor,
+    ContentEditModal,
   },
 })
 </script>

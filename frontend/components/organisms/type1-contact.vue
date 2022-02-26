@@ -10,6 +10,7 @@
         </template>
       </section-eye-catcher>
     </template>
+
     <template #default>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="contactHtml" />
@@ -22,21 +23,27 @@
         </slot>
       </div>
     </template>
+
+    <template #editActivator>
+      <content-edit-activator type="contact" :content-id="1" />
+    </template>
   </contents-card>
 </template>
 
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
-import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionEyeCatcher from '~/components/molecules/section-eye-catcher.vue'
-import contactHandler from '@/composable/contact-handler'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
+import ContentsCard from '@/components/molecules/contents-card.vue'
+import SectionEyeCatcher from '@/components/molecules/section-eye-catcher.vue'
+import contactHandler from '@/composable/contact-handler'
+import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Contact',
   components: {
     ContentsCard,
     SectionEyeCatcher,
+    ContentEditActivator
   },
   setup() {
     const { contact, loadContact } = contactHandler()

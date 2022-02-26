@@ -1,25 +1,31 @@
 <template>
-  <div class="news-edit-activator">
+  <div class="content-edit-activator">
     <b-avatar
       icon="pencil-square"
       button
       :size="size"
       :variant="variant"
-      @click="activateToEdit(id)"
+      @click="activateToEdit(type, contentId)"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { activateToEdit } from '~/components/organisms/news-editor.vue'
+import { defineComponent, PropType } from '@vue/composition-api'
+import { editTypes, activateToEdit } from '@/components/organisms/layout/content-edit-modal.vue'
+
+export type EditType = typeof editTypes[keyof typeof editTypes];
 
 export default defineComponent({
-  name: 'NewsToEdit',
+  name: 'ContentEditActivator',
   props: {
-    id: {
-      type: Number,
+    type: {
+      type: String as PropType<EditType>,
       required: true
+    },
+    contentId: {
+      type: Number,
+      default: 0
     },
     size: {
       type: String,
@@ -39,7 +45,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.news-edit-activator {
+.content-edit-activator {
   display: inline-block;
 }
 </style>

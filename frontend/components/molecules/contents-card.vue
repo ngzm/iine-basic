@@ -9,8 +9,8 @@
     <div v-if="$slots.footer" class="contents-card__footer">
       <slot name="footer" />
     </div>
-    <div v-if="$slots.toEdit" class="contents-card__to-edit">
-      <slot name="toEdit" />
+    <div v-if="$slots.editActivator" class="contents-card__edit-activator">
+      <slot name="editActivator" />
     </div>
   </div>
 </template>
@@ -43,9 +43,8 @@ export default defineComponent({
   &__footer {
     margin: 0 auto;
   }
-  &__to-edit {
+  &__edit-activator {
     position: absolute;
-    background-color: brown;
     top: 1rem;
     right: 1rem;
   }

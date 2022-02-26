@@ -8,13 +8,16 @@
       <h5 class="content-title">{{ content.title }}</h5>
       <div class="content-image" :style="`background-image: url(${content.image || ''})`"></div>
       <p class="content-comment">{{ content.comment || content.body || '' }}</p>
+      <p class="edit-activator">
+        <slot name="editActivator" :content="content" />
+      </p>
     </section>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { ContentType } from '~/types/content-type'
+import { ContentType } from '@/types/content-type'
 
 export default defineComponent({
   name: 'ContentsGrid',
@@ -36,6 +39,7 @@ export default defineComponent({
   padding: 0 1.5rem;
   max-width: 90rem;
   .grid-box {
+    position: relative;
     margin: 1.8rem 1.5rem 0 1.5rem;
     padding: 0;
     max-width: 20rem;
@@ -64,6 +68,13 @@ export default defineComponent({
       margin: 0.8rem 0 0 0;
       padding: 0;
       text-align: left;
+    }
+    p.edit-activator{
+      position: absolute;
+      top: 0;
+      right: 2rem;
+      margin: 0;
+      padding: 0;
     }
   }
 }
