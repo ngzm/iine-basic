@@ -1,13 +1,19 @@
 <template>
   <contents-card>
     <template #header>
-      <section-eye-catcher :background-image="news.image" />
+      <section-eyecatcher :background-image="news.image" />
     </template>
+
     <template #default>
-      <h5 class="type1-news-detail__title"><span>{{ news.title }}</span></h5>
+      <h5 class="type1-news-detail__title">
+        <span>{{ news.title }}</span>
+      </h5>
+
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="newsBodyHtml" />
+    </template>
 
+    <template #action>
       <div class="type1-news-detail__action">
         <slot name="action">
           <b-button v-b-toggle="sidebarIdName" variant="primary">
@@ -29,14 +35,14 @@ import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import newsHandler from '@/composable/news-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionEyeCatcher from '@/components/molecules/section-eye-catcher.vue'
+import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
-  name: 'Type1Iformations',
+  name: 'Type1NewsDetail',
   components: {
     ContentsCard,
-    SectionEyeCatcher,
+    SectionEyecatcher,
     ContentEditActivator
   },
   props: {
@@ -79,7 +85,6 @@ export default defineComponent({
   }
   &__action {
     text-align: center;
-    margin-top: 1.5rem;
   }
 }
 </style>

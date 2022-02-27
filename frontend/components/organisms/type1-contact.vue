@@ -1,20 +1,18 @@
 <template>
   <contents-card>
     <template #header>
-      <section-eye-catcher :background-image="contact.image">
-        <template #default>
-          {{ contact.title }}
-        </template>
-        <template #subtitle>
-          {{ contact.subtitle }}
-        </template>
-      </section-eye-catcher>
+      <section-eyecatcher :background-image="contact.image">
+        <h4 class="type1-contact__header--title">{{ contact.title }}</h4>
+        <p class="type1-contact__header--subtitle">{{ contact.subtitle }}</p>
+      </section-eyecatcher>
     </template>
 
     <template #default>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="contactHtml" />
+    </template>
 
+    <template #action>
       <div class="type1-contact__action">
         <slot name="action">
           <b-button v-b-toggle="sidebarIdName" variant="primary">
@@ -33,16 +31,16 @@
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionEyeCatcher from '@/components/molecules/section-eye-catcher.vue'
 import contactHandler from '@/composable/contact-handler'
+import ContentsCard from '@/components/molecules/contents-card.vue'
+import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Contact',
   components: {
     ContentsCard,
-    SectionEyeCatcher,
+    SectionEyecatcher,
     ContentEditActivator
   },
   setup() {
@@ -66,9 +64,21 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .type1-contact {
+  &__header {
+    &--title, &--subtitle {
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 6px black; 
+      margin: 0;
+      padding: 0;
+    }
+    &--subtitle {
+      font-size: 1.0rem;
+      margin-top: 0.5rem;
+    }
+  }
   &__action {
     text-align: center;
-    margin-top: 1.5rem;
   }
 }
 </style>

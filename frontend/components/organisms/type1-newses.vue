@@ -11,6 +11,9 @@
           />
         </template>
       </news-list>
+    </template>
+
+    <template #action>
       <div class="type1-newses__action">
         <slot name="action">
           <b-link @click="loadMoreNewses">load more news</b-link>
@@ -57,7 +60,6 @@ export default defineComponent({
 .type1-newses {
   &__action {
     text-align: center;
-    margin-top: 1.5rem;
   }
 }
 </style>

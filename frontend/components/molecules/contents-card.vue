@@ -1,13 +1,7 @@
 <template>
   <div class="contents-card">
-    <div v-if="$slots.header" class="contents-card__header">
-      <slot name="header" />
-    </div>
-    <div class="contents-card__text">
+    <div class="contents-card__innner">
       <slot />
-    </div>
-    <div v-if="$slots.footer" class="contents-card__footer">
-      <slot name="footer" />
     </div>
     <div v-if="$slots.editActivator" class="contents-card__edit-activator">
       <slot name="editActivator" />
@@ -32,16 +26,9 @@ export default defineComponent({
   min-width: 18rem;
   margin: 0 auto;
   background-color: white;
-  &__header {
-    margin: 0 auto;
-  }
-  &__text {
-    max-width: 54rem;
-    margin: 0 auto;
-    padding: 2.5rem;
-  }
-  &__footer {
-    margin: 0 auto;
+  &__inner {
+    margin: 0;
+    padding: 0;
   }
   &__edit-activator {
     position: absolute;

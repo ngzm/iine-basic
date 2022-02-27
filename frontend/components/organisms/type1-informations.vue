@@ -1,14 +1,17 @@
 <template>
   <contents-card>
-    <template #header>
-      <section-eye-catcher :background-image="information.image">
-        {{ information.title }}
-      </section-eye-catcher>
-    </template>
-
     <template #default>
+      <section-eyecatcher
+        :background-image="information.image"
+        class="type1-information__header"
+      >
+        <h4 class="type1-information__header--title">
+          {{ information.title }}
+        </h4>
+      </section-eyecatcher>
+
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="informationHtml" />
+      <div class="type1-information__body" v-html="informationHtml" />
 
       <div class="type1-information__action">
         <slot name="action">
@@ -31,14 +34,14 @@ import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import informationHandler from '@/composable/information-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
-import SectionEyeCatcher from '@/components/molecules/section-eye-catcher.vue'
+import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Iformations',
   components: {
     ContentsCard,
-    SectionEyeCatcher,
+    SectionEyecatcher,
     ContentEditActivator
   },
   setup() {
@@ -62,9 +65,28 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .type1-information {
+  &__header {
+    margin: 0;
+    padding: 0;
+    &--title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 6px black; 
+      margin: 0;
+      padding: 0;
+    }
+  }
+  &__body {
+    max-width: 54rem;
+    margin: 0 auto;
+    padding: 2.5rem;
+    padding-bottom: 1.5rem;
+  }
   &__action {
     text-align: center;
-    margin-top: 1.5rem;
+    margin: 0 auto;
+    padding: 2.5rem;
+    padding-top: 0;
   }
 }
 </style>
