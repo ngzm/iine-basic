@@ -10,17 +10,19 @@
         </h4>
       </section-eyecatcher>
 
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="type1-information__body" v-html="informationHtml" />
+      <contents-card-body>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="informationHtml" />
 
-      <div class="type1-information__action">
-        <slot name="action">
-          <b-button v-b-toggle="sidebarIdName" variant="primary">
-            <b-icon icon="hand-index" />
-            お問合せ
-          </b-button>
-        </slot>
-      </div>
+        <div class="type1-information__action">
+          <slot name="action">
+            <b-button v-b-toggle="sidebarIdName" variant="primary">
+              <b-icon icon="hand-index" />
+              お問合せ
+            </b-button>
+          </slot>
+        </div>
+      </contents-card-body>
     </template>
 
     <template #editActivator>
@@ -34,6 +36,7 @@ import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import informationHandler from '@/composable/information-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
+import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
@@ -41,6 +44,7 @@ export default defineComponent({
   name: 'Type1Iformations',
   components: {
     ContentsCard,
+    ContentsCardBody,
     SectionEyecatcher,
     ContentEditActivator
   },
@@ -66,8 +70,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .type1-information {
   &__header {
-    margin: 0;
-    padding: 0;
     &--title {
       font-size: 1.25rem;
       font-weight: bold;
@@ -76,17 +78,9 @@ export default defineComponent({
       padding: 0;
     }
   }
-  &__body {
-    max-width: 54rem;
-    margin: 0 auto;
-    padding: 2.5rem;
-    padding-bottom: 1.5rem;
-  }
   &__action {
     text-align: center;
-    margin: 0 auto;
-    padding: 2.5rem;
-    padding-top: 0;
+    margin-top: 1.5rem;
   }
 }
 </style>

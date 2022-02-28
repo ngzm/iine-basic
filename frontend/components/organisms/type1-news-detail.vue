@@ -1,27 +1,25 @@
 <template>
   <contents-card>
-    <template #header>
-      <section-eyecatcher :background-image="news.image" />
-    </template>
-
     <template #default>
-      <h5 class="type1-news-detail__title">
-        <span>{{ news.title }}</span>
-      </h5>
+      <section-eyecatcher :background-image="news.image" />
 
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="newsBodyHtml" />
-    </template>
+      <contents-card-body>
+        <h5 class="type1-news-detail__title">
+          <span>{{ news.title }}</span>
+        </h5>
 
-    <template #action>
-      <div class="type1-news-detail__action">
-        <slot name="action">
-          <b-button v-b-toggle="sidebarIdName" variant="primary">
-            <b-icon icon="hand-index" />
-            お問い合せ
-          </b-button>
-        </slot>
-      </div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="newsBodyHtml" />
+
+        <div class="type1-news-detail__action">
+          <slot name="action">
+            <b-button v-b-toggle="sidebarIdName" variant="primary">
+              <b-icon icon="hand-index" />
+              お問い合せ
+            </b-button>
+          </slot>
+        </div>
+      </contents-card-body>
     </template>
 
     <template #editActivator>
@@ -35,6 +33,7 @@ import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import newsHandler from '@/composable/news-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
+import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
@@ -42,6 +41,7 @@ export default defineComponent({
   name: 'Type1NewsDetail',
   components: {
     ContentsCard,
+    ContentsCardBody,
     SectionEyecatcher,
     ContentEditActivator
   },
@@ -84,6 +84,7 @@ export default defineComponent({
     }
   }
   &__action {
+    margin-top: 1.5rem;
     text-align: center;
   }
 }

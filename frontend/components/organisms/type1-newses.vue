@@ -1,6 +1,6 @@
 <template>
   <contents-card>
-    <template #default>
+    <contents-card-body>
       <news-list :newses="newses">
         <template #editActivator="{ news }">
           <content-edit-activator
@@ -11,21 +11,20 @@
           />
         </template>
       </news-list>
-    </template>
 
-    <template #action>
       <div class="type1-newses__action">
         <slot name="action">
           <b-link @click="loadMoreNewses">load more news</b-link>
         </slot>
       </div>
-    </template>
+    </contents-card-body>
   </contents-card>
 </template>
 
 <script lang='ts'>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import ContentsCard from '@/components/molecules/contents-card.vue'
+import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import NewsList from '@/components/molecules/news-list.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 import newsHandler from '@/composable/news-handler'
@@ -34,6 +33,7 @@ export default defineComponent({
   name: 'Type1Newses',
   components: {
     ContentsCard,
+    ContentsCardBody,
     NewsList,
     ContentEditActivator
   },
@@ -59,6 +59,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .type1-newses {
   &__action {
+    margin-top: 1.5rem;
     text-align: center;
   }
 }

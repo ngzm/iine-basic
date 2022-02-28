@@ -1,25 +1,23 @@
 <template>
   <contents-card>
-    <template #header>
+    <template #default>
       <section-eyecatcher :background-image="contact.image">
         <h4 class="type1-contact__header--title">{{ contact.title }}</h4>
         <p class="type1-contact__header--subtitle">{{ contact.subtitle }}</p>
       </section-eyecatcher>
-    </template>
 
-    <template #default>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="contactHtml" />
-    </template>
+      <contents-card-body>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="contactHtml" />
 
-    <template #action>
-      <div class="type1-contact__action">
-        <slot name="action">
-          <b-button v-b-toggle="sidebarIdName" variant="primary">
-            メールで問合せる（お問合せフォーム）
-          </b-button>
-        </slot>
-      </div>
+        <div class="type1-contact__action">
+          <slot name="action">
+            <b-button v-b-toggle="sidebarIdName" variant="primary">
+              メールで問合せる（お問合せフォーム）
+            </b-button>
+          </slot>
+        </div>
+      </contents-card-body>
     </template>
 
     <template #editActivator>
@@ -33,6 +31,7 @@ import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import contactHandler from '@/composable/contact-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
+import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
@@ -40,6 +39,7 @@ export default defineComponent({
   name: 'Type1Contact',
   components: {
     ContentsCard,
+    ContentsCardBody,
     SectionEyecatcher,
     ContentEditActivator
   },
@@ -78,6 +78,7 @@ export default defineComponent({
     }
   }
   &__action {
+    margin-top: 1.5rem;
     text-align: center;
   }
 }

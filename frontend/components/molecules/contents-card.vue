@@ -46,3 +46,13 @@ export default defineComponent({
 }
 </style>
 
+<style lang="scss">
+.contents-card {
+  &__inner-body {
+    max-width: 54rem;
+    margin: 0 auto;
+    padding: 2.5rem;
+  }
+}
+</style>
+
