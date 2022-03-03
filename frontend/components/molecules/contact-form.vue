@@ -71,21 +71,9 @@
 
 <script lang='ts'>
 import { defineComponent, ref, computed  } from '@nuxtjs/composition-api'
-import { useValidation } from "vue-composable"
+import { useValidation } from 'vue-composable'
 import { ContactFormType } from '@/types/contact-form'
-
-const required = (x: any) => !!x
-
-const emailValidator = (x: string) => {
-  const format =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return x ? format.test(x) : true
-}
-
-const phoneValidator = (x: string) => {
-  const format = /^\d{2,5}-\d{1,4}-\d{4}$/
-  return x ? format.test(x) : true
-}
-
+import { required, emailValidator, phoneValidator } from '@/composable/form-validators'
 
 export default defineComponent({
   name: 'ContactForm',

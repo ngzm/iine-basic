@@ -1,15 +1,24 @@
 <template>
   <b-modal
     v-model="activator.show"
+    centered
+    size="lg"
     title="コンテンツの編集"
+    hide-footer
   >
+    <component
+      :is="formComponentName"
+      :data-id="dataId"
+      @close="activator.show = false"
+    />
     <p class="my-3">{{ activator.type }}</p>
     <p class="my-3">{{ activator.id }}</p>
   </b-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from '@vue/composition-api'
+import { defineComponent, reactive, computed } from '@vue/composition-api'
+import EyecatcherForm from '@/components/organisms/eyecatcher-form.vue'
 
 export const editTypes = {
   eyecatch: 'eyecatch',
@@ -40,9 +49,17 @@ export const activateToEdit = (type: EditType, id: number = 0) => {
 
 export default defineComponent({
   name: 'ContentEditModal',
+  components: {
+    EyecatcherForm,
+  },
   setup() {
+    const formComponentName = computed(() => 'EyecatcherForm')
+    const dataId = computed(() => activator.id )
+
     return {
       activator,
+      formComponentName,
+      dataId
     }
   },
 })
