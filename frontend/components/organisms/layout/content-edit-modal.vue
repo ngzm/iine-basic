@@ -11,8 +11,6 @@
       :data-id="dataId"
       @close="activator.show = false"
     />
-    <p class="my-3">{{ activator.type }}</p>
-    <p class="my-3">{{ activator.id }}</p>
   </b-modal>
 </template>
 

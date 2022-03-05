@@ -29,7 +29,7 @@ export default defineComponent({
     const { eyeCatch, loadEyeCatch } = eyeCatchHandler()
 
     onMounted(() => {
-      loadEyeCatch()
+      loadEyeCatch(1)
     })
 
     return { eyeCatch }

@@ -34,3 +34,7 @@ export interface EyeCatchType {
   subtitle?: string
   image?: string
 }
+
+export type EyecatchFormType = EyeCatchType & {
+  imageFile?: File|null
+}

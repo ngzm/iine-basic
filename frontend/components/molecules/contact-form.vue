@@ -83,32 +83,32 @@ export default defineComponent({
         $value: ref(''),
         required: {
           $validator: required,
-          $message: ref('お名前を入力してください'),
+          $message: 'お名前を入力してください',
         },
       },
       email: {
         $value: ref(''),
         required: {
           $validator: required,
-          $message: ref('メールアドレスを入力してください'),
+          $message: 'メールアドレスを入力してください',
         },
         emailFormat: {
           $validator: emailValidator,
-          $message: ref('メールアドレスの形式で入力してください'),
+          $message: 'メールアドレスの形式で入力してください',
         },
       },
       phone: {
         $value: ref(''),
         phoneFormat: {
           $validator: phoneValidator,
-          $message: ref('0000-0000-0000 の形式で入力してください'),
+          $message: '0000-0000-0000 の形式で入力してください',
         },
       },
       inquiry: {
         $value: ref(''),
         required: {
           $validator: required,
-          $message: ref('お問い合わせ内容を入力してください'),
+          $message: 'お問い合わせ内容を入力してください',
         },
       },
     })

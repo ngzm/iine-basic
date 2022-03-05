@@ -1,36 +1,46 @@
 <template>
   <div class="eyecatcher-form"> 
-    <p>
-      <label for="eyecatcher-form-input-top-message">トップメッセージ</label>
+    <p class="eyecatcher-form__input">
+      <label for="eyecatcher-form-input-title">トップタイトル</label>
       <b-form-input
-        id="eyecatcher-form-input-top-message"
-        v-model="eyecatcherForm.topMessage.$value"
-        :state="validStateTopMessage"
+        id="eyecatcher-form-input-title"
+        v-model="eyecatcherForm.title.$value"
+        :state="validStateTitle"
       />
-      <b-form-invalid-feedback :state="validStateTopMessage">
-        <span v-for="(err, inx) in eyecatcherForm.topMessage.$errors" :key="inx">
+      <b-form-invalid-feedback :state="validStateTitle">
+        <span v-for="(err, inx) in eyecatcherForm.title.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
     </p>
-    <p>
-      <label for="eyecatcher-form-input-sub-message">サブメッセージ</label>
+    <p class="eyecatcher-form__input">
+      <label for="eyecatcher-form-input-subtitle">サブタイトル</label>
       <b-form-input
-        id="eyecatcher-form-input-sub-message"
-        v-model="eyecatcherForm.subMessage.$value"
-        :state="validStateSubMessage"
+        id="eyecatcher-form-input-subtitle"
+        v-model="eyecatcherForm.subtitle.$value"
+        :state="validStateSubtitle"
       />
-      <b-form-invalid-feedback :state="validStateSubMessage">
-        <span v-for="(err, inx) in eyecatcherForm.subMessage.$errors" :key="inx">
+      <b-form-invalid-feedback :state="validStateSubtitle">
+        <span v-for="(err, inx) in eyecatcherForm.subtitle.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
     </p>
-    <p>
-      <file-input />
+    <p class="eyecatcher-form__input">
+      <label for="eyecatcher-form-input-image">背景画像</label>
+      <file-input
+        id="eyecatcher-form-input-image"
+        :image-url="eyecatcherForm.image.$value"
+        @change-image-file="onChangeImageFile"
+      />
+      <b-form-invalid-feedback :state="validStateImage">
+        <span v-for="(err, inx) in eyecatcherForm.image.$errors" :key="inx">
+          {{ err }}<br />
+        </span>
+      </b-form-invalid-feedback>
     </p>
-    <p class="eyecatcher-form_action">
-      <b-button @click="$emit('close')">
+    <p class="eyecatcher-form__action">
+      <b-button @click="onCancel">
         キャンセル
       </b-button>
       <b-button variant="primary" @click="onUpdate">
@@ -41,55 +51,107 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@vue/composition-api'
+import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
+import { EyecatchFormType } from '~/types/content-type'
+import eyeCatchHandler from '@/composable/eye-catch-handler'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
   name: 'EyeCatcherForm',
   components: { FileInput },
   setup(_props, { emit }) {
+    const { eyeCatch, updateEyeCatch } = eyeCatchHandler()
+
     const eyecatcherForm = useValidation({
-      topMessage: {
+      title: {
         $value: ref(''),
         required: {
           $validator: required,
-          $message: ref('トップメッセージを入力してください'),
+          $message: ref('トップタイトルを入力してください'),
         },
         maximunLength: {
           $validator: maximunLength(40),
           $message: ref('40文字以内で入力してください'),
         },
       },
-      subMessage: {
+      subtitle: {
         $value: ref(''),
         maximunLength: {
           $validator: maximunLength(50),
           $message: ref('50文字以内で入力してください'),
         },
+      },
+      image: {
+        $value: ref(''),
+        required: {
+          $validator: required,
+          $message: ref('背景画像ファイルを設定してください'),
+        },
+      },
+      imageFile: {
+        $value: ref<File|null>(null),
       }
     })
 
-    const validStateTopMessage = computed(() => !eyecatcherForm.topMessage.$dirty ? null : !eyecatcherForm.topMessage.$anyInvalid)
-    const validStateSubMessage = computed(() => !eyecatcherForm.subMessage.$dirty ? null : !eyecatcherForm.subMessage.$anyInvalid)
+    const validStateTitle = computed(() => !eyecatcherForm.title.$dirty ? null : !eyecatcherForm.title.$anyInvalid)
+    const validStateSubtitle = computed(() => !eyecatcherForm.subtitle.$dirty ? null : !eyecatcherForm.subtitle.$anyInvalid)
+    const validStateImage = computed(() => !eyecatcherForm.image.$dirty ? null : !eyecatcherForm.image.$anyInvalid)
+
+    onMounted(() => {
+      eyecatcherForm.title.$value = eyeCatch.title || ''
+      eyecatcherForm.subtitle.$value = eyeCatch.subtitle || ''
+      eyecatcherForm.image.$value = eyeCatch.image || ''
+    })
+
+    const onChangeImageFile =(imageFile: File) => {
+      eyecatcherForm.imageFile.$value = imageFile
+      eyecatcherForm.image.$value = URL.createObjectURL(imageFile)
+    }
 
     const onUpdate = () => {
-      console.log('eyecatcherForm', eyecatcherForm)
+      eyecatcherForm.$touch()
+      if (eyecatcherForm.$anyInvalid) return
 
+      const formData = eyecatcherForm.toObject()
+      const updateData: EyecatchFormType = {
+        id: eyeCatch.id,
+        title: formData.title,
+        subtitle: formData.subtitle,
+        image: formData.image,
+        imageFile: formData.imageFile
+      }
+      updateEyeCatch(updateData)
+      emit('close')
+    }
+
+    const onCancel = () => {
       emit('close')
     }
 
     return {
       eyecatcherForm,
-      validStateTopMessage,
-      validStateSubMessage,
-      onUpdate
+      validStateTitle,
+      validStateSubtitle,
+      validStateImage,
+      onChangeImageFile,
+      onUpdate,
+      onCancel
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-
+.eyecatcher-form {
+  &__input {
+    margin-bottom: 1rem;
+  }
+  &__action {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-align: right;
+  }
+}
 </style>

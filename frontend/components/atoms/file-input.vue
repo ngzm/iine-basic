@@ -3,14 +3,22 @@
     <div
       class="file-input__drag-drop"
       :class="{ 'darg-enter': isDragEnter }"
+      :style="{ 'background-image': `url(${imageUrl})` }"
       @dragenter="onDragEnter"
       @dragleave="onDragLeave"
       @dragover.prevent="onDragOver"
       @drop.prevent="onDropFile"
-      @click="onClick"
     >
-      <p>
-        画像ファイルをドラッグ＆ドロップできます
+      <p class="file-input__drag-drop--nav">
+        ここに画像ファイルを<br/>ドラッグ＆ドロップできます
+      </p>
+      <p class="file-input__drag-drop--action">
+        <b-button
+          variant="primary"
+          @click="onClick"
+        >
+          背景画像ファイルを選択
+        </b-button>
       </p>
     </div>
     <input
@@ -26,13 +34,20 @@
 import { defineComponent, ref, onMounted } from '@vue/composition-api'
 
 export default defineComponent({
-  setup(_propd, { refs }) {
+  name: 'FilrInput',
+  props: {
+    imageUrl: {
+      type: String,
+      default: ''
+    }
+  },
+  setup(_props, { emit, refs }) {
     const isDragEnter = ref(false)
     const fileInputInput = ref<HTMLInputElement>()
-    const file = ref<File>()
+    const imageFile = ref<File>()
 
     onMounted(() => {
-      // TODO:
+      // TODO: refs
       // V3コード修正あり - V2 @vue/composition-api 特有コード
       fileInputInput.value = refs.fileInputInput as HTMLInputElement
     })
@@ -46,32 +61,22 @@ export default defineComponent({
     }
 
     const onDropFile = (e: DragEvent) => {
-      console.log('onDropFile')
-      console.log('e', e)
-
       isDragEnter.value = false
       if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
-        file.value = e.dataTransfer.files[0]
+        imageFile.value = e.dataTransfer.files[0]
+        emit('change-image-file', imageFile.value)
       }
-      console.log('file', file.value)
     }
 
-    interface FileInputEvent extends Event {
-      target: FileInputEvent & EventTarget;
-    }
-
-    const onChangeFile = (e: FileInputEvent) => {
-      console.log('onChangeFile')
-      console.log('e', e)
-
-      if (e.target && e.target.files && e.target.files[0]) {
-        file.value = e.target.files[0]
+    const onChangeFile = (e: InputEvent) => {
+      const target = e.target as HTMLInputElement
+      if (target && target.files && target.files[0]) {
+        imageFile.value = target.files[0]
+        emit('change-image-file', imageFile.value)
       }
-      console.log('file', file.value)
     }
 
     return {
-      file,
       isDragEnter,
       onDragEnter,
       onDragLeave,
@@ -87,16 +92,29 @@ export default defineComponent({
 <style lang="scss" scoped>
 .file-input {
   &__drag-drop {
-    border: 1px dashed #dbdddc;
-    min-height: 250px;
-    p {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: calc(100vh - 700px);
+    min-height: 200px;
+    max-height: 400px;
+    background-color: lightgray;
+    background-position: center center;
+    background-size: cover;
+    &--nav {
       padding: 1rem;
       background-color: rgba($color: #000000, $alpha: 0.5);
       color: white;
     }
+    &--action {
+      padding: 1rem;
+    }
   }
   .darg-enter {
-    border: 1px dashed #76767d;
+    border: 2px solid black;
+    opacity: 0.5;
     cursor: copy;
   }
 }
