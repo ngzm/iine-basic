@@ -23,7 +23,7 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator type="news" :content-id="news.id" />
+      <content-edit-activator type="NewsForm" :content-id="news.id" />
     </template>
   </contents-card>
 </template>

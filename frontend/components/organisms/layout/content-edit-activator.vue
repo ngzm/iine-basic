@@ -11,10 +11,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api'
-import { editTypes, activateToEdit } from '@/components/organisms/layout/content-edit-modal.vue'
+import { defineComponent, PropType, reactive } from '@vue/composition-api'
 
-export type EditType = typeof editTypes[keyof typeof editTypes];
+export const editTypes = {
+  eyecatch: 'EyecatcherForm',
+  information: 'InforamtionForm',
+  news: 'NewsForm',
+  service: 'ServiceForm',
+  work: 'WorkForm',
+  contact: 'ContactForm',
+  menu: 'NenuForm',
+  none: 'none'
+} as const
+
+type EditType = typeof editTypes[keyof typeof editTypes];
+
+const activator = reactive({
+  show: false,
+  type: editTypes.none,
+  id: 0
+})
+
+export const getActivator = () => activator
 
 export default defineComponent({
   name: 'ContentEditActivator',
@@ -37,6 +55,10 @@ export default defineComponent({
     }
   },
   setup() {
+    const activateToEdit = (type: EditType, id: number = 0) => {
+      Object.assign(activator, { show: true, type, id })
+    }
+
     return {
       activateToEdit,
     }

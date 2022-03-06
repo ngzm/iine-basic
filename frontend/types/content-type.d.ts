@@ -9,11 +9,19 @@ export interface ContentType {
   link?: string
 }
 
+type ContentFormType = ContentType & {
+  imageFile?: File|null
+}
+
 export interface InformationType extends ContentType {}
+export interface InformationFormType extends ContentFormType {}
 
 export interface NewsType extends ContentType {
   category: string
   publishOn: Date
+}
+export type NewsFormType = NewsType & {
+  imageFile?: File|null
 }
 
 export interface ServiceType extends ContentType {}

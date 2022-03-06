@@ -2,24 +2,32 @@
   <div class="file-input">
     <div
       class="file-input__drag-drop"
-      :class="{ 'darg-enter': isDragEnter }"
-      :style="{ 'background-image': `url(${imageUrl})` }"
+      :class="{
+        'darg-enter': isDragEnter,
+        'ok-state': state === true,
+        'error-state': state === false,
+      }"
       @dragenter="onDragEnter"
       @dragleave="onDragLeave"
       @dragover.prevent="onDragOver"
       @drop.prevent="onDropFile"
     >
-      <p class="file-input__drag-drop--nav">
-        ここに画像ファイルを<br/>ドラッグ＆ドロップできます
-      </p>
-      <p class="file-input__drag-drop--action">
-        <b-button
-          variant="primary"
-          @click="onClick"
-        >
-          背景画像ファイルを選択
-        </b-button>
-      </p>
+      <div class="file-input__drag-drop--img">
+        <img :src="imageUrl" :alt="imageUrl" />
+      </div>
+      <div class="file-input__drag-drop--nav">
+        <p>
+          ここに画像ファイルを<br/>ドラッグ＆ドロップできます
+        </p>
+        <p class="file-input__drag-drop--nav-action">
+          <b-button
+            variant="primary"
+            @click="onClick"
+          >
+            背景画像ファイルを選択
+          </b-button>
+        </p>
+      </div>
     </div>
     <input
       ref="fileInputInput"
@@ -39,6 +47,10 @@ export default defineComponent({
     imageUrl: {
       type: String,
       default: ''
+    },
+    state: {
+      type: Boolean,
+      default: null
     }
   },
   setup(_props, { emit, refs }) {
@@ -90,32 +102,44 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/style.scss';
+
 .file-input {
   &__drag-drop {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     align-content: center;
-    height: calc(100vh - 700px);
-    min-height: 200px;
-    max-height: 400px;
     background-color: lightgray;
-    background-position: center center;
-    background-size: cover;
+    border: 1px solid gray;
+    &--img {
+      padding: 1rem;
+      img {
+        width: 240px;
+        height: 200px;
+        object-fit: cover;
+      }
+    }
     &--nav {
       padding: 1rem;
-      background-color: rgba($color: #000000, $alpha: 0.5);
-      color: white;
-    }
-    &--action {
-      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      &-action {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
     }
   }
   .darg-enter {
-    border: 2px solid black;
     opacity: 0.5;
     cursor: copy;
+  }
+  .ok-state {
+    border-color: $green;
+  }
+  .error-state {
+    border-color: $red;
   }
 }
 </style>

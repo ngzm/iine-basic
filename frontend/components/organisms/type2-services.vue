@@ -17,7 +17,7 @@
 
     <template #editActivator="{ content }">
       <content-edit-activator
-        type="service"
+        type="ServiceForm"
         :content-id="content.id"
         size="1.6rem"
       />

@@ -4,7 +4,7 @@
       <news-list :newses="newses">
         <template #editActivator="{ news }">
           <content-edit-activator
-            type="news"
+            type="NewsForm"
             :content-id="news.id"
             size="1.6rem"
             class="mr-2"

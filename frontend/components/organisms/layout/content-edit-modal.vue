@@ -15,44 +15,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
+import { editTypes, getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/eyecatcher-form.vue'
+import InformationForm from '@/components/organisms/information-form.vue'
+import newsForm from '@/components/organisms/news-form.vue'
 
-export const editTypes = {
-  eyecatch: 'eyecatch',
-  information: 'inforamtion',
-  news: 'news',
-  service: 'service',
-  work: 'work',
-  contact: 'contact',
-  menu: 'menu',
-  none: 'none'
-} as const
-
-type EditType = typeof editTypes[keyof typeof editTypes];
-
-const activator = reactive({
-  show: false,
-  type: editTypes.none,
-  id: 0
-})
-
-export const activateToEdit = (type: EditType, id: number = 0) => {
-  Object.assign(activator, {
-    show: true,
-    type,
-    id
-  })
+const editType2Component = {
+  [editTypes.eyecatch]: 'EyecatcherForm',
+  [editTypes.information]: 'InformationForm',
+  [editTypes.news]: 'newsForm',
+  [editTypes.service]: 'InformationForm',
+  [editTypes.work]: 'InformationForm',
+  [editTypes.contact]: 'InformationForm',
+  [editTypes.menu]: 'InformationForm',
+  [editTypes.none]: 'NoneForm',
 }
 
 export default defineComponent({
   name: 'ContentEditModal',
   components: {
     EyecatcherForm,
+    InformationForm,
+    newsForm,
   },
   setup() {
-    const formComponentName = computed(() => 'EyecatcherForm')
-    const dataId = computed(() => activator.id )
+    const activator = computed(() => getActivator())
+    const formComponentName = computed(() => editType2Component[activator.value.type])
+    const dataId = computed(() => activator.value.id )
 
     return {
       activator,

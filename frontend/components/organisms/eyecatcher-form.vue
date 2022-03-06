@@ -1,6 +1,20 @@
 <template>
   <div class="eyecatcher-form"> 
     <p class="eyecatcher-form__input">
+      <label for="eyecatcher-form-input-image">トップ背景画像</label>
+      <file-input
+        id="eyecatcher-form-input-image"
+        :image-url="eyecatcherForm.image.$value"
+        :state="validStateImage"
+        @change-image-file="onChangeImageFile"
+      />
+      <b-form-invalid-feedback :state="validStateImage">
+        <span v-for="(err, inx) in eyecatcherForm.image.$errors" :key="inx">
+          {{ err }}<br />
+        </span>
+      </b-form-invalid-feedback>
+    </p>
+    <p class="eyecatcher-form__input">
       <label for="eyecatcher-form-input-title">トップタイトル</label>
       <b-form-input
         id="eyecatcher-form-input-title"
@@ -22,19 +36,6 @@
       />
       <b-form-invalid-feedback :state="validStateSubtitle">
         <span v-for="(err, inx) in eyecatcherForm.subtitle.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="eyecatcher-form__input">
-      <label for="eyecatcher-form-input-image">背景画像</label>
-      <file-input
-        id="eyecatcher-form-input-image"
-        :image-url="eyecatcherForm.image.$value"
-        @change-image-file="onChangeImageFile"
-      />
-      <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in eyecatcherForm.image.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
@@ -62,9 +63,13 @@ export default defineComponent({
   name: 'EyeCatcherForm',
   components: { FileInput },
   setup(_props, { emit }) {
-    const { eyeCatch, updateEyeCatch } = eyeCatchHandler()
+    const { getEyeCatch, updateEyeCatch } = eyeCatchHandler()
+    const eyeCatch = computed(() => getEyeCatch())
 
     const eyecatcherForm = useValidation({
+      id: {
+        $value: ref(0),
+      },
       title: {
         $value: ref(''),
         required: {
@@ -87,7 +92,7 @@ export default defineComponent({
         $value: ref(''),
         required: {
           $validator: required,
-          $message: ref('背景画像ファイルを設定してください'),
+          $message: ref('トップ背景画像ファイルを設定してください'),
         },
       },
       imageFile: {
@@ -100,9 +105,10 @@ export default defineComponent({
     const validStateImage = computed(() => !eyecatcherForm.image.$dirty ? null : !eyecatcherForm.image.$anyInvalid)
 
     onMounted(() => {
-      eyecatcherForm.title.$value = eyeCatch.title || ''
-      eyecatcherForm.subtitle.$value = eyeCatch.subtitle || ''
-      eyecatcherForm.image.$value = eyeCatch.image || ''
+      eyecatcherForm.id.$value = eyeCatch.value.id || 0
+      eyecatcherForm.title.$value = eyeCatch.value.title || ''
+      eyecatcherForm.subtitle.$value = eyeCatch.value.subtitle || ''
+      eyecatcherForm.image.$value = eyeCatch.value.image || ''
     })
 
     const onChangeImageFile =(imageFile: File) => {
@@ -116,7 +122,7 @@ export default defineComponent({
 
       const formData = eyecatcherForm.toObject()
       const updateData: EyecatchFormType = {
-        id: eyeCatch.id,
+        id: formData.id,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,

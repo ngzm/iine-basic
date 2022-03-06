@@ -21,7 +21,7 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator type="contact" :content-id="1" />
+      <content-edit-activator type="ContactForm" :content-id="1" />
     </template>
   </contents-card>
 </template>

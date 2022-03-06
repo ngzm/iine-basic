@@ -24,24 +24,37 @@ const eyeCatch = reactive(initialData())
  * Eyecatcher Handler
  */
 export default ( /* userId */ ) => {
+  /**
+   * Eyecatcher getter
+   */
+  const getEyeCatch = () => eyeCatch
+
+  /**
+   * Eyecatcher setter
+   */
+  const setEyeCatch = (data: EyeCatchType) => {
+    Object.assign(eyeCatch, data)
+  }
+
+  /**
+   * Load Eyecatcher data from database through API
+   */
   const loadEyeCatch = (id: number) => {
     setEyeCatch(fetchEyeCatch(id))
   }
 
+  /**
+   * Update Eyecatcher database through API
+   */
   const updateEyeCatch = (formData: EyecatchFormType) => {
     // update through API
 
     setEyeCatch(formData)
   }
 
-  const setEyeCatch = (data: EyeCatchType) => {
-    Object.assign(eyeCatch, data)
-  }
-
   return {
-    eyeCatch,
+    getEyeCatch,
     loadEyeCatch,
     updateEyeCatch,
-    setEyeCatch,
   }
 }

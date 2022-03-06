@@ -1,47 +1,6 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import { NewsType } from '@/types/content-type'
+import { NewsType, NewsFormType } from '@/types/content-type'
 import { initContent } from '@/composable/content'
-
-const isLoading = ref(false)
-
-export default ( /* userId */ ) => {
-  const news = reactive(initNews())
-
-  const loadNews = (id: number) => {
-    isLoading.value = true;
-
-    setTimeout(() => {
-      newses.value.push(...fetchNewses())
-      Object.assign(news, newses.value.find((news) => news.id === id) || initNews())
-      isLoading.value = false;
-    }, 300)
-  }
-
-  const newses = ref([] as NewsType[])
-
-  const loadNewses = (limit?: number) => {
-    isLoading.value = true;
-
-    if (limit) {
-      const fetchData = fetchNewses()
-      newses.value.push(...fetchData)
-    } else {
-      const fetchData = fetchNewses()
-      newses.value.push(...fetchData)
-    }
-
-    isLoading.value = false;
-  }
-
-  return {
-    initNews,
-    news,
-    loadNews,
-    newses,
-    loadNewses,
-    isLoadingNews: isLoading
-  }
-}
 
 const initNews = (): NewsType => ({
   ...initContent(),
@@ -50,7 +9,6 @@ const initNews = (): NewsType => ({
 })
 
  const fetchNewses = (): NewsType[] => {
-
   let idSeq = 0;
   return [
   {
@@ -125,4 +83,75 @@ const initNews = (): NewsType => ({
     publishOn: new Date('2020-02-25 00:00:00'.replace(/-/g, '/'))
   },
 ]
+}
+
+const fetchNews = (id: number = 1): NewsType|undefined => {
+  const fetchList = fetchNewses()
+  return fetchList.find((i) => i.id === id)
+}
+
+/**
+ * News State
+ */
+const news = reactive(initNews())
+const newses = ref([] as NewsType[])
+
+/**
+ * News Handler
+ */
+export default ( /* userId */ ) => {
+  /**
+   * news getter
+   */
+  const getNews = () => news
+
+  /**
+   * news setter
+   */
+  const setNews = (data: NewsType) => {
+    Object.assign(news, data)
+  }
+
+  /**
+   * Load news data from database through API
+   */
+  const loadNews = async (id: number) => {
+    await setTimeout(() => { setNews(fetchNews(id) || initNews()) }, 300)
+  }
+
+  /**
+   * Update news database through API
+   */
+  const updateNews = (formData: NewsFormType) => {
+    // update through API
+
+    setNews(formData)
+  }
+
+  /**
+   * Information List getter
+   */
+  const getNewses = () => newses
+
+  const loadNewses = (limit?: number) => {
+    if (limit) {
+      const fetchData = fetchNewses()
+      newses.value.push(...fetchData)
+    } else {
+      const fetchData = fetchNewses()
+      newses.value.push(...fetchData)
+    }
+  }
+
+  return {
+    initNews,
+    news,
+    getNews,
+    setNews,
+    loadNews,
+    updateNews,
+    newses,
+    getNewses,
+    loadNewses,
+  }
 }

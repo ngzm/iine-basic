@@ -6,18 +6,16 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator
-        type="eyecatch"
-      />
+      <content-edit-activator :type="editType" />
     </template>
   </top-eyecatcher>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api'
+import { defineComponent, onMounted, computed } from '@vue/composition-api'
 import eyeCatchHandler from '@/composable/eye-catch-handler'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentEditActivator, { editTypes } from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1TopEyecatcher',
@@ -26,13 +24,17 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { eyeCatch, loadEyeCatch } = eyeCatchHandler()
+    const { getEyeCatch, loadEyeCatch } = eyeCatchHandler()
+    const eyeCatch = computed(() => getEyeCatch())
 
     onMounted(() => {
       loadEyeCatch(1)
     })
 
-    return { eyeCatch }
+    return {
+      eyeCatch,
+      editType: editTypes.eyecatch
+    }
   }
 })
 </script>

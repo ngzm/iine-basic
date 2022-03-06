@@ -1,30 +1,9 @@
 import { ref, reactive } from '@nuxtjs/composition-api'
-import { InformationType } from '@/types/content-type'
+import { InformationType, InformationFormType } from '@/types/content-type'
 import { initContent } from '@/composable/content'
 
-export default ( /* userId */ ) => {
-  const information = reactive(initInformation())
-  const loadInformation = (id: number = 1) => {
-    informations.value.push(...fetchInformations())
-    Object.assign(information, informations.value.find((i) => i.id === id) || initInformation())
-  }
+const initInformation = (): InformationType => initContent() as InformationType
 
-  const informations = ref([] as InformationType[])
-  const loadInformations = () => {
-    const fetchData = fetchInformations()
-    informations.value.push(...fetchData);
-  }
-
-  return {
-    initInformation,
-    information,
-    loadInformation,
-    informations,
-    loadInformations,
-  }
-}
-
-const initInformation = (): InformationType => ({ ...initContent() } as InformationType)
 const fetchInformations = (): InformationType[] => ([
   {
     id: 1,
@@ -45,3 +24,67 @@ const fetchInformations = (): InformationType[] => ([
       `
   }
 ])
+
+const fetchInformation = (id: number = 1): InformationType|undefined => {
+  const fetchList = fetchInformations()
+  return fetchList.find((i) => i.id === id)
+}
+
+/**
+ * Information State
+ */
+const information = reactive<InformationType>(initInformation())
+const informations = ref<InformationType[]>([])
+
+/**
+ * Information Handler
+ */
+export default ( /* userId */ ) => {
+  /**
+   * Information getter
+   */
+  const getInformation = () => information
+
+  /**
+   * Information setter
+   */
+  const setInformation = (data: InformationType) => {
+    Object.assign(information, data)
+  }
+
+  /**
+   * Load information data from database through API
+   */
+  const loadInformation = (id: number) => {
+    setInformation(fetchInformation(id) || initInformation())
+  }
+
+  /**
+   * Update information database through API
+   */
+  const updateInformation = (formData: InformationFormType) => {
+    // update through API
+
+    setInformation(formData)
+  }
+
+  /**
+   * Information List getter
+   */
+  const getInformations = () => informations
+
+  /**
+   * Load Information List data from database 
+   */
+  const loadInformations = () => {
+    informations.value.push(...fetchInformations());
+  }
+
+  return {
+    getInformation,
+    loadInformation,
+    updateInformation,
+    getInformations,
+    loadInformations,
+  }
+}

@@ -26,7 +26,7 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator type="information" :content-id="1" />
+      <content-edit-activator :type="editType" :content-id="1" />
     </template>
   </contents-card>
 </template>
@@ -38,7 +38,7 @@ import informationHandler from '@/composable/information-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentEditActivator, { editTypes } from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Iformations',
@@ -49,19 +49,21 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { information, loadInformation } = informationHandler()
+    const { getInformation, loadInformation } = informationHandler()
+    const information = computed(() => getInformation())
+
+    // TODO: need sanitize!
+    const informationHtml = computed(() => information.value.body)
 
     onMounted(() => {
       loadInformation(1)
     })
 
-    // TODO: need sanitize!
-    const informationHtml = computed(() => information.body)
-
     return {
       sidebarIdName,
       information,
       informationHtml,
+      editType: editTypes.information
     }
   }
 })
