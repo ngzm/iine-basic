@@ -1,8 +1,8 @@
 <template>
   <contents-card>
     <template #default>
-      <section-eyecatcher :background-image="news.image" />
-
+      <section-eyecatcher :background-image="news.image || ''" />
+      {{ loading }}
       <contents-card-body>
         <h5 class="type1-news-detail__title">
           <span>{{ news.title }}</span>
@@ -23,15 +23,16 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator type="NewsForm" :content-id="news.id" />
+      <content-edit-activator :type="editType" :content-id="news.id" />
     </template>
   </contents-card>
 </template>
 
 <script lang='ts'>
-import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import newsHandler from '@/composable/news-handler'
+import { contentDataTypes } from '@/composable/use-content-helper'
+import { useNewsData } from '~/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
@@ -52,21 +53,21 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { news, loadNews } = newsHandler()
-
-    // TODO: need sanitize!
-    const newsBodyHtml = computed(() => {
-      return news.body
-    })
+    const { news, loading, loadNews } = useNewsData(1)
 
     onMounted(() => {
       loadNews(props.newsId)
     })
 
+    // TODO: need sanitize!
+    const newsBodyHtml = computed(() => news.value.body )
+
     return {
       sidebarIdName,
       news,
-      newsBodyHtml
+      newsBodyHtml,
+      loading,
+      editType: contentDataTypes.news
     }
   }
 })

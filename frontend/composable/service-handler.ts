@@ -1,6 +1,6 @@
 import { ref, reactive } from '@nuxtjs/composition-api'
 import { ServiceType } from '@/types/content-type'
-import { initContent } from '@/composable/content'
+import { initContent } from '~/composable/use-content-helper'
 
 export default ( /* userId */ ) => {
   const service = reactive(initService())

@@ -12,23 +12,11 @@
 
 <script lang="ts">
 import { defineComponent, PropType, reactive } from '@vue/composition-api'
-
-export const editTypes = {
-  eyecatch: 'EyecatcherForm',
-  information: 'InforamtionForm',
-  news: 'NewsForm',
-  service: 'ServiceForm',
-  work: 'WorkForm',
-  contact: 'ContactForm',
-  menu: 'NenuForm',
-  none: 'none'
-} as const
-
-type EditType = typeof editTypes[keyof typeof editTypes];
+import { ContentDataType, contentDataTypes } from '@/composable/use-content-helper'
 
 const activator = reactive({
   show: false,
-  type: editTypes.none,
+  type: contentDataTypes.none as ContentDataType,
   id: 0
 })
 
@@ -38,7 +26,7 @@ export default defineComponent({
   name: 'ContentEditActivator',
   props: {
     type: {
-      type: String as PropType<EditType>,
+      type: String as PropType<ContentDataType>,
       required: true
     },
     contentId: {
@@ -55,7 +43,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const activateToEdit = (type: EditType, id: number = 0) => {
+    const activateToEdit = (type: ContentDataType, id: number = 0) => {
       Object.assign(activator, { show: true, type, id })
     }
 

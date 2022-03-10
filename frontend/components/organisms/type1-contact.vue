@@ -21,7 +21,7 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator type="ContactForm" :content-id="1" />
+      <content-edit-activator :type="editType" :content-id="1" />
     </template>
   </contents-card>
 </template>
@@ -29,6 +29,7 @@
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
+import { contentDataTypes } from '@/composable/use-content-helper'
 import contactHandler from '@/composable/contact-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -56,7 +57,8 @@ export default defineComponent({
     return {
       sidebarIdName,
       contact,
-      contactHtml
+      contactHtml,
+      editType: contentDataTypes.contact
     }
   }
 })

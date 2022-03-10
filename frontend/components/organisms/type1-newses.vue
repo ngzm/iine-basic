@@ -1,20 +1,21 @@
 <template>
   <contents-card>
     <contents-card-body>
-      <news-list :newses="newses">
+      <news-list :newses="newsList">
         <template #editActivator="{ news }">
           <content-edit-activator
-            type="NewsForm"
+            :type="editType"
             :content-id="news.id"
             size="1.6rem"
             class="mr-2"
           />
         </template>
       </news-list>
+      {{ loading }}
 
       <div class="type1-newses__action">
         <slot name="action">
-          <b-link @click="loadMoreNewses">load more news</b-link>
+          <b-link @click="loadMoreNewsList">load more news</b-link>
         </slot>
       </div>
     </contents-card-body>
@@ -23,11 +24,12 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { contentDataTypes } from '@/composable/use-content-helper'
+import { useNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import NewsList from '@/components/molecules/news-list.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
-import newsHandler from '@/composable/news-handler'
 
 export default defineComponent({
   name: 'Type1Newses',
@@ -38,19 +40,17 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { newses, loadNewses } = newsHandler()
+    const { newsList, loading, loadNewsList, loadMoreNewsList } = useNewsList()
 
     onMounted(() => {
-      loadNewses()
+      loadNewsList()
     })
 
-    const loadMoreNewses = (loadCount: number = 20) => {
-      loadNewses(loadCount)
-    }
-
     return {
-      newses,
-      loadMoreNewses,
+      newsList,
+      loading,
+      loadMoreNewsList,
+      editType: contentDataTypes.news
     }
   }
 })

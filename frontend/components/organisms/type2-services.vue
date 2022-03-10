@@ -17,7 +17,7 @@
 
     <template #editActivator="{ content }">
       <content-edit-activator
-        type="ServiceForm"
+        :type="editType"
         :content-id="content.id"
         size="1.6rem"
       />
@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { contentDataTypes } from '@/composable/use-content-helper'
 import ContentsGrid from '~/components/molecules/contents-grid.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
@@ -48,6 +49,7 @@ export default defineComponent({
 
     return {
       services,
+      editType: contentDataTypes.service
     }
   }
 })

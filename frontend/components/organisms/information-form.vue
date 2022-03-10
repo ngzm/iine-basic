@@ -78,8 +78,7 @@ export default defineComponent({
   name: 'InformationForm',
   components: { FileInput },
   setup(_props, { emit }) {
-    const { getInformation, updateInformation } = informationHandler()
-    const information = computed(() => getInformation())
+    const { information, updateInformation } = informationHandler()
 
     const informationForm = useValidation({
       id: {

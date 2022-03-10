@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    v-model="activator.show"
+    v-model="showModal"
     centered
     size="lg"
     title="コンテンツの編集"
@@ -9,27 +9,28 @@
     <component
       :is="formComponentName"
       :data-id="dataId"
-      @close="activator.show = false"
+      @close="close"
     />
   </b-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
-import { editTypes, getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
+import { defineComponent, computed, toRefs, unref } from '@vue/composition-api'
+import { contentDataTypes } from '@/composable/use-content-helper'
+import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/eyecatcher-form.vue'
 import InformationForm from '@/components/organisms/information-form.vue'
 import newsForm from '@/components/organisms/news-form.vue'
 
 const editType2Component = {
-  [editTypes.eyecatch]: 'EyecatcherForm',
-  [editTypes.information]: 'InformationForm',
-  [editTypes.news]: 'newsForm',
-  [editTypes.service]: 'InformationForm',
-  [editTypes.work]: 'InformationForm',
-  [editTypes.contact]: 'InformationForm',
-  [editTypes.menu]: 'InformationForm',
-  [editTypes.none]: 'NoneForm',
+  [contentDataTypes.eyecatch]: 'EyecatcherForm',
+  [contentDataTypes.information]: 'InformationForm',
+  [contentDataTypes.news]: 'newsForm',
+  [contentDataTypes.service]: 'InformationForm',
+  [contentDataTypes.work]: 'InformationForm',
+  [contentDataTypes.contact]: 'InformationForm',
+  [contentDataTypes.menu]: 'InformationForm',
+  [contentDataTypes.none]: 'NoneForm',
 }
 
 export default defineComponent({
@@ -40,14 +41,15 @@ export default defineComponent({
     newsForm,
   },
   setup() {
-    const activator = computed(() => getActivator())
-    const formComponentName = computed(() => editType2Component[activator.value.type])
-    const dataId = computed(() => activator.value.id )
+    const activator = toRefs(getActivator())
+    const formComponentName = computed(() => editType2Component[unref(activator.type)])
+    const close = () => { activator.show.value = false }
 
     return {
-      activator,
+      showModal: activator.show,
+      dataId: activator.id,
       formComponentName,
-      dataId
+      close
     }
   },
 })

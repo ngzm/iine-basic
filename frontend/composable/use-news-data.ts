@@ -1,14 +1,94 @@
-import { reactive, ref } from '@nuxtjs/composition-api'
-import { NewsType, NewsFormType } from '@/types/content-type'
-import { initContent } from '@/composable/content'
+import { computed, reactive, onUnmounted } from '@nuxtjs/composition-api'
+import { NewsType } from '@/types/content-type'
+import { ComparerFunction, LoaderFunction, SaverFunction } from '@/types/use-content-handler'
+import { UpdateSyncronizer, ContentHandler, ContentListHandler } from '@/composable/use-content-handler'
+import { initContent } from '@/composable/use-content-helper'
 
+// データ更新時に既にロードされた同じデータを更新するシンクロナイザー
+const updateSynchronizer = new UpdateSyncronizer<NewsType>()
+
+// データ比較メソッド
+const compaerer: ComparerFunction<NewsType> = (c1, c2) => (c1.id === c2.id)
+
+// Newsデータ初期化
 const initNews = (): NewsType => ({
   ...initContent(),
   category: '',
   publishOn: new Date(),
 })
 
- const fetchNewses = (): NewsType[] => {
+/**
+ * Use News Handler
+ */
+export const useNewsData = (userId: number = 0) => {
+  const newsHandler = reactive<ContentHandler<NewsType>>(
+    new ContentHandler<NewsType>(updateSynchronizer, compaerer, initNews())
+  )
+
+  const news = computed(() => newsHandler.contentData)
+  const loading = computed(() => newsHandler.isLoading)
+
+  const loadNews = async (newsId: number) => {
+    const loader: LoaderFunction<NewsType> = () => fetchNews(userId, newsId)
+    await newsHandler.loadContent(loader)
+  }
+
+  const updateNews = async (news: NewsType, imageFile: File | null) => {
+    const saver: SaverFunction<NewsType> = () => modifyNews(news, imageFile)
+    await newsHandler.updateContent(saver)
+  }
+
+  onUnmounted(() => {
+    newsHandler.destructor()
+  })
+
+  return {
+    news,
+    loading,
+    loadNews,
+    updateNews
+  }
+}
+
+/**
+ * Use NewsList Handler
+ */
+ export const useNewsList = (userId: number = 0) => {
+  const newsListHandler = reactive<ContentListHandler<NewsType>>(
+    new ContentListHandler<NewsType>(updateSynchronizer, compaerer, [])
+  )
+
+  const newsList = computed(() => newsListHandler.contentListData)
+  const loading = computed(() => newsListHandler.isLoading)
+
+  const loadNewsList = async (limit: number = 20) => {
+    const loader: LoaderFunction<NewsType[]> = () => fetchNewsList(userId, limit)
+    await newsListHandler.searchContentList(loader)
+  }
+
+  const loadMoreNewsList = async (limit: number = 20) => {
+    const loader: LoaderFunction<NewsType[]> = () => fetchNewsList(userId, limit)
+    await newsListHandler.searchContentList(loader)
+  }
+
+  onUnmounted(() => {
+    newsListHandler.destructor()
+  })
+
+  return {
+    newsList,
+    loading,
+    loadNewsList,
+    loadMoreNewsList
+  }
+}
+
+/**
+ * テスト用データと操作メソッド
+ * 
+ */
+  
+const fetchList = (): NewsType[] => {
   let idSeq = 0;
   return [
   {
@@ -85,73 +165,36 @@ const initNews = (): NewsType => ({
 ]
 }
 
-const fetchNews = (id: number = 1): NewsType|undefined => {
-  const fetchList = fetchNewses()
-  return fetchList.find((i) => i.id === id)
+const fetchData = (id: number = 1): NewsType|undefined => {
+  const list = fetchList()
+  return list.find((i) => i.id === id)
 }
 
-/**
- * News State
- */
-const news = reactive(initNews())
-const newses = ref([] as NewsType[])
+const fetchNewsList = (userId: number, limit: number): Promise<NewsType[]> => {
+  console.log(userId)
+  console.log(limit)
 
-/**
- * News Handler
- */
-export default ( /* userId */ ) => {
-  /**
-   * news getter
-   */
-  const getNews = () => news
+  return new Promise((resolve) => setTimeout(() => {
+    const newsList: NewsType[] = fetchList()
+    resolve(newsList)
+  }, 1000)) 
+}
 
-  /**
-   * news setter
-   */
-  const setNews = (data: NewsType) => {
-    Object.assign(news, data)
-  }
+const fetchNews = (userId: number, newsId: number): Promise<NewsType> => {
+  console.log(userId, newsId)
 
-  /**
-   * Load news data from database through API
-   */
-  const loadNews = async (id: number) => {
-    await setTimeout(() => { setNews(fetchNews(id) || initNews()) }, 300)
-  }
+  return new Promise((resolve) => setTimeout(() => {
+    const news: NewsType = fetchData(newsId) || initNews()
+    resolve(news)
+  }, 1000)) 
+}
 
-  /**
-   * Update news database through API
-   */
-  const updateNews = (formData: NewsFormType) => {
-    // update through API
-
-    setNews(formData)
-  }
-
-  /**
-   * Information List getter
-   */
-  const getNewses = () => newses
-
-  const loadNewses = (limit?: number) => {
-    if (limit) {
-      const fetchData = fetchNewses()
-      newses.value.push(...fetchData)
-    } else {
-      const fetchData = fetchNewses()
-      newses.value.push(...fetchData)
+const modifyNews = (updateNews: NewsType, imageFile: File | null): Promise<NewsType> => {
+  return new Promise((resolve) => setTimeout(() => {
+    const news: NewsType = { ...updateNews }
+    if (imageFile) {
+      Object.assign(news, URL.createObjectURL(imageFile))
     }
-  }
-
-  return {
-    initNews,
-    news,
-    getNews,
-    setNews,
-    loadNews,
-    updateNews,
-    newses,
-    getNewses,
-    loadNewses,
-  }
+    resolve(news)
+  }, 1000))
 }

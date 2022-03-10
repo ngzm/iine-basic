@@ -34,11 +34,12 @@
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
+import { contentDataTypes } from '@/composable/use-content-helper'
 import informationHandler from '@/composable/information-handler'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
-import ContentEditActivator, { editTypes } from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Iformations',
@@ -49,8 +50,7 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { getInformation, loadInformation } = informationHandler()
-    const information = computed(() => getInformation())
+    const { information, loadInformation } = informationHandler()
 
     // TODO: need sanitize!
     const informationHtml = computed(() => information.value.body)
@@ -63,7 +63,7 @@ export default defineComponent({
       sidebarIdName,
       information,
       informationHtml,
-      editType: editTypes.information
+      editType: contentDataTypes.information
     }
   }
 })

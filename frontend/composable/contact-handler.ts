@@ -1,6 +1,6 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { ContactType } from '@/types/content-type'
-import { initContent } from '@/composable/content'
+import { initContent } from '~/composable/use-content-helper'
 
 export default ( /* userId */ ) => {
   const contact = reactive(initContact())

@@ -1,6 +1,6 @@
-import { ref, reactive } from '@nuxtjs/composition-api'
+import { reactive, computed } from '@nuxtjs/composition-api'
 import { InformationType, InformationFormType } from '@/types/content-type'
-import { initContent } from '@/composable/content'
+import { initContent } from '~/composable/use-content-helper'
 
 const initInformation = (): InformationType => initContent() as InformationType
 
@@ -33,30 +33,28 @@ const fetchInformation = (id: number = 1): InformationType|undefined => {
 /**
  * Information State
  */
-const information = reactive<InformationType>(initInformation())
-const informations = ref<InformationType[]>([])
+const iformationState = reactive<InformationType>(initInformation())
+const informationsState: InformationType[] = []
 
 /**
  * Information Handler
  */
 export default ( /* userId */ ) => {
   /**
-   * Information getter
+   * Information getter/setter
    */
-  const getInformation = () => information
-
-  /**
-   * Information setter
-   */
-  const setInformation = (data: InformationType) => {
-    Object.assign(information, data)
-  }
+  const information = computed<InformationType>({
+    get: () => iformationState,
+    set: (data: InformationType) => {
+      Object.assign(iformationState, data)
+    }
+  })
 
   /**
    * Load information data from database through API
    */
   const loadInformation = (id: number) => {
-    setInformation(fetchInformation(id) || initInformation())
+    information.value = fetchInformation(id) || initInformation()
   }
 
   /**
@@ -64,27 +62,31 @@ export default ( /* userId */ ) => {
    */
   const updateInformation = (formData: InformationFormType) => {
     // update through API
-
-    setInformation(formData)
+    information.value = formData
   }
 
   /**
    * Information List getter
    */
-  const getInformations = () => informations
+  const informations = computed({
+    get: () => informationsState,
+    set: (data: InformationType[]) => {
+        informationsState.push(...data)
+      }
+    })
 
   /**
    * Load Information List data from database 
    */
   const loadInformations = () => {
-    informations.value.push(...fetchInformations());
+    informations.value = fetchInformations();
   }
 
   return {
-    getInformation,
+    information,
     loadInformation,
     updateInformation,
-    getInformations,
+    informations,
     loadInformations,
   }
 }

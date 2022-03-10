@@ -29,11 +29,17 @@
     </p>
     <p class="news-form__input">
       <label for="news-form-input-category">ニュースカテゴリ</label>
-      <b-form-input
+      <b-form-select
+        id="news-form-input-category"
+        v-model="newsForm.category.$value"
+        :options="categoryOptions"
+        :state="validStateCategory"
+       />
+      <!-- <b-form-input
         id="news-form-input-category"
         v-model="newsForm.category.$value"
         :state="validStateCategory"
-      />
+      /> -->
       <b-form-invalid-feedback :state="validStateCategory">
         <span v-for="(err, inx) in newsForm.category.$errors" :key="inx">
           {{ err }}<br />
@@ -42,9 +48,9 @@
     </p>
     <p class="news-form__input">
       <label for="news-form-input-publish-on">ニュース公開日</label>
-      <b-form-input
+      <b-form-datepicker
         id="news-form-input-publish-on"
-        v-model="newsForm.publishOn.$value"
+        placeholder="公開日選択"
         :state="validStatePublishOn"
       />
       <b-form-invalid-feedback :state="validStatePublishOn">
@@ -80,11 +86,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
+import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { NewsFormType } from '~/types/content-type'
-import newsHandler from '@/composable/news-handler'
+import { NewsType } from '~/types/content-type'
+import { useNewsData } from '~/composable/use-news-data'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
@@ -97,9 +103,7 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const { loadNews, getNews, updateNews } = newsHandler()
-    const newsId = props.dataId;
-
+    const { news, loading, loadNews, updateNews } = useNewsData(1)
     const newsForm = useValidation({
       id: {
         $value: ref(0),
@@ -158,15 +162,23 @@ export default defineComponent({
     const validStateImage = computed(() => !newsForm.image.$dirty ? null : !newsForm.image.$anyInvalid)
     const validStateBody = computed(() => !newsForm.body.$dirty ? null : !newsForm.body.$anyInvalid)
 
-    onMounted(async () => {
-      await loadNews(newsId)
-      const news = getNews()
-      newsForm.id.$value = news.id || 0
-      newsForm.title.$value = news.title || ''
-      newsForm.category.$value = news.category || ''
-      newsForm.publishOn.$value = news.publishOn || new Date() 
-      newsForm.image.$value = news.image || ''
-      newsForm.body.$value = news.body || ''
+    const categoryOptions = [
+      { value: null, text: 'カテゴリを選択', disabled: true },
+      { value: 'I', text: 'INFO' },
+      { value: 'S', text: 'SERVICE' },
+      { value: 'W', text: 'WORK' },
+      { value: 'T', text: 'TECH' },
+    ]
+
+    onMounted(async() => {
+      await loadNews(props.dataId)
+      newsForm.id.$value = news.value.id || 0
+      newsForm.title.$value = news.value.title || ''
+      newsForm.category.$value = news.value.category || ''
+      newsForm.publishOn.$value = news.value.publishOn || new Date() 
+      newsForm.image.$value = news.value.image || ''
+      newsForm.body.$value = news.value.body || ''
+      console.log('news-form onMounted')
     })
 
     const onChangeImageFile =(imageFile: File) => {
@@ -174,21 +186,21 @@ export default defineComponent({
       newsForm.image.$value = URL.createObjectURL(imageFile)
     }
 
-    const onUpdate = () => {
+    const onUpdate = async () => {
       newsForm.$touch()
       if (newsForm.$anyInvalid) return
 
       const formData = newsForm.toObject()
-      const updateData: NewsFormType = {
+      const newData: NewsType = {
         id: formData.id,
         title: formData.title,
         category: formData.category,
         publishOn: formData.publishOn as Date,
         image: formData.image,
-        imageFile: formData.imageFile,
         body: formData.body
       }
-      updateNews(updateData)
+      const imageFile = formData.imageFile as File || null
+      await updateNews(newData, imageFile)
       emit('close')
     }
 
@@ -197,6 +209,7 @@ export default defineComponent({
     }
 
     return {
+      loading,
       newsForm,
       validStateTitle,
       validStateCategory,
@@ -205,7 +218,8 @@ export default defineComponent({
       validStateBody,
       onChangeImageFile,
       onUpdate,
-      onCancel
+      onCancel,
+      categoryOptions
     }
   },
 })

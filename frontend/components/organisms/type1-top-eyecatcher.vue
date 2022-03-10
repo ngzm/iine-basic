@@ -13,9 +13,10 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, computed } from '@vue/composition-api'
+import { contentDataTypes } from '@/composable/use-content-helper'
 import eyeCatchHandler from '@/composable/eye-catch-handler'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
-import ContentEditActivator, { editTypes } from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1TopEyecatcher',
@@ -33,7 +34,7 @@ export default defineComponent({
 
     return {
       eyeCatch,
-      editType: editTypes.eyecatch
+      editType: contentDataTypes.eyecatch
     }
   }
 })
