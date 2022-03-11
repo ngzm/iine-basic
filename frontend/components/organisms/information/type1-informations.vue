@@ -36,8 +36,8 @@
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import { contentDataTypes } from '@/composable/use-content-helper'
-import { useInformationData } from '~/composable/use-information-data'
+import { contentDataTypes } from '@/composable/content-helper'
+import { useInformationData } from '@/composable/use-information-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'

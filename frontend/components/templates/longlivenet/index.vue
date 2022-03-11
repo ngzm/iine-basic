@@ -52,11 +52,11 @@
 <script lang="ts">
 import { defineComponent, onMounted, useRoute, useRouter, nextTick } from '@nuxtjs/composition-api'
 import VueScrollTo from "vue-scrollto"
-import TopEyeCatcher from '@/components/organisms/type1-top-eyecatcher.vue'
-import Informations from '@/components/organisms/type1-informations.vue'
-import Newses from '@/components/organisms/type1-newses.vue'
-import Services from '@/components/organisms/type2-services.vue'
-import Contact from '@/components/organisms/type1-contact.vue'
+import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher.vue'
+import Informations from '@/components/organisms/information/type1-informations.vue'
+import Newses from '@/components/organisms/news/type1-newses.vue'
+import Services from '@/components/organisms/service/type2-services.vue'
+import Contact from '@/components/organisms/contact/type1-contact.vue'
 
 export default defineComponent({
   name: 'LongLivenetIndex',

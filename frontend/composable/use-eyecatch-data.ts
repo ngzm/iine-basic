@@ -1,7 +1,7 @@
 import { reactive, toRefs, onUnmounted } from '@nuxtjs/composition-api'
 import { EyecatchType } from '@/types/content-type'
 import { ComparerFunction, LoaderFunction, SaverFunction } from '@/types/use-content-handler'
-import { UpdateSyncronizer, ContentHandler } from '@/composable/use-content-handler'
+import { UpdateSyncronizer, ContentHandler } from '@/composable/content-handler'
 
 // データ更新時に既にロードされた同じデータを更新するシンクロナイザー
 const updateSynchronizer = new UpdateSyncronizer<EyecatchType>()

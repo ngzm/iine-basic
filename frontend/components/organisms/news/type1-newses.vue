@@ -24,7 +24,7 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { contentDataTypes } from '@/composable/use-content-helper'
+import { contentDataTypes } from '@/composable/content-helper'
 import { useNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'

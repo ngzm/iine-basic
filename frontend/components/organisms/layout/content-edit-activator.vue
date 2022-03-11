@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, reactive } from '@vue/composition-api'
-import { ContentDataType, contentDataTypes } from '@/composable/use-content-helper'
+import { ContentDataType, contentDataTypes } from '@/composable/content-helper'
 
 const activator = reactive({
   show: false,

@@ -16,13 +16,13 @@
 
 <script lang="ts">
 import { defineComponent, computed, toRefs, unref } from '@vue/composition-api'
-import { contentDataTypes } from '@/composable/use-content-helper'
+import { contentDataTypes } from '@/composable/content-helper'
 import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
-import EyecatcherForm from '@/components/organisms/eyecatcher-form.vue'
-import InformationForm from '@/components/organisms/information-form.vue'
-import NewsForm from '@/components/organisms/news-form.vue'
-import ServiceForm from '@/components/organisms/service-form.vue'
-import ContactForm from '@/components/organisms/contact-form.vue'
+import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
+import InformationForm from '@/components/organisms/information/information-form.vue'
+import NewsForm from '@/components/organisms/news/news-form.vue'
+import ServiceForm from '@/components/organisms/service/service-form.vue'
+import ContactForm from '@/components/organisms/contact/contact-form.vue'
 
 const editType2Component = {
   [contentDataTypes.eyecatch]: 'EyecatcherForm',

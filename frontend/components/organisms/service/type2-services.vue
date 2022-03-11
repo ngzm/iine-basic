@@ -27,9 +27,9 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { contentDataTypes } from '@/composable/use-content-helper'
+import { contentDataTypes } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
-import ContentsGrid from '~/components/molecules/contents-grid.vue'
+import ContentsGrid from '@/components/molecules/contents-grid.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 

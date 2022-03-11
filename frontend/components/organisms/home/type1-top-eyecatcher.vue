@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api'
-import { contentDataTypes } from '@/composable/use-content-helper'
+import { contentDataTypes } from '@/composable/content-helper'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'

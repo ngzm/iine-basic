@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, ref, readonly, useRoute } from '@nuxtjs/composition-api'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
-import NewsDetail from '@/components/organisms/type1-news-detail.vue'
+import NewsDetail from '@/components/organisms/news/type1-news-detail.vue'
 
 export default defineComponent({
   name: 'LongLivenetNewsId',

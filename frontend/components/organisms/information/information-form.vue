@@ -70,8 +70,8 @@
 import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { InformationType } from '~/types/content-type'
-import { useInformationData } from '~/composable/use-information-data'
+import { InformationType } from '@/types/content-type'
+import { useInformationData } from '@/composable/use-information-data'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({

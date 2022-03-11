@@ -1,21 +1,19 @@
 <template>
   <contents-card>
     <template #default>
-      <section-eyecatcher :background-image="news.image || ''" />
-      {{ loading }}
+      <section-eyecatcher :background-image="contact.image">
+        <h4 class="type1-contact__header--title">{{ contact.title }}</h4>
+        <p class="type1-contact__header--subtitle">{{ contact.subtitle }}</p>
+      </section-eyecatcher>
+
       <contents-card-body>
-        <h5 class="type1-news-detail__title">
-          <span>{{ news.title }}</span>
-        </h5>
-
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-html="newsBodyHtml" />
+        <div v-html="contactHtml" />
 
-        <div class="type1-news-detail__action">
+        <div class="type1-contact__action">
           <slot name="action">
             <b-button v-b-toggle="sidebarIdName" variant="primary">
-              <b-icon icon="hand-index" />
-              お問い合せ
+              メールで問合せる（お問合せフォーム）
             </b-button>
           </slot>
         </div>
@@ -23,65 +21,63 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator :type="editType" :content-id="news.id" />
+      <content-edit-activator :type="editType" :content-id="1" />
     </template>
   </contents-card>
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import { contentDataTypes } from '@/composable/use-content-helper'
-import { useNewsData } from '~/composable/use-news-data'
+import { contentDataTypes } from '@/composable/content-helper'
+import { useContactData } from '@/composable/use-contact-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
-  name: 'Type1NewsDetail',
+  name: 'Type1Contact',
   components: {
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
     ContentEditActivator
   },
-  props: {
-    newsId: {
-      type: Number,
-      required: true
-    },
-  },
-  setup(props) {
-    const { news, loading, loadNews } = useNewsData(1)
+  setup() {
+    const { contact, loading, loadContact } = useContactData()
 
     onMounted(() => {
-      loadNews(props.newsId)
+      loadContact(1)
     })
 
     // TODO: need sanitize!
-    const newsBodyHtml = computed(() => news.value.body )
+    const contactHtml = computed(() => contact.value.body)
 
     return {
       sidebarIdName,
-      news,
-      newsBodyHtml,
+      contact,
+      contactHtml,
       loading,
-      editType: contentDataTypes.news
+      editType: contentDataTypes.contact
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-
-.type1-news-detail {
-  &__title {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    span {
+.type1-contact {
+  &__header {
+    &--title, &--subtitle {
+      font-size: 1.25rem;
       font-weight: bold;
+      text-shadow: 1px 1px 6px black; 
+      margin: 0;
+      padding: 0;
+    }
+    &--subtitle {
+      font-size: 1.0rem;
+      margin-top: 0.5rem;
     }
   }
   &__action {

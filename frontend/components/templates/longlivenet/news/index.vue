@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
-import Newses from '@/components/organisms/type1-newses.vue'
+import Newses from '@/components/organisms/news/type1-newses.vue'
 
 export default defineComponent({
   name: 'LongLivenetNewsIndex',
