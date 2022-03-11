@@ -52,20 +52,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
+import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { EyecatchFormType } from '~/types/content-type'
-import eyeCatchHandler from '@/composable/eye-catch-handler'
+import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
   name: 'EyeCatcherForm',
   components: { FileInput },
   setup(_props, { emit }) {
-    const { getEyeCatch, updateEyeCatch } = eyeCatchHandler()
-    const eyeCatch = computed(() => getEyeCatch())
-
+    const { eyecatch, loadEyecatch, updateEyecatch } = useEyecatchData(1)
     const eyecatcherForm = useValidation({
       id: {
         $value: ref(0),
@@ -100,35 +97,36 @@ export default defineComponent({
       }
     })
 
+    onMounted(async () => {
+      await loadEyecatch()
+      eyecatcherForm.id.$value = eyecatch.value.id || 0
+      eyecatcherForm.title.$value = eyecatch.value.title || ''
+      eyecatcherForm.subtitle.$value = eyecatch.value.subtitle || ''
+      eyecatcherForm.image.$value = eyecatch.value.image || ''
+    })
+
     const validStateTitle = computed(() => !eyecatcherForm.title.$dirty ? null : !eyecatcherForm.title.$anyInvalid)
     const validStateSubtitle = computed(() => !eyecatcherForm.subtitle.$dirty ? null : !eyecatcherForm.subtitle.$anyInvalid)
     const validStateImage = computed(() => !eyecatcherForm.image.$dirty ? null : !eyecatcherForm.image.$anyInvalid)
-
-    onMounted(() => {
-      eyecatcherForm.id.$value = eyeCatch.value.id || 0
-      eyecatcherForm.title.$value = eyeCatch.value.title || ''
-      eyecatcherForm.subtitle.$value = eyeCatch.value.subtitle || ''
-      eyecatcherForm.image.$value = eyeCatch.value.image || ''
-    })
 
     const onChangeImageFile =(imageFile: File) => {
       eyecatcherForm.imageFile.$value = imageFile
       eyecatcherForm.image.$value = URL.createObjectURL(imageFile)
     }
 
-    const onUpdate = () => {
+    const onUpdate = async () => {
       eyecatcherForm.$touch()
       if (eyecatcherForm.$anyInvalid) return
 
       const formData = eyecatcherForm.toObject()
-      const updateData: EyecatchFormType = {
+      const ecData = {
         id: formData.id,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
-        imageFile: formData.imageFile
       }
-      updateEyeCatch(updateData)
+      const imageFile = formData.imageFile as File || null
+      await updateEyecatch(ecData, imageFile)
       emit('close')
     }
 

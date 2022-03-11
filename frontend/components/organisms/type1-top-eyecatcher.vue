@@ -1,8 +1,8 @@
 <template>
-  <top-eyecatcher :background-image="eyeCatch.image" class="type1-top-eyecatcher">
+  <top-eyecatcher :background-image="eyecatch.image" class="type1-top-eyecatcher">
     <template #default>
-      <h2 class="type1-top-eyecatcher__header--title">{{ eyeCatch.title || '' }}</h2>
-      <p class="type1-top-eyecatcher__header--subtitle">{{ eyeCatch.subtitle || '' }}</p>
+      <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
+      <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
     </template>
 
     <template #editActivator>
@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from '@vue/composition-api'
+import { defineComponent, onMounted } from '@vue/composition-api'
 import { contentDataTypes } from '@/composable/use-content-helper'
-import eyeCatchHandler from '@/composable/eye-catch-handler'
+import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
@@ -25,15 +25,15 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { getEyeCatch, loadEyeCatch } = eyeCatchHandler()
-    const eyeCatch = computed(() => getEyeCatch())
+    const { eyecatch, loading, loadEyecatch } = useEyecatchData(1)
 
     onMounted(() => {
-      loadEyeCatch(1)
+      loadEyecatch()
     })
 
     return {
-      eyeCatch,
+      eyecatch,
+      loading,
       editType: contentDataTypes.eyecatch
     }
   }

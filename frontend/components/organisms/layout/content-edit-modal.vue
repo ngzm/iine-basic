@@ -20,15 +20,17 @@ import { contentDataTypes } from '@/composable/use-content-helper'
 import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/eyecatcher-form.vue'
 import InformationForm from '@/components/organisms/information-form.vue'
-import newsForm from '@/components/organisms/news-form.vue'
+import NewsForm from '@/components/organisms/news-form.vue'
+import ServiceForm from '@/components/organisms/service-form.vue'
+import ContactForm from '@/components/organisms/contact-form.vue'
 
 const editType2Component = {
   [contentDataTypes.eyecatch]: 'EyecatcherForm',
   [contentDataTypes.information]: 'InformationForm',
-  [contentDataTypes.news]: 'newsForm',
-  [contentDataTypes.service]: 'InformationForm',
+  [contentDataTypes.news]: 'NewsForm',
+  [contentDataTypes.service]: 'ServiceForm',
   [contentDataTypes.work]: 'InformationForm',
-  [contentDataTypes.contact]: 'InformationForm',
+  [contentDataTypes.contact]: 'ContactForm',
   [contentDataTypes.menu]: 'InformationForm',
   [contentDataTypes.none]: 'NoneForm',
 }
@@ -38,16 +40,18 @@ export default defineComponent({
   components: {
     EyecatcherForm,
     InformationForm,
-    newsForm,
+    NewsForm,
+    ServiceForm,
+    ContactForm,
   },
   setup() {
-    const activator = toRefs(getActivator())
-    const formComponentName = computed(() => editType2Component[unref(activator.type)])
-    const close = () => { activator.show.value = false }
+    const { show, id, type } = toRefs(getActivator())
+    const formComponentName = computed(() => editType2Component[unref(type)])
+    const close = () => { show.value = false }
 
     return {
-      showModal: activator.show,
-      dataId: activator.id,
+      showModal: show,
+      dataId: id,
       formComponentName,
       close
     }

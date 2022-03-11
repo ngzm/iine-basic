@@ -1,61 +1,61 @@
 <template>
-  <div class="information-form"> 
-    <p class="information-form__input">
-      <label for="information-form-input-image">タイトル背景画像</label>
+  <div class="contact-form"> 
+    <p class="contact-form__input">
+      <label for="contact-form-input-image">タイトル背景画像</label>
       <file-input
-        id="information-form-input-image"
-        :image-url="informationForm.image.$value"
+        id="contact-form-input-image"
+        :image-url="contactForm.image.$value"
         :state="validStateImage"
         @change-image-file="onChangeImageFile"
       />
       <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in informationForm.image.$errors" :key="inx">
+        <span v-for="(err, inx) in contactForm.image.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
     </p>
-    <p class="information-form__input">
-      <label for="information-form-input-title">タイトル</label>
+    <p class="contact-form__input">
+      <label for="contact-form-input-title">タイトル</label>
       <b-form-input
-        id="information-form-input-title"
-        v-model="informationForm.title.$value"
+        id="contact-form-input-title"
+        v-model="contactForm.title.$value"
         :state="validStateTitle"
       />
       <b-form-invalid-feedback :state="validStateTitle">
-        <span v-for="(err, inx) in informationForm.title.$errors" :key="inx">
+        <span v-for="(err, inx) in contactForm.title.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
     </p>
-    <p class="information-form__input">
-      <label for="information-form-input-subtitle">サブタイトル</label>
+    <p class="contact-form__input">
+      <label for="contact-form-input-subtitle">サブタイトル</label>
       <b-form-input
-        id="information-form-input-subtitle"
-        v-model="informationForm.subtitle.$value"
+        id="contact-form-input-subtitle"
+        v-model="contactForm.subtitle.$value"
         :state="validStateSubtitle"
       />
       <b-form-invalid-feedback :state="validStateSubtitle">
-        <span v-for="(err, inx) in informationForm.subtitle.$errors" :key="inx">
+        <span v-for="(err, inx) in contactForm.subtitle.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
     </p>
-    <p class="information-form__input">
-      <label for="information-form-input-body">本文</label>
+    <p class="contact-form__input">
+      <label for="contact-form-input-body">本文</label>
       <b-form-textarea
-        id="information-form-input-body"
-        v-model="informationForm.body.$value"
+        id="contact-form-input-body"
+        v-model="contactForm.body.$value"
         rows="6"
         max-rows="18"
         :state="validStateBody"
       />
       <b-form-invalid-feedback :state="validStateBody">
-        <span v-for="(err, inx) in informationForm.body.$errors" :key="inx">
+        <span v-for="(err, inx) in contactForm.body.$errors" :key="inx">
           {{ err }}<br />
         </span>
       </b-form-invalid-feedback>
     </p>
-    <p class="information-form__action">
+    <p class="contact-form__action">
       <b-button @click="onCancel">
         キャンセル
       </b-button>
@@ -67,19 +67,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
+import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { InformationType } from '~/types/content-type'
-import { useInformationData } from '~/composable/use-information-data'
+import { useContactData } from '~/composable/use-contact-data'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
-  name: 'InformationForm',
+  name: 'ContactForm',
   components: { FileInput },
-  setup(_props, { emit }) {
-    const { information, loadInformation, updateInformation } = useInformationData()
-    const informationForm = useValidation({
+  props: {
+    dataId: {
+      type: Number,
+      required: true
+    }
+  },
+  setup(props, { emit }) {
+    const { contact, loading, loadContact, updateContact } = useContactData(1)
+    const contactForm = useValidation({
       id: {
         $value: ref(0),
       },
@@ -96,6 +101,10 @@ export default defineComponent({
       },
       subtitle: {
         $value: ref(''),
+        required: {
+          $validator: required,
+          $message: ref('サブタイトルを入力してください'),
+        },
         maximunLength: {
           $validator: maximunLength(50),
           $message: ref('50文字以内で入力してください'),
@@ -124,31 +133,31 @@ export default defineComponent({
       },
     })
 
-    onMounted(async () => {
-      await loadInformation(1)
-      informationForm.id.$value = information.value.id || 0
-      informationForm.title.$value = information.value.title || ''
-      informationForm.subtitle.$value = information.value.subtitle || ''
-      informationForm.image.$value = information.value.image || ''
-      informationForm.body.$value = information.value.body || ''
+    const validStateTitle = computed(() => !contactForm.title.$dirty ? null : !contactForm.title.$anyInvalid)
+    const validStateSubtitle = computed(() => !contactForm.subtitle.$dirty ? null : !contactForm.subtitle.$anyInvalid)
+    const validStateImage = computed(() => !contactForm.image.$dirty ? null : !contactForm.image.$anyInvalid)
+    const validStateBody = computed(() => !contactForm.body.$dirty ? null : !contactForm.body.$anyInvalid)
+
+    onMounted(async() => {
+      await loadContact(props.dataId)
+      contactForm.id.$value = contact.value.id || 0
+      contactForm.title.$value = contact.value.title || ''
+      contactForm.subtitle.$value = contact.value.subtitle || ''
+      contactForm.image.$value = contact.value.image || ''
+      contactForm.body.$value = contact.value.body || ''
     })
 
-    const validStateTitle = computed(() => !informationForm.title.$dirty ? null : !informationForm.title.$anyInvalid)
-    const validStateSubtitle = computed(() => !informationForm.subtitle.$dirty ? null : !informationForm.subtitle.$anyInvalid)
-    const validStateImage = computed(() => !informationForm.image.$dirty ? null : !informationForm.image.$anyInvalid)
-    const validStateBody = computed(() => !informationForm.body.$dirty ? null : !informationForm.body.$anyInvalid)
-
     const onChangeImageFile =(imageFile: File) => {
-      informationForm.imageFile.$value = imageFile
-      informationForm.image.$value = URL.createObjectURL(imageFile)
+      contactForm.imageFile.$value = imageFile
+      contactForm.image.$value = URL.createObjectURL(imageFile)
     }
 
     const onUpdate = async () => {
-      informationForm.$touch()
-      if (informationForm.$anyInvalid) return
+      contactForm.$touch()
+      if (contactForm.$anyInvalid) return
 
-      const formData = informationForm.toObject()
-      const updateData: InformationType = {
+      const formData = contactForm.toObject()
+      const contactData = {
         id: formData.id,
         title: formData.title,
         subtitle: formData.subtitle,
@@ -156,7 +165,7 @@ export default defineComponent({
         body: formData.body
       }
       const imageFile = formData.imageFile as File || null
-      await updateInformation(updateData, imageFile)
+      await updateContact(contactData, imageFile)
       emit('close')
     }
 
@@ -165,21 +174,22 @@ export default defineComponent({
     }
 
     return {
-      informationForm,
+      loading,
+      contactForm,
       validStateTitle,
       validStateSubtitle,
       validStateImage,
       validStateBody,
       onChangeImageFile,
       onUpdate,
-      onCancel
+      onCancel,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.information-form {
+.contact-form {
   &__input {
     margin-bottom: 1rem;
   }

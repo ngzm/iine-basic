@@ -35,11 +35,6 @@
         :options="categoryOptions"
         :state="validStateCategory"
        />
-      <!-- <b-form-input
-        id="news-form-input-category"
-        v-model="newsForm.category.$value"
-        :state="validStateCategory"
-      /> -->
       <b-form-invalid-feedback :state="validStateCategory">
         <span v-for="(err, inx) in newsForm.category.$errors" :key="inx">
           {{ err }}<br />
@@ -89,7 +84,6 @@
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { NewsType } from '~/types/content-type'
 import { useNewsData } from '~/composable/use-news-data'
 import FileInput from '@/components/atoms/file-input.vue'
 
@@ -112,7 +106,7 @@ export default defineComponent({
         $value: ref(''),
         required: {
           $validator: required,
-          $message: ref('トップタイトルを入力してください'),
+          $message: ref('タイトルを入力してください'),
         },
         maximunLength: {
           $validator: maximunLength(40),
@@ -178,7 +172,6 @@ export default defineComponent({
       newsForm.publishOn.$value = news.value.publishOn || new Date() 
       newsForm.image.$value = news.value.image || ''
       newsForm.body.$value = news.value.body || ''
-      console.log('news-form onMounted')
     })
 
     const onChangeImageFile =(imageFile: File) => {
@@ -191,7 +184,7 @@ export default defineComponent({
       if (newsForm.$anyInvalid) return
 
       const formData = newsForm.toObject()
-      const newData: NewsType = {
+      const newsData = {
         id: formData.id,
         title: formData.title,
         category: formData.category,
@@ -200,7 +193,7 @@ export default defineComponent({
         body: formData.body
       }
       const imageFile = formData.imageFile as File || null
-      await updateNews(newData, imageFile)
+      await updateNews(newsData, imageFile)
       emit('close')
     }
 

@@ -14,9 +14,6 @@ export interface ContentType {
  * Information
  */
 export interface InformationType extends ContentType {}
-export interface InformationFormType extends InformationType {
-  imageFile?: File | null
-}
 
 /**
  * News
@@ -50,12 +47,9 @@ export interface ContactType extends ContentType {}
 /**
  * Eyecatcher
  */
-export interface EyeCatchType {
+export interface EyecatchType {
   id: number
   title?: string
   subtitle?: string
   image?: string
-}
-export interface EyecatchFormType extends EyeCatchType {
-  imageFile?: File | null
 }

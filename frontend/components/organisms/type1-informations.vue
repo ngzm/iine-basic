@@ -10,6 +10,8 @@
         </h4>
       </section-eyecatcher>
 
+      {{ loading }}
+
       <contents-card-body>
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="informationHtml" />
@@ -35,7 +37,7 @@
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import { contentDataTypes } from '@/composable/use-content-helper'
-import informationHandler from '@/composable/information-handler'
+import { useInformationData } from '~/composable/use-information-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
@@ -50,7 +52,7 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { information, loadInformation } = informationHandler()
+    const { information, loading, loadInformation } = useInformationData(1)
 
     // TODO: need sanitize!
     const informationHtml = computed(() => information.value.body)
@@ -63,6 +65,7 @@ export default defineComponent({
       sidebarIdName,
       information,
       informationHtml,
+      loading,
       editType: contentDataTypes.information
     }
   }

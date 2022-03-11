@@ -30,7 +30,7 @@
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import { contentDataTypes } from '@/composable/use-content-helper'
-import contactHandler from '@/composable/contact-handler'
+import { useContactData } from '~/composable/use-contact-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
@@ -45,19 +45,20 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { contact, loadContact } = contactHandler()
+    const { contact, loading, loadContact } = useContactData()
 
     onMounted(() => {
-      loadContact()
+      loadContact(1)
     })
 
     // TODO: need sanitize!
-    const contactHtml = computed(() => contact.body)
+    const contactHtml = computed(() => contact.value.body)
 
     return {
       sidebarIdName,
       contact,
       contactHtml,
+      loading,
       editType: contentDataTypes.contact
     }
   }

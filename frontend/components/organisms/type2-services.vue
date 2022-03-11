@@ -1,5 +1,5 @@
 <template>
-  <contents-grid :contents-list="services" class="type2-services">
+  <contents-grid :contents-list="serviceList" class="type2-services">
     <template #default="{ content }">
       <h5 class="type2-services__content-title">
         {{ content.title }}
@@ -28,10 +28,10 @@
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { contentDataTypes } from '@/composable/use-content-helper'
+import { useServiceList } from '@/composable/use-service-data'
 import ContentsGrid from '~/components/molecules/contents-grid.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
-import serviceHandler from '@/composable/service-handler'
 
 export default defineComponent({
   name: 'Type1Services',
@@ -41,14 +41,15 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { services, loadServices } = serviceHandler()
+    const { serviceList, loading, loadServiceList } = useServiceList()
 
     onMounted(() => {
-      loadServices()
+      loadServiceList()
     })
 
     return {
-      services,
+      serviceList,
+      loading,
       editType: contentDataTypes.service
     }
   }

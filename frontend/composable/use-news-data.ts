@@ -1,4 +1,4 @@
-import { computed, reactive, onUnmounted } from '@nuxtjs/composition-api'
+import { reactive, toRefs, onUnmounted } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
 import { ComparerFunction, LoaderFunction, SaverFunction } from '@/types/use-content-handler'
 import { UpdateSyncronizer, ContentHandler, ContentListHandler } from '@/composable/use-content-handler'
@@ -25,8 +25,7 @@ export const useNewsData = (userId: number = 0) => {
     new ContentHandler<NewsType>(updateSynchronizer, compaerer, initNews())
   )
 
-  const news = computed(() => newsHandler.contentData)
-  const loading = computed(() => newsHandler.isLoading)
+  const { contentData: news, isLoading: loading } = toRefs(newsHandler)
 
   const loadNews = async (newsId: number) => {
     const loader: LoaderFunction<NewsType> = () => fetchNews(userId, newsId)
@@ -58,8 +57,7 @@ export const useNewsData = (userId: number = 0) => {
     new ContentListHandler<NewsType>(updateSynchronizer, compaerer, [])
   )
 
-  const newsList = computed(() => newsListHandler.contentListData)
-  const loading = computed(() => newsListHandler.isLoading)
+  const { contentListData: newsList, isLoading: loading } = toRefs(newsListHandler)
 
   const loadNewsList = async (limit: number = 20) => {
     const loader: LoaderFunction<NewsType[]> = () => fetchNewsList(userId, limit)
@@ -193,7 +191,7 @@ const modifyNews = (updateNews: NewsType, imageFile: File | null): Promise<NewsT
   return new Promise((resolve) => setTimeout(() => {
     const news: NewsType = { ...updateNews }
     if (imageFile) {
-      Object.assign(news, URL.createObjectURL(imageFile))
+      Object.assign(news, { image: URL.createObjectURL(imageFile) })
     }
     resolve(news)
   }, 1000))

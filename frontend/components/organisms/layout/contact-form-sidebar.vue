@@ -27,7 +27,7 @@
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { ContactFormType } from '@/types/contact-form'
 import { ToastParams, addToast } from '@/components/molecules/make-toast.vue'
-import contactHandler from '@/composable/contact-handler'
+import { useContactData } from '~/composable/use-contact-data'
 import ContactForm from '@/components/molecules/contact-form.vue'
 import ContactFormResult from '@/components/molecules/contact-form-result.vue'
 
@@ -40,14 +40,14 @@ export default defineComponent({
     ContactFormResult,
   },
   setup() {
-    const { contact, loadContact } = contactHandler()
+    const { contact, loadContact } = useContactData()
 
     onMounted(() => {
-      loadContact()
+      loadContact(1)
     })
 
     // TODO: need sanitize!
-    const contactBody = computed(() => contact.body || '')
+    const contactBody = computed(() => contact.value.body || '')
 
     const sendContactMail = (data: ContactFormType) => {
       console.log(data)
