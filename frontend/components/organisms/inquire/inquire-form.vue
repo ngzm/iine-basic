@@ -1,63 +1,63 @@
 <template>
-  <div class="contact-form">
+  <div class="inquire-form">
     <b-form @submit.stop.prevent="onSubmit">
       <p>
-        <label for="contact-form-input-name">お名前</label>
+        <label for="inquire-form-input-name">お名前</label>
         <b-form-input
-          id="contact-form-input-name"
-          v-model="contactForm.name.$value"
+          id="inquire-form-input-name"
+          v-model="inquireForm.name.$value"
           :state="validStateName"
         />
         <b-form-invalid-feedback :state="validStateName">
-          <span v-for="(err, inx) in contactForm.name.$errors" :key="inx">
+          <span v-for="(err, inx) in inquireForm.name.$errors" :key="inx">
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
       </p>
       <p>
-        <label for="contact-form-input-email">メールアドレス</label>
+        <label for="inquire-form-input-email">メールアドレス</label>
         <b-form-input
-          id="contact-form-input-email"
-          v-model="contactForm.email.$value"
+          id="inquire-form-input-email"
+          v-model="inquireForm.email.$value"
           type="email"
           :state="validStateEmail"
         />
         <b-form-invalid-feedback :state="validStateEmail">
-          <span v-for="(err, inx) in contactForm.email.$errors" :key="inx">
+          <span v-for="(err, inx) in inquireForm.email.$errors" :key="inx">
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
       </p>
       <p>
-        <label for="contact-form-input-phone">電話番号 (任意)</label>
+        <label for="inquire-form-input-phone">電話番号 (任意)</label>
         <b-form-input
-          id="contact-form-input-phone"
-          v-model="contactForm.phone.$value"
+          id="inquire-form-input-phone"
+          v-model="inquireForm.phone.$value"
           type="tel"
           :state="validStatePhone"
         />
         <b-form-invalid-feedback :state="validStatePhone">
-          <span v-for="(err, inx) in contactForm.phone.$errors" :key="inx">
+          <span v-for="(err, inx) in inquireForm.phone.$errors" :key="inx">
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
       </p>
       <p>
-        <label for="contact-form-input-inquiry">お問い合わせ内容</label>
+        <label for="inquire-form-input-inquiry">お問い合わせ内容</label>
         <b-form-textarea
-          id="contact-form-input-inquiry"
-          v-model="contactForm.inquiry.$value"
+          id="inquire-form-input-inquiry"
+          v-model="inquireForm.inquiry.$value"
           rows="6"
           max-rows="12"
           :state="validStateInquiry"
         />
         <b-form-invalid-feedback :state="validStateInquiry">
-          <span v-for="(err, inx) in contactForm.inquiry.$errors" :key="inx">
+          <span v-for="(err, inx) in inquireForm.inquiry.$errors" :key="inx">
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
       </p>
-      <p class="contact-form__action">
+      <p class="inquire-form__action">
         <b-button @click="onReset()">
           リセット
         </b-button>
@@ -72,13 +72,19 @@
 <script lang='ts'>
 import { defineComponent, ref, computed  } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
-import { ContactFormType } from '@/types/contact-form'
 import { required, emailValidator, phoneValidator } from '@/composable/form-validators'
 
+export interface InquireFormType {
+  name: string
+  email: string
+  phone?: string
+  inquiry: string
+}
+
 export default defineComponent({
-  name: 'ContactForm',
+  name: 'InquireForm',
   setup(_props, { emit }) {
-    const contactForm = useValidation({
+    const inquireForm = useValidation({
       name: {
         $value: ref(''),
         required: {
@@ -113,31 +119,31 @@ export default defineComponent({
       },
     })
 
-    const validStateName = computed(() => !contactForm.name.$dirty ? null : !contactForm.name.$anyInvalid)
-    const validStateEmail = computed(() => !contactForm.email.$dirty ? null : !contactForm.email.$anyInvalid)
-    const validStatePhone = computed(() => !contactForm.phone.$dirty ? null : !contactForm.phone.$anyInvalid)
-    const validStateInquiry = computed(() => !contactForm.inquiry.$dirty ? null : !contactForm.inquiry.$anyInvalid)
+    const validStateName = computed(() => !inquireForm.name.$dirty ? null : !inquireForm.name.$anyInvalid)
+    const validStateEmail = computed(() => !inquireForm.email.$dirty ? null : !inquireForm.email.$anyInvalid)
+    const validStatePhone = computed(() => !inquireForm.phone.$dirty ? null : !inquireForm.phone.$anyInvalid)
+    const validStateInquiry = computed(() => !inquireForm.inquiry.$dirty ? null : !inquireForm.inquiry.$anyInvalid)
 
     const onReset = () => {
       // $value は getter - setter らしい
-      contactForm.name.$value = '';
-      contactForm.email.$value = '';
-      contactForm.phone.$value = '';
-      contactForm.inquiry.$value = '';
-      contactForm.$reset()
+      inquireForm.name.$value = '';
+      inquireForm.email.$value = '';
+      inquireForm.phone.$value = '';
+      inquireForm.inquiry.$value = '';
+      inquireForm.$reset()
     }
 
     const onSubmit = () => {
-      contactForm.$touch()
-      if (contactForm.$anyInvalid) return
+      inquireForm.$touch()
+      if (inquireForm.$anyInvalid) return
 
-      const contactData: ContactFormType = contactForm.toObject();
-      emit('submit', contactData)
+      const inquireData: InquireFormType = inquireForm.toObject();
+      emit('submit', inquireData)
       onReset()
     }
 
     return {
-      contactForm,
+      inquireForm,
       validStateName,
       validStateEmail,
       validStatePhone,
@@ -150,7 +156,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.contact-form {
+.inquire-form {
   p {
     margin-bottom: 1rem;
   }

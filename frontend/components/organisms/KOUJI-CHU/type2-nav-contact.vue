@@ -12,7 +12,7 @@
           <b-button
             pill
             variant="warning"
-            @click="contactFormModal = !contactFormModal"
+            @click="inquireFormModal = !inquireFormModal"
           >
             <b-icon icon="pencil" />
             メールで問い合せる
@@ -21,13 +21,13 @@
       </div>
 
       <b-modal
-        v-model="contactFormModal"
+        v-model="inquireFormModal"
         title="お問い合せフォーム"
         size="lg"
         centered
         hide-footer
       >
-        <contact-form @close="contactFormModal = false" />
+        <inquire-form @close="inquireFormModal = false" />
       </b-modal>
     </template>
   </contents-card-info>
@@ -37,14 +37,13 @@
 import { defineComponent, PropType, ref, computed } from '@nuxtjs/composition-api'
 import { ContactType } from '@/types/content-type'
 import ContentsCardInfo from '~/components/molecules/KOUJI-CHU/contents-card-info.vue'
-import ContactForm from '@/components/molecules/contact-form.vue'
+import InquireForm from '@/components/organisms/inquire/inquire-form.vue'
 
 export default defineComponent({
   name: 'Type2NavContact',
   components: {
-    ContactForm,
+    InquireForm,
     ContentsCardInfo,
-    // SectionEyeCatcher 
   },
   props: {
     contact: {
@@ -53,13 +52,13 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const contactFormModal = ref(false)
+    const inquireFormModal = ref(false)
 
     // TODO: need sanitize!
     const contactBody = computed(() => props.contact.body)
 
     return {
-      contactFormModal,
+      inquireFormModal,
       contactBody
     }
   }

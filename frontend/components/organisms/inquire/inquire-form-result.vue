@@ -1,11 +1,11 @@
 <template>
-  <div class="contact-form-result">
+  <div class="inquire-form-result">
     <h5>お問合せありがとうございます</h5>
     <p>
       お問い合せを受け付けました。<br />
       追ってメールにてご連絡いたします。
     </p>
-    <div class="contact-form-result__action">
+    <div class="inquire-form-result__action">
       <b-button @click="$emit('ok')">
         入力フォームに戻る
       </b-button>
@@ -17,12 +17,12 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'ContactFormResult',
+  name: 'InquireFormResult',
 })
 </script>
 
 <style lang="scss" scoped>
-.contact-form-result {
+.inquire-form-result {
   h5 {
     font-size: normal;
     font-weight: bold;

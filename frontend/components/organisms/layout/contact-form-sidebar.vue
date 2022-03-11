@@ -9,15 +9,15 @@
     <div class="px-3 py-2">
       <div
         :style="{ 'background-image': `url(${contact.image})` }"
-        class="contact-form-sidebar__eyecatch"
+        class="inquire-form-sidebar__eyecatch"
       />
-      <div class="contact-form-sidebar__address">
+      <div class="inquire-form-sidebar__address">
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="contactBody" />
       </div>
-      <div class="contact-form-sidebar__form">
-        <contact-form v-if="isFormMode" @submit="sendContactMail" />
-        <contact-form-result v-else @ok="setFormMode" />
+      <div class="inquire-form-sidebar__form">
+        <inquire-form v-if="isFormMode" @submit="sendInquirMail" />
+        <inquire-form-result v-else @ok="setFormMode" />
       </div>
     </div>
   </b-sidebar>
@@ -25,19 +25,18 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
-import { ContactFormType } from '@/types/contact-form'
 import { ToastParams, addToast } from '@/components/molecules/make-toast.vue'
-import { useContactData } from '~/composable/use-contact-data'
-import ContactForm from '@/components/molecules/contact-form.vue'
-import ContactFormResult from '@/components/molecules/contact-form-result.vue'
+import { useContactData } from '@/composable/use-contact-data'
+import InquireForm, { InquireFormType } from '@/components/organisms/inquire/inquire-form.vue'
+import InquireFormResult from '@/components/organisms/inquire/inquire-form-result.vue'
 
-export const sidebarIdName = 'contact-form-sidebar'
+export const sidebarIdName = 'inquire-form-sidebar'
 
 export default defineComponent({
   name: 'ContactSidebar',
   components: {
-    ContactForm,
-    ContactFormResult,
+    InquireForm,
+    InquireFormResult,
   },
   setup() {
     const { contact, loadContact } = useContactData()
@@ -49,7 +48,7 @@ export default defineComponent({
     // TODO: need sanitize!
     const contactBody = computed(() => contact.value.body || '')
 
-    const sendContactMail = (data: ContactFormType) => {
+    const sendInquirMail = (data: InquireFormType) => {
       console.log(data)
 
       setResultMode()
@@ -66,7 +65,7 @@ export default defineComponent({
       sidebarIdName,
       contact,
       contactBody,
-      sendContactMail,
+      sendInquirMail,
       isFormMode,
       setFormMode,
       setResultMode 
@@ -86,7 +85,7 @@ const formMode = () => {
 </script>
 
 <style lang="scss" scoped>
-.contact-form-sidebar {
+.inquire-form-sidebar {
   &__eyecatch {
     width: 100%;
     height: 10rem;
