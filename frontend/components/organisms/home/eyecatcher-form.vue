@@ -98,7 +98,7 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      await loadEyecatch()
+      await loadEyecatch(1)
       eyecatcherForm.id.$value = eyecatch.value.id || 0
       eyecatcherForm.title.$value = eyecatch.value.title || ''
       eyecatcherForm.subtitle.$value = eyecatch.value.subtitle || ''

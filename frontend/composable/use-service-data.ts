@@ -1,44 +1,46 @@
-import { reactive, toRefs, onUnmounted } from '@nuxtjs/composition-api'
+import { reactive, ref, computed, watch } from '@nuxtjs/composition-api'
 import { ServiceType } from '@/types/content-type'
-import { ComparerFunction, LoaderFunction, SaverFunction } from '@/types/use-content-handler'
-import { UpdateSyncronizer, ContentHandler, ContentListHandler } from '@/composable/content-handler'
 import { initContent } from '@/composable/content-helper'
+import { fetchService, fetchServiceList, saveService } from '@/utils/data-service'
 
-// データ更新時に既にロードされた同じデータを更新するシンクロナイザー
-const updateSynchronizer = new UpdateSyncronizer<ServiceType>()
+const initService = () => ({ ...initContent() })
 
-// データ比較メソッド
-const compaerer: ComparerFunction<ServiceType> = (c1, c2) => (c1.id === c2.id)
-
-// Serviceデータ初期化
-const initService = (): ServiceType => ({ ...initContent() })
+const synchronizer = ref(false)
+const syncronizeData = ref({} as ServiceType)
 
 /**
- * Use Service Handler
+ * Use Service Data
  */
 export const useServiceData = (userId: number = 0) => {
-  const serviceHandler = reactive<ContentHandler<ServiceType>>(
-    new ContentHandler<ServiceType>(updateSynchronizer, compaerer, initService())
-  )
-
-  const { contentData: service, isLoading: loading } = toRefs(serviceHandler)
+  const dataReactive = reactive<ServiceType>(initService())
+  const loading = ref(false)
+  const dataRef= computed(() => dataReactive)
 
   const loadService = async (serviceId: number) => {
-    const loader: LoaderFunction<ServiceType> = () => fetchService(userId, serviceId)
-    await serviceHandler.loadContent(loader)
+    loading.value = true
+    const fetchedData = await fetchService(userId, serviceId)
+    Object.assign(dataReactive, fetchedData)
+    loading.value = false
   }
 
-  const updateService = async (service: ServiceType, imageFile: File | null) => {
-    const saver: SaverFunction<ServiceType> = () => modifyService(service, imageFile)
-    await serviceHandler.updateContent(saver)
+  const updateService = async (updateData: ServiceType, imageFile: File | null) => {
+    loading.value = true
+    const savedData = await saveService(updateData, imageFile)
+
+    // 同期フラグを変更
+    syncronizeData.value = savedData
+    synchronizer.value = !synchronizer.value
+    loading.value = false
   }
 
-  onUnmounted(() => {
-    serviceHandler.destructor()
+  watch(synchronizer, () => {
+    if (syncronizeData.value && syncronizeData.value.id === dataReactive.id) {
+      Object.assign(dataReactive, syncronizeData.value)
+    }
   })
 
   return {
-    service,
+    service: dataRef,
     loading,
     loadService,
     updateService
@@ -46,111 +48,29 @@ export const useServiceData = (userId: number = 0) => {
 }
 
 /**
- * Use ServiceList Handler
+ * Use Service List Data
  */
- export const useServiceList = (userId: number = 0) => {
-  const serviceListHandler = reactive<ContentListHandler<ServiceType>>(
-    new ContentListHandler<ServiceType>(updateSynchronizer, compaerer, [])
-  )
+export const useServiceList = (userId: number = 0) => {
+  const listRef = ref<ServiceType[]>([] as ServiceType[])
+  const loading = ref(false)
 
-  const { contentListData: serviceList, isLoading: loading } = toRefs(serviceListHandler)
-
-  const loadServiceList = async (limit: number = 20) => {
-    const loader: LoaderFunction<ServiceType[]> = () => fetchServiceList(userId, limit)
-    await serviceListHandler.searchContentList(loader)
+  const loadServiceList = async (limit: number = 10) => {
+    loading.value = true
+    const fetchedList = await fetchServiceList(userId, limit)
+    listRef.value = fetchedList
+    loading.value = false
   }
 
-  const loadMoreServiceList = async (limit: number = 20) => {
-    const loader: LoaderFunction<ServiceType[]> = () => fetchServiceList(userId, limit)
-    await serviceListHandler.searchContentList(loader)
-  }
-
-  onUnmounted(() => {
-    serviceListHandler.destructor()
+  watch(synchronizer, () => {
+    if (syncronizeData.value && syncronizeData.value.id) {
+      const target = listRef.value.find((l) => l.id === syncronizeData.value.id)
+      Object.assign(target, syncronizeData.value)
+    }
   })
 
   return {
-    serviceList,
+    serviceList: listRef,
     loading,
     loadServiceList,
-    loadMoreServiceList
   }
-}
-
-/**
- * テスト用データと操作メソッド
- * 
- */
-
-const fetchList = (): ServiceType[] => ([
-  {
-    id: 1,
-    title: 'AWSクラウド導入',
-    image: 'https://longlivenet.com/static/images/s-service-aws.jpg',
-    body: '代表ナガズミはアマゾンウェブサービスジャパン (AWS) のエンジニアとしての経歴がございます。そのキャリアによる技術知見を元に適切なサポートをご提供いたします。'
-  },
-  {
-    id: 2,
-    title: 'ソフトウェア開発',
-    image: 'https://longlivenet.com/static/images/s-service-system.jpg',
-    body: 'お客様のWebアプリケーションなど各種ソフトウェア開発を行います。上流工程から下流工程まで、また、PM や PMO 業務などの開発管理につきましてもお気軽にご相談ください。'
-  },
-  {
-    id: 3,
-    title: '技術顧問',
-    image: 'https://longlivenet.com/static/images/s-service-advisor.jpg',
-    body: '特に AWS を前提とするシステムアーキテクチャについて、または開発や組織のマネージメント強化、あるいは技術者育成や環境整備といった内容についてご相談いただけます。'
-  },
-  {
-    id: 4,
-    title: 'ホームページ作成',
-    image: 'https://longlivenet.com/static/images/s-service-hp.jpg',
-    body: 'PC からスマホまでレスポンシブなデザインのホームページを作成いたします。またチャットなどインタラクティブな Web サイトの開発についてもぜひご相談ください。'
-  },
-  {
-    id: 5,
-    title: 'ITエンジニア育成',
-    image: 'https://longlivenet.com/static/images/s-service-education.jpg',
-    body: 'インドや中国出身のグローバルで活躍するエンジニアが増えていますが、我が国出身のエンジニアはまだまだ少ないように思えます。グローバルに活躍できるエンジニアの育成は、ロングリブネットにおける今後の大きなビジョンです。'
-  },
-  {
-    id: 6,
-    title: '各種IT相談',
-    image: 'https://longlivenet.com/static/images/s-service-consul.jpg',
-    body: '組織におけるビジネスシステムを設計しているが現構成で大丈夫か不安、新たなシステム責任者となったが協力会社から提案された内容が正しいのか判断つかない、このようなご相談をプロ目線にてお受けします。1時間単位でご相談いただけます。'
-  },
-])
-
-const fetchData = (id: number = 1): ServiceType|undefined => {
-  const list = fetchList()
-  return list.find((i) => i.id === id)
-}
-
-const fetchServiceList = (userId: number, limit: number): Promise<ServiceType[]> => {
-  console.log(userId)
-  console.log(limit)
-
-  return new Promise((resolve) => setTimeout(() => {
-    const serviceList: ServiceType[] = fetchList()
-    resolve(serviceList)
-  }, 1000)) 
-}
-
-const fetchService = (userId: number, serviceId: number): Promise<ServiceType> => {
-  console.log(userId, serviceId)
-
-  return new Promise((resolve) => setTimeout(() => {
-    const service: ServiceType = fetchData(serviceId) || initService()
-    resolve(service)
-  }, 1000)) 
-}
-
-const modifyService = (updateService: ServiceType, imageFile: File | null): Promise<ServiceType> => {
-  return new Promise((resolve) => setTimeout(() => {
-    const service: ServiceType = { ...updateService }
-    if (imageFile) {
-      Object.assign(service, { image: URL.createObjectURL(imageFile) })
-    }
-    resolve(service)
-  }, 1000))
 }

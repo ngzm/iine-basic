@@ -15,7 +15,7 @@
 
       <div class="type1-newses__action">
         <slot name="action">
-          <b-link @click="loadMoreNewsList">load more news</b-link>
+          <b-link @click="loadMoreNewsList(5)">load more news</b-link>
         </slot>
       </div>
     </contents-card-body>
@@ -25,7 +25,7 @@
 <script lang='ts'>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { contentDataTypes } from '@/composable/content-helper'
-import { useNewsList } from '@/composable/use-news-data'
+import { useStoreNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import NewsList from '@/components/molecules/news-list.vue'
@@ -40,10 +40,10 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { newsList, loading, loadNewsList, loadMoreNewsList } = useNewsList()
+    const { newsList, loading, loadNewsList, loadMoreNewsList } = useStoreNewsList()
 
     onMounted(() => {
-      loadNewsList()
+      loadNewsList(5)
     })
 
     return {

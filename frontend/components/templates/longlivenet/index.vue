@@ -71,13 +71,17 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
 
+    const onScroll = (hash: string) => {
+      nextTick(() => {
+        VueScrollTo.scrollTo(hash, 500, { offset: -180 })
+      })
+    }
+
     onMounted(() => {
       if (route.value.hash) {
         const hash = route.value.hash
         router.replace({ name: 'index', hash: ''})
-        nextTick(() => {
-          VueScrollTo.scrollTo(hash, 500, { offset: -180 })
-        })
+        setTimeout(() => { onScroll(hash) }, 1200)
       }
     })
   }
