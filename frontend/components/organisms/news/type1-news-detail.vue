@@ -1,5 +1,5 @@
 <template>
-  <contents-card>
+  <contents-card :loading="loading">
     <template #default>
       <section-eyecatcher :background-image="news.image || ''" />
       {{ loading }}

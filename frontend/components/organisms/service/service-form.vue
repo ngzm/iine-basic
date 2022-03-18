@@ -1,56 +1,58 @@
 <template>
-  <div class="service-form"> 
-    <p class="service-form__input">
-      <label for="service-form-input-image">タイトル背景画像</label>
-      <file-input
-        id="service-form-input-image"
-        :image-url="serviceForm.image.$value"
-        :state="validStateImage"
-        @change-image-file="onChangeImageFile"
-      />
-      <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in serviceForm.image.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="service-form__input">
-      <label for="service-form-input-title">タイトル</label>
-      <b-form-input
-        id="service-form-input-title"
-        v-model="serviceForm.title.$value"
-        :state="validStateTitle"
-      />
-      <b-form-invalid-feedback :state="validStateTitle">
-        <span v-for="(err, inx) in serviceForm.title.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="service-form__input">
-      <label for="service-form-input-body">本文</label>
-      <b-form-textarea
-        id="service-form-input-body"
-        v-model="serviceForm.body.$value"
-        rows="6"
-        max-rows="18"
-        :state="validStateBody"
-      />
-      <b-form-invalid-feedback :state="validStateBody">
-        <span v-for="(err, inx) in serviceForm.body.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="service-form__action">
-      <b-button @click="onCancel">
-        キャンセル
-      </b-button>
-      <b-button variant="primary" @click="onUpdate">
-        更新する
-      </b-button>
-    </p>
-  </div>
+  <b-overlay :show="loading">
+    <div class="service-form"> 
+      <p class="service-form__input">
+        <label for="service-form-input-image">タイトル背景画像</label>
+        <file-input
+          id="service-form-input-image"
+          :image-url="serviceForm.image.$value"
+          :state="validStateImage"
+          @change-image-file="onChangeImageFile"
+        />
+        <b-form-invalid-feedback :state="validStateImage">
+          <span v-for="(err, inx) in serviceForm.image.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="service-form__input">
+        <label for="service-form-input-title">タイトル</label>
+        <b-form-input
+          id="service-form-input-title"
+          v-model="serviceForm.title.$value"
+          :state="validStateTitle"
+        />
+        <b-form-invalid-feedback :state="validStateTitle">
+          <span v-for="(err, inx) in serviceForm.title.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="service-form__input">
+        <label for="service-form-input-body">本文</label>
+        <b-form-textarea
+          id="service-form-input-body"
+          v-model="serviceForm.body.$value"
+          rows="6"
+          max-rows="18"
+          :state="validStateBody"
+        />
+        <b-form-invalid-feedback :state="validStateBody">
+          <span v-for="(err, inx) in serviceForm.body.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="service-form__action">
+        <b-button @click="onCancel">
+          キャンセル
+        </b-button>
+        <b-button variant="primary" @click="onUpdate">
+          更新する
+        </b-button>
+      </p>
+    </div>
+  </b-overlay>
 </template>
 
 <script lang="ts">
@@ -147,7 +149,6 @@ export default defineComponent({
     }
 
     return {
-      loading,
       serviceForm,
       validStateTitle,
       validStateImage,
@@ -155,6 +156,7 @@ export default defineComponent({
       onChangeImageFile,
       onUpdate,
       onCancel,
+      loading,
     }
   },
 })

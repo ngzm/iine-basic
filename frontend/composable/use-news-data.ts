@@ -45,7 +45,7 @@ export const useNewsData = (userId: number = 0) => {
   }
 
   watch(syncUpdated, () => {
-    if (syncronizer.shouldUpdate(dataReactive)) {
+    if (syncronizer.shouldUpdate(dataReactive as NewsType)) {
       Object.assign(dataReactive, syncData.value)
     }
   })

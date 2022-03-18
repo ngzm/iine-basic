@@ -306,7 +306,7 @@ export const fetchServiceList = (userId, limit) => {
   return new Promise((resolve) => setTimeout(() => {
     const serviceList = ServicefetchList()
     resolve(serviceList)
-  }, 1000)) 
+  }, 4000)) 
 }
 
 export const fetchService = (userId, serviceId) => {

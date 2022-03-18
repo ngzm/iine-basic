@@ -1,5 +1,9 @@
 <template>
-  <contents-grid :contents-list="serviceList" class="type2-services">
+  <contents-grid
+    :contents-list="serviceList"
+    :loading="loading"
+    class="type2-services"
+  >
     <template #default="{ content }">
       <h5 class="type2-services__content-title">
         {{ content.title }}

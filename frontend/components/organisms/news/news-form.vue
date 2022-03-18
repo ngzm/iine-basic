@@ -1,83 +1,85 @@
 <template>
-  <div class="news-form"> 
-    <p class="news-form__input">
-      <label for="news-form-input-image">タイトル背景画像</label>
-      <file-input
-        id="news-form-input-image"
-        :image-url="newsForm.image.$value"
-        :state="validStateImage"
-        @change-image-file="onChangeImageFile"
-      />
-      <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in newsForm.image.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="news-form__input">
-      <label for="news-form-input-title">タイトル</label>
-      <b-form-input
-        id="news-form-input-title"
-        v-model="newsForm.title.$value"
-        :state="validStateTitle"
-      />
-      <b-form-invalid-feedback :state="validStateTitle">
-        <span v-for="(err, inx) in newsForm.title.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="news-form__input">
-      <label for="news-form-input-category">ニュースカテゴリ</label>
-      <b-form-select
-        id="news-form-input-category"
-        v-model="newsForm.category.$value"
-        :options="categoryOptions"
-        :state="validStateCategory"
-       />
-      <b-form-invalid-feedback :state="validStateCategory">
-        <span v-for="(err, inx) in newsForm.category.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="news-form__input">
-      <label for="news-form-input-publish-on">ニュース公開日</label>
-      <b-form-datepicker
-        id="news-form-input-publish-on"
-        placeholder="公開日選択"
-        :state="validStatePublishOn"
-      />
-      <b-form-invalid-feedback :state="validStatePublishOn">
-        <span v-for="(err, inx) in newsForm.publishOn.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="news-form__input">
-      <label for="news-form-input-body">本文</label>
-      <b-form-textarea
-        id="news-form-input-body"
-        v-model="newsForm.body.$value"
-        rows="6"
-        max-rows="18"
-        :state="validStateBody"
-      />
-      <b-form-invalid-feedback :state="validStateBody">
-        <span v-for="(err, inx) in newsForm.body.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="news-form__action">
-      <b-button @click="onCancel">
-        キャンセル
-      </b-button>
-      <b-button variant="primary" @click="onUpdate">
-        更新する
-      </b-button>
-    </p>
-  </div>
+  <b-overlay :show="loading">
+    <div class="news-form"> 
+      <p class="news-form__input">
+        <label for="news-form-input-image">タイトル背景画像</label>
+        <file-input
+          id="news-form-input-image"
+          :image-url="newsForm.image.$value"
+          :state="validStateImage"
+          @change-image-file="onChangeImageFile"
+        />
+        <b-form-invalid-feedback :state="validStateImage">
+          <span v-for="(err, inx) in newsForm.image.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="news-form__input">
+        <label for="news-form-input-title">タイトル</label>
+        <b-form-input
+          id="news-form-input-title"
+          v-model="newsForm.title.$value"
+          :state="validStateTitle"
+        />
+        <b-form-invalid-feedback :state="validStateTitle">
+          <span v-for="(err, inx) in newsForm.title.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="news-form__input">
+        <label for="news-form-input-category">ニュースカテゴリ</label>
+        <b-form-select
+          id="news-form-input-category"
+          v-model="newsForm.category.$value"
+          :options="categoryOptions"
+          :state="validStateCategory"
+        />
+        <b-form-invalid-feedback :state="validStateCategory">
+          <span v-for="(err, inx) in newsForm.category.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="news-form__input">
+        <label for="news-form-input-publish-on">ニュース公開日</label>
+        <b-form-datepicker
+          id="news-form-input-publish-on"
+          placeholder="公開日選択"
+          :state="validStatePublishOn"
+        />
+        <b-form-invalid-feedback :state="validStatePublishOn">
+          <span v-for="(err, inx) in newsForm.publishOn.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="news-form__input">
+        <label for="news-form-input-body">本文</label>
+        <b-form-textarea
+          id="news-form-input-body"
+          v-model="newsForm.body.$value"
+          rows="6"
+          max-rows="18"
+          :state="validStateBody"
+        />
+        <b-form-invalid-feedback :state="validStateBody">
+          <span v-for="(err, inx) in newsForm.body.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="news-form__action">
+        <b-button @click="onCancel">
+          キャンセル
+        </b-button>
+        <b-button variant="primary" @click="onUpdate">
+          更新する
+        </b-button>
+      </p>
+    </div>
+  </b-overlay>
 </template>
 
 <script lang="ts">
@@ -97,7 +99,7 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const { news, loading, loadNews, updateNews } = useNewsData(1)
+    const { news, loadNews, updateNews, loading } = useNewsData(1)
     const newsForm = useValidation({
       id: {
         $value: ref(0),
@@ -202,7 +204,6 @@ export default defineComponent({
     }
 
     return {
-      loading,
       newsForm,
       validStateTitle,
       validStateCategory,
@@ -212,7 +213,8 @@ export default defineComponent({
       onChangeImageFile,
       onUpdate,
       onCancel,
-      categoryOptions
+      categoryOptions,
+      loading,
     }
   },
 })

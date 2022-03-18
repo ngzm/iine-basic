@@ -1,14 +1,16 @@
 <template>
-  <top-eyecatcher :background-image="eyecatch.image" class="type1-top-eyecatcher">
-    <template #default>
-      <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
-      <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
-    </template>
+  <b-overlay :show="loading">
+    <top-eyecatcher :background-image="eyecatch.image" class="type1-top-eyecatcher">
+      <template #default>
+        <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
+        <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
+      </template>
 
-    <template #editActivator>
-      <content-edit-activator :type="editType" />
-    </template>
-  </top-eyecatcher>
+      <template #editActivator>
+        <content-edit-activator :type="editType" />
+      </template>
+    </top-eyecatcher>
+  </b-overlay>
 </template>
 
 <script lang="ts">

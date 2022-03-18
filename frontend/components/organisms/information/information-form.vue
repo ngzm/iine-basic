@@ -1,69 +1,71 @@
 <template>
-  <div class="information-form"> 
-    <p class="information-form__input">
-      <label for="information-form-input-image">タイトル背景画像</label>
-      <file-input
-        id="information-form-input-image"
-        :image-url="informationForm.image.$value"
-        :state="validStateImage"
-        @change-image-file="onChangeImageFile"
-      />
-      <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in informationForm.image.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="information-form__input">
-      <label for="information-form-input-title">タイトル</label>
-      <b-form-input
-        id="information-form-input-title"
-        v-model="informationForm.title.$value"
-        :state="validStateTitle"
-      />
-      <b-form-invalid-feedback :state="validStateTitle">
-        <span v-for="(err, inx) in informationForm.title.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="information-form__input">
-      <label for="information-form-input-subtitle">サブタイトル</label>
-      <b-form-input
-        id="information-form-input-subtitle"
-        v-model="informationForm.subtitle.$value"
-        :state="validStateSubtitle"
-      />
-      <b-form-invalid-feedback :state="validStateSubtitle">
-        <span v-for="(err, inx) in informationForm.subtitle.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="information-form__input">
-      <label for="information-form-input-body">本文</label>
-      <b-form-textarea
-        id="information-form-input-body"
-        v-model="informationForm.body.$value"
-        rows="6"
-        max-rows="18"
-        :state="validStateBody"
-      />
-      <b-form-invalid-feedback :state="validStateBody">
-        <span v-for="(err, inx) in informationForm.body.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="information-form__action">
-      <b-button @click="onCancel">
-        キャンセル
-      </b-button>
-      <b-button variant="primary" @click="onUpdate">
-        更新する
-      </b-button>
-    </p>
-  </div>
+  <b-overlay :show="loading">
+    <div class="information-form"> 
+      <p class="information-form__input">
+        <label for="information-form-input-image">タイトル背景画像</label>
+        <file-input
+          id="information-form-input-image"
+          :image-url="informationForm.image.$value"
+          :state="validStateImage"
+          @change-image-file="onChangeImageFile"
+        />
+        <b-form-invalid-feedback :state="validStateImage">
+          <span v-for="(err, inx) in informationForm.image.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="information-form__input">
+        <label for="information-form-input-title">タイトル</label>
+        <b-form-input
+          id="information-form-input-title"
+          v-model="informationForm.title.$value"
+          :state="validStateTitle"
+        />
+        <b-form-invalid-feedback :state="validStateTitle">
+          <span v-for="(err, inx) in informationForm.title.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="information-form__input">
+        <label for="information-form-input-subtitle">サブタイトル</label>
+        <b-form-input
+          id="information-form-input-subtitle"
+          v-model="informationForm.subtitle.$value"
+          :state="validStateSubtitle"
+        />
+        <b-form-invalid-feedback :state="validStateSubtitle">
+          <span v-for="(err, inx) in informationForm.subtitle.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="information-form__input">
+        <label for="information-form-input-body">本文</label>
+        <b-form-textarea
+          id="information-form-input-body"
+          v-model="informationForm.body.$value"
+          rows="6"
+          max-rows="18"
+          :state="validStateBody"
+        />
+        <b-form-invalid-feedback :state="validStateBody">
+          <span v-for="(err, inx) in informationForm.body.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="information-form__action">
+        <b-button @click="onCancel">
+          キャンセル
+        </b-button>
+        <b-button variant="primary" @click="onUpdate">
+          更新する
+        </b-button>
+      </p>
+    </div>
+  </b-overlay>
 </template>
 
 <script lang="ts">
@@ -78,7 +80,7 @@ export default defineComponent({
   name: 'InformationForm',
   components: { FileInput },
   setup(_props, { emit }) {
-    const { information, loadInformation, updateInformation } = useInformationData()
+    const { information, loadInformation, updateInformation, loading } = useInformationData()
     const informationForm = useValidation({
       id: {
         $value: ref(0),
@@ -172,7 +174,8 @@ export default defineComponent({
       validStateBody,
       onChangeImageFile,
       onUpdate,
-      onCancel
+      onCancel,
+      loading
     }
   },
 })

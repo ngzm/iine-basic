@@ -1,69 +1,71 @@
 <template>
-  <div class="contact-form"> 
-    <p class="contact-form__input">
-      <label for="contact-form-input-image">タイトル背景画像</label>
-      <file-input
-        id="contact-form-input-image"
-        :image-url="contactForm.image.$value"
-        :state="validStateImage"
-        @change-image-file="onChangeImageFile"
-      />
-      <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in contactForm.image.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="contact-form__input">
-      <label for="contact-form-input-title">タイトル</label>
-      <b-form-input
-        id="contact-form-input-title"
-        v-model="contactForm.title.$value"
-        :state="validStateTitle"
-      />
-      <b-form-invalid-feedback :state="validStateTitle">
-        <span v-for="(err, inx) in contactForm.title.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="contact-form__input">
-      <label for="contact-form-input-subtitle">サブタイトル</label>
-      <b-form-input
-        id="contact-form-input-subtitle"
-        v-model="contactForm.subtitle.$value"
-        :state="validStateSubtitle"
-      />
-      <b-form-invalid-feedback :state="validStateSubtitle">
-        <span v-for="(err, inx) in contactForm.subtitle.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="contact-form__input">
-      <label for="contact-form-input-body">本文</label>
-      <b-form-textarea
-        id="contact-form-input-body"
-        v-model="contactForm.body.$value"
-        rows="6"
-        max-rows="18"
-        :state="validStateBody"
-      />
-      <b-form-invalid-feedback :state="validStateBody">
-        <span v-for="(err, inx) in contactForm.body.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="contact-form__action">
-      <b-button @click="onCancel">
-        キャンセル
-      </b-button>
-      <b-button variant="primary" @click="onUpdate">
-        更新する
-      </b-button>
-    </p>
-  </div>
+  <b-overlay :show="loading">
+    <div class="contact-form"> 
+      <p class="contact-form__input">
+        <label for="contact-form-input-image">タイトル背景画像</label>
+        <file-input
+          id="contact-form-input-image"
+          :image-url="contactForm.image.$value"
+          :state="validStateImage"
+          @change-image-file="onChangeImageFile"
+        />
+        <b-form-invalid-feedback :state="validStateImage">
+          <span v-for="(err, inx) in contactForm.image.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="contact-form__input">
+        <label for="contact-form-input-title">タイトル</label>
+        <b-form-input
+          id="contact-form-input-title"
+          v-model="contactForm.title.$value"
+          :state="validStateTitle"
+        />
+        <b-form-invalid-feedback :state="validStateTitle">
+          <span v-for="(err, inx) in contactForm.title.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="contact-form__input">
+        <label for="contact-form-input-subtitle">サブタイトル</label>
+        <b-form-input
+          id="contact-form-input-subtitle"
+          v-model="contactForm.subtitle.$value"
+          :state="validStateSubtitle"
+        />
+        <b-form-invalid-feedback :state="validStateSubtitle">
+          <span v-for="(err, inx) in contactForm.subtitle.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="contact-form__input">
+        <label for="contact-form-input-body">本文</label>
+        <b-form-textarea
+          id="contact-form-input-body"
+          v-model="contactForm.body.$value"
+          rows="6"
+          max-rows="18"
+          :state="validStateBody"
+        />
+        <b-form-invalid-feedback :state="validStateBody">
+          <span v-for="(err, inx) in contactForm.body.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="contact-form__action">
+        <b-button @click="onCancel">
+          キャンセル
+        </b-button>
+        <b-button variant="primary" @click="onUpdate">
+          更新する
+        </b-button>
+      </p>
+    </div>
+  </b-overlay>
 </template>
 
 <script lang="ts">
@@ -174,7 +176,6 @@ export default defineComponent({
     }
 
     return {
-      loading,
       contactForm,
       validStateTitle,
       validStateSubtitle,
@@ -183,6 +184,7 @@ export default defineComponent({
       onChangeImageFile,
       onUpdate,
       onCancel,
+      loading,
     }
   },
 })

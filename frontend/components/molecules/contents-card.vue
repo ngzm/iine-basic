@@ -1,11 +1,13 @@
 <template>
   <div class="contents-card">
-    <div class="contents-card__innner">
-      <slot />
-    </div>
-    <div v-if="$slots.editActivator" class="contents-card__edit-activator">
-      <slot name="editActivator" />
-    </div>
+    <b-overlay :show="loading">
+      <div class="contents-card__innner">
+        <slot />
+      </div>
+      <div v-if="$slots.editActivator" class="contents-card__edit-activator">
+        <slot name="editActivator" />
+      </div>
+    </b-overlay>
   </div>
 </template>
 
@@ -14,6 +16,12 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'ContentsCard',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  }
 })
 </script>
 

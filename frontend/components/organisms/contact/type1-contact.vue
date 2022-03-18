@@ -1,5 +1,5 @@
 <template>
-  <contents-card>
+  <contents-card :loading="loading">
     <template #default>
       <section-eyecatcher :background-image="contact.image">
         <h4 class="type1-contact__header--title">{{ contact.title }}</h4>

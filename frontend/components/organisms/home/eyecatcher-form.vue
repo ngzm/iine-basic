@@ -1,54 +1,56 @@
 <template>
-  <div class="eyecatcher-form"> 
-    <p class="eyecatcher-form__input">
-      <label for="eyecatcher-form-input-image">トップ背景画像</label>
-      <file-input
-        id="eyecatcher-form-input-image"
-        :image-url="eyecatcherForm.image.$value"
-        :state="validStateImage"
-        @change-image-file="onChangeImageFile"
-      />
-      <b-form-invalid-feedback :state="validStateImage">
-        <span v-for="(err, inx) in eyecatcherForm.image.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="eyecatcher-form__input">
-      <label for="eyecatcher-form-input-title">トップタイトル</label>
-      <b-form-input
-        id="eyecatcher-form-input-title"
-        v-model="eyecatcherForm.title.$value"
-        :state="validStateTitle"
-      />
-      <b-form-invalid-feedback :state="validStateTitle">
-        <span v-for="(err, inx) in eyecatcherForm.title.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="eyecatcher-form__input">
-      <label for="eyecatcher-form-input-subtitle">サブタイトル</label>
-      <b-form-input
-        id="eyecatcher-form-input-subtitle"
-        v-model="eyecatcherForm.subtitle.$value"
-        :state="validStateSubtitle"
-      />
-      <b-form-invalid-feedback :state="validStateSubtitle">
-        <span v-for="(err, inx) in eyecatcherForm.subtitle.$errors" :key="inx">
-          {{ err }}<br />
-        </span>
-      </b-form-invalid-feedback>
-    </p>
-    <p class="eyecatcher-form__action">
-      <b-button @click="onCancel">
-        キャンセル
-      </b-button>
-      <b-button variant="primary" @click="onUpdate">
-        更新する
-      </b-button>
-    </p>
-  </div>
+  <b-overlay :show="loading">
+    <div class="eyecatcher-form"> 
+      <p class="eyecatcher-form__input">
+        <label for="eyecatcher-form-input-image">トップ背景画像</label>
+        <file-input
+          id="eyecatcher-form-input-image"
+          :image-url="eyecatcherForm.image.$value"
+          :state="validStateImage"
+          @change-image-file="onChangeImageFile"
+        />
+        <b-form-invalid-feedback :state="validStateImage">
+          <span v-for="(err, inx) in eyecatcherForm.image.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="eyecatcher-form__input">
+        <label for="eyecatcher-form-input-title">トップタイトル</label>
+        <b-form-input
+          id="eyecatcher-form-input-title"
+          v-model="eyecatcherForm.title.$value"
+          :state="validStateTitle"
+        />
+        <b-form-invalid-feedback :state="validStateTitle">
+          <span v-for="(err, inx) in eyecatcherForm.title.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="eyecatcher-form__input">
+        <label for="eyecatcher-form-input-subtitle">サブタイトル</label>
+        <b-form-input
+          id="eyecatcher-form-input-subtitle"
+          v-model="eyecatcherForm.subtitle.$value"
+          :state="validStateSubtitle"
+        />
+        <b-form-invalid-feedback :state="validStateSubtitle">
+          <span v-for="(err, inx) in eyecatcherForm.subtitle.$errors" :key="inx">
+            {{ err }}<br />
+          </span>
+        </b-form-invalid-feedback>
+      </p>
+      <p class="eyecatcher-form__action">
+        <b-button @click="onCancel">
+          キャンセル
+        </b-button>
+        <b-button variant="primary" @click="onUpdate">
+          更新する
+        </b-button>
+      </p>
+    </div>
+  </b-overlay>
 </template>
 
 <script lang="ts">
@@ -62,7 +64,7 @@ export default defineComponent({
   name: 'EyeCatcherForm',
   components: { FileInput },
   setup(_props, { emit }) {
-    const { eyecatch, loadEyecatch, updateEyecatch } = useEyecatchData(1)
+    const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(1)
     const eyecatcherForm = useValidation({
       id: {
         $value: ref(0),
@@ -141,7 +143,8 @@ export default defineComponent({
       validStateImage,
       onChangeImageFile,
       onUpdate,
-      onCancel
+      onCancel,
+      loading
     }
   },
 })
