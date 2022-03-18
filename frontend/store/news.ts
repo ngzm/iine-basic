@@ -13,6 +13,7 @@ export const state = (): NewsSate => ({
 
 export const getters: GetterTree<NewsSate, RootState> = {
   newsList: (state) => state.newsList,
+  isFetched: (state) => state.newsList.length > 0
 }
 
 export const mutations: MutationTree<NewsSate> = {
@@ -31,7 +32,6 @@ export const actions: ActionTree<NewsSate, RootState> = {
   fetchNewsList: async ({ commit }, params: { userId: number, maxLimit?: number }) => {
     const maxLimit = params.maxLimit || 1000
     const newsList = await fetchNewsList(params.userId, maxLimit)
-    console.log('newsList', newsList)
     commit('setNewsList', newsList)
   }
 }

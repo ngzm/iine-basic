@@ -1,41 +1,45 @@
-import { reactive, ref, computed, watch } from '@nuxtjs/composition-api'
+import { reactive, ref, toRefs, computed, watch, useStore } from '@nuxtjs/composition-api'
 import { ServiceType } from '@/types/content-type'
-import { initContent } from '@/composable/content-helper'
+import { initContent, ContentSynchronizer } from '@/composable/content-helper'
 import { fetchService, fetchServiceList, saveService } from '@/utils/data-service'
 
 const initService = () => ({ ...initContent() })
 
-const synchronizer = ref(false)
-const syncronizeData = ref({} as ServiceType)
+const syncronizer = reactive(new ContentSynchronizer<ServiceType>())
+const { /* syncCreated,  */ syncUpdated, syncData } = toRefs(syncronizer)
 
 /**
  * Use Service Data
  */
 export const useServiceData = (userId: number = 0) => {
+  const { dispatch } = useStore()
   const dataReactive = reactive<ServiceType>(initService())
   const loading = ref(false)
   const dataRef= computed(() => dataReactive)
 
   const loadService = async (serviceId: number) => {
-    loading.value = true
-    const fetchedData = await fetchService(userId, serviceId)
-    Object.assign(dataReactive, fetchedData)
-    loading.value = false
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        Object.assign(dataReactive, await fetchService(userId, serviceId))
+        loading.value = false
+      }
+    })
   }
 
   const updateService = async (updateData: ServiceType, imageFile: File | null) => {
-    loading.value = true
-    const savedData = await saveService(updateData, imageFile)
-
-    // 同期フラグを変更
-    syncronizeData.value = savedData
-    synchronizer.value = !synchronizer.value
-    loading.value = false
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        syncronizer.onUpdated(await saveService(updateData, imageFile))
+        loading.value = false
+      }
+    })
   }
 
-  watch(synchronizer, () => {
-    if (syncronizeData.value && syncronizeData.value.id === dataReactive.id) {
-      Object.assign(dataReactive, syncronizeData.value)
+  watch(syncUpdated, () => {
+    if (syncronizer.shouldUpdate(dataReactive)) {
+      Object.assign(dataReactive, syncData.value)
     }
   })
 
@@ -51,21 +55,25 @@ export const useServiceData = (userId: number = 0) => {
  * Use Service List Data
  */
 export const useServiceList = (userId: number = 0) => {
+  const { dispatch } = useStore()
   const listRef = ref<ServiceType[]>([] as ServiceType[])
   const loading = ref(false)
+  let offset: number = 0
 
   const loadServiceList = async (limit: number = 10) => {
-    loading.value = true
-    const fetchedList = await fetchServiceList(userId, limit)
-    listRef.value = fetchedList
-    loading.value = false
+    offset = limit
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        listRef.value = await fetchServiceList(userId, offset)
+        loading.value = false
+      }
+    })
   }
 
-  watch(synchronizer, () => {
-    if (syncronizeData.value && syncronizeData.value.id) {
-      const target = listRef.value.find((l) => l.id === syncronizeData.value.id)
-      Object.assign(target, syncronizeData.value)
-    }
+  watch(syncUpdated, () => {
+    const target = listRef.value.find((l) => syncronizer.shouldUpdate(l))
+    Object.assign(target, syncData.value)
   })
 
   return {

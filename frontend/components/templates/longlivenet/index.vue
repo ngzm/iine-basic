@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, useRoute, useRouter, nextTick } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, useRoute, useRouter, useStore, nextTick } from '@nuxtjs/composition-api'
 import VueScrollTo from "vue-scrollto"
 import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher.vue'
 import Informations from '@/components/organisms/information/type1-informations.vue'
@@ -70,18 +70,16 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const { dispatch } = useStore()
 
-    const onScroll = (hash: string) => {
-      nextTick(() => {
-        VueScrollTo.scrollTo(hash, 500, { offset: -180 })
-      })
-    }
-
-    onMounted(() => {
+    onMounted(async () => {
       if (route.value.hash) {
         const hash = route.value.hash
         router.replace({ name: 'index', hash: ''})
-        setTimeout(() => { onScroll(hash) }, 1200)
+        await dispatch('buzy/buzyWait')
+        nextTick(() => {
+          VueScrollTo.scrollTo(hash, 500, { offset: -180 })
+        })
       }
     })
   }
