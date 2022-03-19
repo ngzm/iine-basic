@@ -243,10 +243,19 @@ export const fetchNews = (userId, newsId) => {
 export const saveNews = (updateNews, imageFile) => {
   return new Promise((resolve) => setTimeout(() => {
     const news = { ...updateNews }
+    if (!news.id || news.id <= 0) {
+      Object.assign(news, { id: 6 })
+    }
     if (imageFile) {
       Object.assign(news, { image: URL.createObjectURL(imageFile) })
     }
     resolve(news)
+  }, 1000))
+}
+
+export const removeNews = (id) => {
+  return new Promise((resolve) => setTimeout(() => {
+    resolve(id)
   }, 1000))
 }
 

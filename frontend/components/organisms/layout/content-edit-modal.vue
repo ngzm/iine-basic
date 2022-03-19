@@ -8,6 +8,7 @@
   >
     <component
       :is="formComponentName"
+      :action="action"
       :data-id="dataId"
       @close="close"
     />
@@ -15,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, toRefs, unref } from '@vue/composition-api'
+import { defineComponent, computed, toRefs } from '@vue/composition-api'
 import { contentDataTypes } from '@/composable/content-helper'
 import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
@@ -33,7 +34,7 @@ const editType2Component = {
   [contentDataTypes.contact]: 'ContactForm',
   [contentDataTypes.menu]: 'InformationForm',
   [contentDataTypes.none]: 'NoneForm',
-}
+} as const
 
 export default defineComponent({
   name: 'ContentEditModal',
@@ -45,12 +46,13 @@ export default defineComponent({
     ContactForm,
   },
   setup() {
-    const { show, id, type } = toRefs(getActivator())
-    const formComponentName = computed(() => editType2Component[unref(type)])
+    const { show, type, action, id } = toRefs(getActivator())
+    const formComponentName = computed(() => editType2Component[type.value])
     const close = () => { show.value = false }
 
     return {
       showModal: show,
+      action,
       dataId: id,
       formComponentName,
       close

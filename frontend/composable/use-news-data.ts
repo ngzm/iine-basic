@@ -1,7 +1,7 @@
 import { reactive, ref, toRefs, computed, watch, useStore } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
 import { initContent, ContentSynchronizer } from '@/composable/content-helper'
-import { fetchNews, saveNews } from '@/utils/data-service'
+import { fetchNews, saveNews, removeNews } from '@/utils/data-service'
 
 const initNews = (): NewsType => ({
   ...initContent(),
@@ -30,6 +30,16 @@ export const useNewsData = (userId: number = 0) => {
       }
     })
   }
+  const createNews = async (createData: NewsType, imageFile: File | null) => {
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        syncronizer.onCreated(await saveNews(createData, imageFile))
+        loading.value = false
+      }
+    })
+    commit('news/addToNewsList', syncData.value)
+  }
 
   const updateNews = async (updateData: NewsType, imageFile: File | null) => {
     await dispatch('buzy/runBuzyJob', {
@@ -39,9 +49,19 @@ export const useNewsData = (userId: number = 0) => {
         loading.value = false
       }
     })
+    commit('news/mergeToNewsList', syncData.value)
+  }
 
-    // Store データを更新
-    commit('news/mergeNewsList', syncData.value)
+  const deleteNews = async (id: number) => {
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        await removeNews(id)
+        syncronizer.onUpdated({ ...dataReactive as NewsType, removed: true })
+        loading.value = false
+      }
+    })
+    commit('news/reoveFromNewsList', id)
   }
 
   watch(syncUpdated, () => {
@@ -54,32 +74,34 @@ export const useNewsData = (userId: number = 0) => {
     news: dataRef,
     loading,
     loadNews,
-    updateNews
+    createNews,
+    updateNews,
+    deleteNews
   }
 }
 
 /**
  * Use News List stored using vuex state
  */
-export const useStoreNewsList = (userId: number = 0) => {
+export const useStoreNewsList = (userId: number = 0, limit: number = 10) => {
   const { getters, dispatch } = useStore()
-  const storedList = computed(() => getters['news/newsList'])
 
-  const listRef = ref([] as NewsType[])
   const loading = ref(false)
-  let offset: number = 0
+  const offset = ref(limit)
+  const storedList = computed(() => getters['news/newsList'])
+  const newsList = computed(() => storedList.value.slice(0, offset.value))
 
-  const loadNewsList = async (limit: number = 10) => {
+  const loadNewsList = async () => {
+    offset.value = limit
     await dispatch('buzy/runBuzyJob', { job: fetchNewsList })
-    offset = limit
-    listRef.value = storedList.value.slice(0, offset)
   }
 
-  const loadMoreNewsList = async (limit: number = 10) => {
+  const loadMoreNewsList = async () => {
+    let newOffset = offset.value + limit
+    if (newOffset > storedList.value.length) newOffset = storedList.value.length
+    offset.value = newOffset
+
     await dispatch('buzy/runBuzyJob', { job: fetchNewsList })
-    offset += limit
-    if (offset > storedList.value.length) offset = storedList.value.length
-    listRef.value = storedList.value.slice(0, offset)
   }
 
   const fetchNewsList = async () => {
@@ -91,7 +113,7 @@ export const useStoreNewsList = (userId: number = 0) => {
   }
 
   return {
-    newsList: listRef,
+    newsList,
     loading,
     loadNewsList,
     loadMoreNewsList

@@ -4,27 +4,29 @@
       <news-list :newses="newsList">
         <template #editActivator="{ news }">
           <content-edit-activator
-            :type="editType"
+            :type="types.news"
+            :action="actions.moddel"
             :content-id="news.id"
             size="1.6rem"
             class="mr-2"
           />
         </template>
       </news-list>
-      {{ loading }}
-
       <div class="type1-newses__action">
         <slot name="action">
-          <b-link @click="loadMoreNewsList(5)">load more news</b-link>
+          <b-link @click="loadMoreNewsList()">load more news</b-link>
         </slot>
       </div>
     </contents-card-body>
+    <template #editActivator>
+      <content-edit-activator :type="types.news" :action="actions.create" />
+    </template>
   </contents-card>
 </template>
 
 <script lang='ts'>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { contentDataTypes } from '@/composable/content-helper'
+import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useStoreNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -40,17 +42,18 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { newsList, loading, loadNewsList, loadMoreNewsList } = useStoreNewsList()
+    const { newsList, loading, loadNewsList, loadMoreNewsList } = useStoreNewsList(1, 5)
 
     onMounted(() => {
-      loadNewsList(5)
+      loadNewsList()
     })
 
     return {
       newsList,
       loading,
       loadMoreNewsList,
-      editType: contentDataTypes.news
+      types: contentDataTypes,
+      actions: contentActionTypes,
     }
   }
 })

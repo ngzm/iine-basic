@@ -70,36 +70,67 @@
           </span>
         </b-form-invalid-feedback>
       </p>
-      <p class="news-form__action">
-        <b-button @click="onCancel">
-          キャンセル
-        </b-button>
-        <b-button variant="primary" @click="onUpdate">
-          更新する
-        </b-button>
-      </p>
+      <div class="news-form__action">
+        <div class="news-form__action--left">
+          <b-button v-show="action === 'moddel'" variant="outline-danger" @click="confirmDelete = true">
+            削除する
+          </b-button>
+        </div>
+        <div class="news-form__action--right">
+          <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+            作成する
+          </b-button>
+          <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
+            更新する
+          </b-button>
+          <b-button @click="onCancel">
+            キャンセル
+          </b-button>
+        </div>
+        <b-overlay :show="confirmDelete" opacity="0.75" no-wrap>
+          <template #overlay>
+            <div class="text-center">
+              <b-icon icon="exclamation-circle" variant="danger" font-scale="3" animation="cylon" />
+              <p class="my-3">本当に削除しますか？</p>
+              <b-button variant="danger" @click="onDelete">
+                削除する
+              </b-button>
+              <b-button variant="secondary" @click="confirmDelete = false">
+                やめる
+              </b-button>
+            </div>
+          </template>
+        </b-overlay>
+      </div>
     </div>
   </b-overlay>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
+import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { useNewsData } from '~/composable/use-news-data'
+import { useNewsData } from '@/composable/use-news-data'
+import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
   name: 'NewsForm',
   components: { FileInput },
   props: {
+    action: {
+      type: String as PropType<ContentActionType>,
+      required: true
+    },
     dataId: {
       type: Number,
-      required: true
-    }
+      default: 0
+    },
   },
   setup(props, { emit }) {
-    const { news, loadNews, updateNews, loading } = useNewsData(1)
+    const { action, dataId } = props
+
+    const { news, loadNews, createNews, updateNews, deleteNews, loading } = useNewsData(1)
     const newsForm = useValidation({
       id: {
         $value: ref(0),
@@ -167,7 +198,9 @@ export default defineComponent({
     ]
 
     onMounted(async() => {
-      await loadNews(props.dataId)
+      if (action === contentActionTypes.create) return
+
+      await loadNews(dataId)
       newsForm.id.$value = news.value.id || 0
       newsForm.title.$value = news.value.title || ''
       newsForm.category.$value = news.value.category || ''
@@ -179,6 +212,24 @@ export default defineComponent({
     const onChangeImageFile =(imageFile: File) => {
       newsForm.imageFile.$value = imageFile
       newsForm.image.$value = URL.createObjectURL(imageFile)
+    }
+
+    const onCreate = async () => {
+      newsForm.$touch()
+      if (newsForm.$anyInvalid) return
+
+      const formData = newsForm.toObject()
+      const newsData = {
+        id: 0,
+        title: formData.title,
+        category: formData.category,
+        publishOn: formData.publishOn as Date,
+        image: formData.image,
+        body: formData.body
+      }
+      const imageFile = formData.imageFile as File || null
+      await createNews(newsData, imageFile)
+      emit('close')
     }
 
     const onUpdate = async () => {
@@ -199,6 +250,13 @@ export default defineComponent({
       emit('close')
     }
 
+    const confirmDelete = ref(false)
+    const onDelete = async () => {
+      await deleteNews(dataId)
+      confirmDelete.value = false
+      emit('close')
+    }
+
     const onCancel = () => {
       emit('close')
     }
@@ -211,10 +269,13 @@ export default defineComponent({
       validStateImage,
       validStateBody,
       onChangeImageFile,
+      onCreate,
       onUpdate,
+      onDelete,
       onCancel,
       categoryOptions,
       loading,
+      confirmDelete
     }
   },
 })
@@ -228,7 +289,14 @@ export default defineComponent({
   &__action {
     margin-top: 2rem;
     margin-bottom: 1rem;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    &--left {
+      text-align: left;
+    }
+    &--right {
+      text-align: right;
+    }
   }
 }
 </style>

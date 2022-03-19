@@ -9,9 +9,6 @@
           {{ information.title }}
         </h4>
       </section-eyecatcher>
-
-      {{ loading }}
-
       <contents-card-body>
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="informationHtml" />
@@ -28,7 +25,11 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator :type="editType" :content-id="1" />
+      <content-edit-activator
+        :type="types.information"
+        :action="actions.update"
+        :content-id="1"
+      />
     </template>
   </contents-card>
 </template>
@@ -36,7 +37,7 @@
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import { contentDataTypes } from '@/composable/content-helper'
+import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useInformationData } from '@/composable/use-information-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -66,7 +67,8 @@ export default defineComponent({
       information,
       informationHtml,
       loading,
-      editType: contentDataTypes.information
+      types: contentDataTypes,
+      actions: contentActionTypes
     }
   }
 })

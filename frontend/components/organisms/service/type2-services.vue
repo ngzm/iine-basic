@@ -21,7 +21,8 @@
 
     <template #editActivator="{ content }">
       <content-edit-activator
-        :type="editType"
+        :type="types.service"
+        :action="actions.moddel"
         :content-id="content.id"
         size="1.6rem"
       />
@@ -31,7 +32,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { contentDataTypes } from '~/composable/content-helper'
+import { contentDataTypes, contentActionTypes } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
 import ContentsGrid from '@/components/molecules/contents-grid.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
@@ -54,7 +55,8 @@ export default defineComponent({
     return {
       serviceList,
       loading,
-      editType: contentDataTypes.service
+      types: contentDataTypes,
+      actions: contentActionTypes,
     }
   }
 })

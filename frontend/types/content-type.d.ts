@@ -8,6 +8,7 @@ export interface ContentType {
   body?: string
   image?: string
   link?: string
+  removed?: boolean
 }
 
 /**

@@ -29,6 +29,18 @@ export const contentDataTypes = {
 export type ContentDataType = typeof contentDataTypes[keyof typeof contentDataTypes];
 
 /**
+ * データ種別 enum
+ */
+export const contentActionTypes = {
+ create: 'create',
+ update: 'update',
+ moddel: 'moddel',
+ none: 'none'
+} as const
+
+export type ContentActionType = typeof contentActionTypes[keyof typeof contentActionTypes];
+
+/**
  * データ更新・追加時に同期すべきデータも更新できる仕組みを提供
  */
 export class ContentSynchronizer<T extends { id: number }> {

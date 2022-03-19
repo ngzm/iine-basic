@@ -1,22 +1,23 @@
 <template>
   <div class="content-edit-activator">
     <b-avatar
-      icon="pencil-square"
       button
-      :size="size"
-      :variant="variant"
-      @click="activateToEdit(type, contentId)"
+      :icon="avatorIcon"
+      :size="avatorSize"
+      :variant="avatorVariant"
+      @click="activateToEdit()"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive } from '@vue/composition-api'
-import { ContentDataType, contentDataTypes } from '@/composable/content-helper'
+import { defineComponent, PropType, toRefs, reactive, computed } from '@vue/composition-api'
+import { contentDataTypes, ContentDataType, contentActionTypes, ContentActionType } from '@/composable/content-helper'
 
 const activator = reactive({
   show: false,
   type: contentDataTypes.none as ContentDataType,
+  action: contentActionTypes.none as ContentActionType,
   id: 0
 })
 
@@ -29,6 +30,10 @@ export default defineComponent({
       type: String as PropType<ContentDataType>,
       required: true
     },
+    action: {
+      type: String as PropType<ContentActionType>,
+      required: true
+    },
     contentId: {
       type: Number,
       default: 0
@@ -39,15 +44,42 @@ export default defineComponent({
     },
     variant: {
       type: String,
-      default: 'success'
+      default: ''
     }
   },
-  setup() {
-    const activateToEdit = (type: ContentDataType, id: number = 0) => {
-      Object.assign(activator, { show: true, type, id })
+  setup(props) {
+    const { type, action, contentId, size, variant } = toRefs(props)
+
+    const action2icon = {
+      [contentActionTypes.create]: 'plus-circle',
+      [contentActionTypes.update]: 'pencil-square',
+      [contentActionTypes.moddel]: 'pencil-fill',
+      [contentActionTypes.none]: 'exclamation-triangle',
+    } as const
+    const action2variant = {
+      [contentActionTypes.create]: 'info',
+      [contentActionTypes.update]: 'success',
+      [contentActionTypes.moddel]: 'success',
+      [contentActionTypes.none]: 'danger',
+    } as const
+
+    const avatorIcon = computed(() => action2icon[action.value])
+    const avatorVariant = computed(() => variant.value || action2variant[action.value])
+    const avatorSize = computed(() => size.value)
+
+    const activateToEdit = () => {
+      Object.assign(activator, {
+        show: true,
+        type: type.value,
+        action: action.value,
+        id: contentId.value
+      })
     }
 
     return {
+      avatorIcon,
+      avatorVariant,
+      avatorSize,
       activateToEdit,
     }
   },

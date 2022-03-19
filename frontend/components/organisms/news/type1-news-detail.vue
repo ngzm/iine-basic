@@ -2,7 +2,7 @@
   <contents-card :loading="loading">
     <template #default>
       <section-eyecatcher :background-image="news.image || ''" />
-      {{ loading }}
+
       <contents-card-body>
         <h5 class="type1-news-detail__title">
           <span>{{ news.title }}</span>
@@ -23,7 +23,7 @@
     </template>
 
     <template #editActivator>
-      <content-edit-activator :type="editType" :content-id="news.id" />
+      <content-edit-activator :type="types.news" :action="actions.moddel" :content-id="newsId" />
     </template>
   </contents-card>
 </template>
@@ -31,7 +31,7 @@
 <script lang='ts'>
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import { contentDataTypes } from '@/composable/content-helper'
+import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useNewsData } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -67,7 +67,8 @@ export default defineComponent({
       news,
       newsBodyHtml,
       loading,
-      editType: contentDataTypes.news
+      types: contentDataTypes,
+      actions: contentActionTypes,
     }
   }
 })
