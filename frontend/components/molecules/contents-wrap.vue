@@ -1,10 +1,10 @@
 <template>
-  <div class="contents-card">
+  <div class="contents-wrap">
     <b-overlay :show="loading">
-      <div class="contents-card__innner">
+      <div class="contents-wrap__innner">
         <slot />
       </div>
-      <div v-if="$slots.editActivator" class="contents-card__edit-activator">
+      <div v-if="$slots.editActivator" class="contents-wrap__edit-activator">
         <slot name="editActivator" />
       </div>
     </b-overlay>
@@ -15,7 +15,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'ContentsCard',
+  name: 'ContentsWrap',
   props: {
     loading: {
       type: Boolean,
@@ -28,28 +28,25 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-.contents-card {
+.contents-wrap {
   position: relative;
   width: 100%;
   min-width: 18rem;
   margin: 0 auto;
-  background-color: white;
   &__inner {
     margin: 0;
     padding: 0;
   }
   &__edit-activator {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 0;
+    right: 2rem;
   }
 }
 
 @media only screen and (min-width: $grid-breakpoint-md) {
-  .contents-card {
-    width: 90%;
-    border-radius: 12px;
-    overflow: hidden;
+  .contents-wrap {
+    width: 98%;
   }
 }
 </style>

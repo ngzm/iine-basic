@@ -1,39 +1,41 @@
 <template>
-  <contents-grid
-    :contents-list="serviceList"
-    :loading="loading"
-    class="type2-services"
-  >
-    <template #default="{ content }">
-      <h5 class="type2-services__content-title">
-        {{ content.title }}
-      </h5>
-      <section-content-eyecatcher
-        :image="content.image"
-        height="14rem"
-        circle
-        class="type2-services__content-eyecatcher"
-      />
-      <p class="type2-services__content-body">
-        {{ content.body || '' }}
-      </p>
-    </template>
+  <contents-wrap :loading="loading" class="type2-services">
+    <contents-grid :contents-list="serviceList">
+      <template #default="{ content }">
+        <h5 class="type2-services__content-title">
+          {{ content.title }}
+        </h5>
+        <section-content-eyecatcher
+          :image="content.image"
+          height="14rem"
+          circle
+          class="type2-services__content-eyecatcher"
+        />
+        <p class="type2-services__content-body">
+          {{ content.body || '' }}
+        </p>
+      </template>
+      <template #editActivator="{ content }">
+        <content-edit-activator
+          :type="types.service"
+          :action="actions.moddel"
+          :content-id="content.id"
+          size="1.6rem"
+        />
+      </template>
+    </contents-grid>
 
-    <template #editActivator="{ content }">
-      <content-edit-activator
-        :type="types.service"
-        :action="actions.moddel"
-        :content-id="content.id"
-        size="1.6rem"
-      />
+    <template #editActivator>
+      <content-edit-activator :type="types.service" :action="actions.create" />
     </template>
-  </contents-grid>
+  </contents-wrap>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { contentDataTypes, contentActionTypes } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
+import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import ContentsGrid from '@/components/molecules/contents-grid.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
@@ -41,6 +43,7 @@ import ContentEditActivator from '@/components/organisms/layout/content-edit-act
 export default defineComponent({
   name: 'Type1Services',
   components: {
+    ContentsWrap,
     ContentsGrid,
     SectionContentEyecatcher,
     ContentEditActivator

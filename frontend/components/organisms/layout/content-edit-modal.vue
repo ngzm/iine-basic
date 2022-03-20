@@ -1,9 +1,9 @@
 <template>
   <b-modal
     v-model="showModal"
+    :title="modalTitle"
     centered
     size="lg"
-    title="コンテンツの編集"
     hide-footer
   >
     <component
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, toRefs } from '@vue/composition-api'
-import { contentDataTypes } from '@/composable/content-helper'
+import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
 import InformationForm from '@/components/organisms/information/information-form.vue'
@@ -48,6 +48,13 @@ export default defineComponent({
   setup() {
     const { show, type, action, id } = toRefs(getActivator())
     const formComponentName = computed(() => editType2Component[type.value])
+    const modalTitle = computed(() => (
+      action.value === contentActionTypes.create
+        ? 'コンテンツの作成'
+        : action.value === contentActionTypes.moddel
+          ? 'コンテンツの編集・削除'
+          : 'コンテンツの編集'
+    ))
     const close = () => { show.value = false }
 
     return {
@@ -55,6 +62,7 @@ export default defineComponent({
       action,
       dataId: id,
       formComponentName,
+      modalTitle,
       close
     }
   },

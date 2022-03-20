@@ -1,19 +1,17 @@
 <template>
-  <b-overlay :show="loading" bg-color="transparent">
-    <div class="contents-grid">
-      <section
-        v-for="content in contentsList"
-        :key="content.id"
-        class="contents-grid__column"
-      >
-        <slot :content="content" />
+  <div class="contents-grid">
+    <section
+      v-for="content in contentsList"
+      :key="content.id"
+      class="contents-grid__column"
+    >
+      <slot :content="content" />
 
-        <div class="edit-activator">
-          <slot name="editActivator" :content="content" />
-        </div>
-      </section>
-    </div>
-  </b-overlay>
+      <div class="edit-activator">
+        <slot name="editActivator" :content="content" />
+      </div>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -28,12 +26,8 @@ export default defineComponent({
     contentsList: {
       type: Array as PropType<ColsType[]>,
       required: true
-    },
-    loading: {
-      type: Boolean,
-      default: false
     }
-  },
+  }
 })
 </script>
 
@@ -45,7 +39,7 @@ export default defineComponent({
   margin: 0 auto;
   padding: 0 1.5rem;
   max-width: 90rem;
-  min-height: 12rem;
+  min-height: 18rem;
   &__column {
     position: relative;
     margin: 1.8rem 1.5rem 0 1.5rem;
@@ -56,7 +50,7 @@ export default defineComponent({
     .edit-activator{
       position: absolute;
       top: 0;
-      right: 2rem;
+      left: 2rem;
     }
   }
 }

@@ -57,11 +57,11 @@
         </b-form-invalid-feedback>
       </p>
       <p class="contact-form__action">
+        <b-button variant="success" @click="onUpdate">
+          更新する
+        </b-button>
         <b-button @click="onCancel">
           キャンセル
-        </b-button>
-        <b-button variant="primary" @click="onUpdate">
-          更新する
         </b-button>
       </p>
     </div>
