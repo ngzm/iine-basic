@@ -38,7 +38,7 @@ export const useEyecatchData = (userId: number = 0) => {
   }
 
   watch(syncUpdated, () => {
-    if (syncronizer.shouldUpdate(dataReactive)) {
+    if (syncronizer.isTarget(dataReactive)) {
       Object.assign(dataReactive, syncData.value)
     }
   })

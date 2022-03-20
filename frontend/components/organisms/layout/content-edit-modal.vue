@@ -50,7 +50,7 @@ export default defineComponent({
     const formComponentName = computed(() => editType2Component[type.value])
     const modalTitle = computed(() => (
       action.value === contentActionTypes.create
-        ? 'コンテンツの作成'
+        ? 'コンテンツの追加'
         : action.value === contentActionTypes.moddel
           ? 'コンテンツの編集・削除'
           : 'コンテンツの編集'

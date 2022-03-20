@@ -10,7 +10,7 @@ const initNews = (): NewsType => ({
 })
 
 const syncronizer = reactive(new ContentSynchronizer<NewsType>())
-const { /* syncCreated,  */ syncUpdated, syncData } = toRefs(syncronizer)
+const { /* syncCreated,  */ syncUpdated, syncDeleted, syncData } = toRefs(syncronizer)
 
 /**
  * Use News Data
@@ -57,7 +57,7 @@ export const useNewsData = (userId: number = 0) => {
       job: async () => {
         loading.value = true
         await removeNews(id)
-        syncronizer.onUpdated({ ...dataReactive as NewsType, removed: true })
+        syncronizer.onDeleted({ ...dataReactive as NewsType, removed: true })
         loading.value = false
       }
     })
@@ -65,7 +65,13 @@ export const useNewsData = (userId: number = 0) => {
   }
 
   watch(syncUpdated, () => {
-    if (syncronizer.shouldUpdate(dataReactive as NewsType)) {
+    if (syncronizer.isTarget(dataReactive as NewsType)) {
+      Object.assign(dataReactive, syncData.value)
+    }
+  })
+
+  watch(syncDeleted, () => {
+    if (syncronizer.isTarget(dataReactive as NewsType)) {
       Object.assign(dataReactive, syncData.value)
     }
   })

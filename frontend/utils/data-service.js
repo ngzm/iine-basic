@@ -330,10 +330,19 @@ export const fetchService = (userId, serviceId) => {
 export const saveService = (updateService, imageFile) => {
   return new Promise((resolve) => setTimeout(() => {
     const service = { ...updateService }
+    if (!service.id || service.id <= 0) {
+      Object.assign(service, { id: 7 })
+    }
     if (imageFile) {
       Object.assign(service, { image: URL.createObjectURL(imageFile) })
     }
     resolve(service)
+  }, 1000))
+}
+
+export const removeService = (id) => {
+  return new Promise((resolve) => setTimeout(() => {
+    resolve(id)
   }, 1000))
 }
 

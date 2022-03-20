@@ -46,11 +46,13 @@ export type ContentActionType = typeof contentActionTypes[keyof typeof contentAc
 export class ContentSynchronizer<T extends { id: number }> {
   syncCreated: boolean
   syncUpdated: boolean
+  syncDeleted: boolean
   syncData: T
 
   constructor() {
     this.syncCreated = false
     this.syncUpdated = false
+    this.syncDeleted = false
     this.syncData = {} as T
   }
 
@@ -64,7 +66,12 @@ export class ContentSynchronizer<T extends { id: number }> {
     this.syncUpdated = !this.syncUpdated
   }
 
-  shouldUpdate(target: T) {
+  onDeleted(data: T) {
+    this.syncData = data
+    this.syncDeleted = !this.syncDeleted
+  }
+
+  isTarget(target: T) {
     return this.syncData.id && this.syncData.id === target.id
   }
 }

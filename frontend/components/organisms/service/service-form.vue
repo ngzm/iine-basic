@@ -43,36 +43,73 @@
           </span>
         </b-form-invalid-feedback>
       </p>
-      <p class="service-form__action">
-        <b-button variant="success" @click="onUpdate">
-          更新する
-        </b-button>
-        <b-button @click="onCancel">
-          キャンセル
-        </b-button>
-      </p>
+      <div class="service-form__action">
+        <div class="service-form__action--left">
+          <b-button v-show="action === 'moddel'" variant="outline-danger" @click="confirmDelete = true">
+            削除する
+          </b-button>
+        </div>
+        <div class="service-form__action--right">
+          <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+            作成する
+          </b-button>
+          <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
+            更新する
+          </b-button>
+          <b-button @click="onCancel">
+            キャンセル
+          </b-button>
+        </div>
+        <b-overlay :show="confirmDelete" opacity="0.75" no-wrap>
+          <template #overlay>
+            <div class="text-center">
+              <b-icon icon="exclamation-circle" variant="danger" font-scale="3" animation="cylon" />
+              <p class="my-3">本当に削除しますか？</p>
+              <b-button variant="danger" @click="onDelete">
+                削除する
+              </b-button>
+              <b-button variant="secondary" @click="confirmDelete = false">
+                やめる
+              </b-button>
+            </div>
+          </template>
+        </b-overlay>
+      </div>
     </div>
   </b-overlay>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
+import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useServiceData } from '~/composable/use-service-data'
+import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
   name: 'ServiceForm',
   components: { FileInput },
   props: {
+    action: {
+      type: String as PropType<ContentActionType>,
+      required: true
+    },
     dataId: {
       type: Number,
       required: true
     }
   },
   setup(props, { emit }) {
-    const { service, loading, loadService, updateService } = useServiceData(1)
+    const { action, dataId } = props
+    const {
+      service,
+      loading,
+      loadService,
+      createService,
+      updateService,
+      deleteService
+    } = useServiceData(1)
     const serviceForm = useValidation({
       id: {
         $value: ref(0),
@@ -110,13 +147,14 @@ export default defineComponent({
         },
       },
     })
-
     const validStateTitle = computed(() => !serviceForm.title.$dirty ? null : !serviceForm.title.$anyInvalid)
     const validStateImage = computed(() => !serviceForm.image.$dirty ? null : !serviceForm.image.$anyInvalid)
     const validStateBody = computed(() => !serviceForm.body.$dirty ? null : !serviceForm.body.$anyInvalid)
 
     onMounted(async() => {
-      await loadService(props.dataId)
+      if (action === contentActionTypes.create) return
+
+      await loadService(dataId)
       serviceForm.id.$value = service.value.id || 0
       serviceForm.title.$value = service.value.title || ''
       serviceForm.image.$value = service.value.image || ''
@@ -126,6 +164,22 @@ export default defineComponent({
     const onChangeImageFile =(imageFile: File) => {
       serviceForm.imageFile.$value = imageFile
       serviceForm.image.$value = URL.createObjectURL(imageFile)
+    }
+
+    const onCreate = async () => {
+      serviceForm.$touch()
+      if (serviceForm.$anyInvalid) return
+
+      const formData = serviceForm.toObject()
+      const serviceData = {
+        id: 0,
+        title: formData.title,
+        image: formData.image,
+        body: formData.body
+      }
+      const imageFile = formData.imageFile as File || null
+      await createService(serviceData, imageFile)
+      emit('close')
     }
 
     const onUpdate = async () => {
@@ -144,6 +198,13 @@ export default defineComponent({
       emit('close')
     }
 
+    const confirmDelete = ref(false)
+    const onDelete = async () => {
+      await deleteService(dataId)
+      confirmDelete.value = false
+      emit('close')
+    }
+
     const onCancel = () => {
       emit('close')
     }
@@ -154,9 +215,12 @@ export default defineComponent({
       validStateImage,
       validStateBody,
       onChangeImageFile,
+      onCreate,
       onUpdate,
+      onDelete,
       onCancel,
       loading,
+      confirmDelete
     }
   },
 })
@@ -170,7 +234,14 @@ export default defineComponent({
   &__action {
     margin-top: 2rem;
     margin-bottom: 1rem;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    &--left {
+      text-align: left;
+    }
+    &--right {
+      text-align: right;
+    }
   }
 }
 </style>

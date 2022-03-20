@@ -1,12 +1,12 @@
 import { reactive, ref, toRefs, computed, watch, useStore } from '@nuxtjs/composition-api'
 import { ServiceType } from '@/types/content-type'
 import { initContent, ContentSynchronizer } from '@/composable/content-helper'
-import { fetchService, fetchServiceList, saveService } from '@/utils/data-service'
+import { fetchService, fetchServiceList, saveService, removeService } from '@/utils/data-service'
 
 const initService = () => ({ ...initContent() })
 
 const syncronizer = reactive(new ContentSynchronizer<ServiceType>())
-const { /* syncCreated,  */ syncUpdated, syncData } = toRefs(syncronizer)
+const { syncCreated, syncUpdated, syncDeleted, syncData } = toRefs(syncronizer)
 
 /**
  * Use Service Data
@@ -27,6 +27,16 @@ export const useServiceData = (userId: number = 0) => {
     })
   }
 
+  const createService = async (createData: ServiceType, imageFile: File | null) => {
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        syncronizer.onCreated(await saveService(createData, imageFile))
+        loading.value = false
+      }
+    })
+  }
+
   const updateService = async (updateData: ServiceType, imageFile: File | null) => {
     await dispatch('buzy/runBuzyJob', {
       job: async () => {
@@ -37,8 +47,25 @@ export const useServiceData = (userId: number = 0) => {
     })
   }
 
+  const deleteService = async (id: number) => {
+    await dispatch('buzy/runBuzyJob', {
+      job: async () => {
+        loading.value = true
+        await removeService(id)
+        syncronizer.onDeleted({ ...dataReactive as ServiceType, removed: true })
+        loading.value = false
+      }
+    })
+  }
+
   watch(syncUpdated, () => {
-    if (syncronizer.shouldUpdate(dataReactive)) {
+    if (syncronizer.isTarget(dataReactive)) {
+      Object.assign(dataReactive, syncData.value)
+    }
+  })
+
+  watch(syncDeleted, () => {
+    if (syncronizer.isTarget(dataReactive)) {
       Object.assign(dataReactive, syncData.value)
     }
   })
@@ -47,7 +74,9 @@ export const useServiceData = (userId: number = 0) => {
     service: dataRef,
     loading,
     loadService,
-    updateService
+    createService,
+    updateService,
+    deleteService
   }
 }
 
@@ -71,9 +100,26 @@ export const useServiceList = (userId: number = 0) => {
     })
   }
 
+  watch(syncCreated, () => {
+    listRef.value.push(syncData.value)
+
+    // const list = Array.from(listRef.value)
+    // list.push(syncData.value)
+    // listRef.value = list
+  })
+
   watch(syncUpdated, () => {
-    const target = listRef.value.find((l) => syncronizer.shouldUpdate(l))
-    Object.assign(target, syncData.value)
+    const target = listRef.value.find((l) => syncronizer.isTarget(l))
+    if (target) {
+      Object.assign(target, syncData.value)
+    }
+  })
+
+  watch(syncDeleted, () => {
+    const targetIndex = listRef.value.findIndex((l) => syncronizer.isTarget(l))
+    if (targetIndex >= 0) {
+      listRef.value.splice(targetIndex, 1)
+    }
   })
 
   return {
