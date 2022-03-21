@@ -1,7 +1,7 @@
 <template>
   <b-overlay :show="loading">
     <div class="information-form"> 
-      <p class="information-form__input">
+      <div class="information-form__input">
         <label for="information-form-input-image">タイトル背景画像</label>
         <file-input
           id="information-form-input-image"
@@ -14,8 +14,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="information-form__input">
+      </div>
+      <div class="information-form__input">
         <label for="information-form-input-title">タイトル</label>
         <b-form-input
           id="information-form-input-title"
@@ -27,8 +27,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="information-form__input">
+      </div>
+      <div class="information-form__input">
         <label for="information-form-input-subtitle">サブタイトル</label>
         <b-form-input
           id="information-form-input-subtitle"
@@ -40,14 +40,12 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="information-form__input">
+      </div>
+      <div class="information-form__input">
         <label for="information-form-input-body">本文</label>
-        <b-form-textarea
+        <wysiwsg-editor
           id="information-form-input-body"
           v-model="informationForm.body.$value"
-          rows="6"
-          max-rows="18"
           :state="validStateBody"
         />
         <b-form-invalid-feedback :state="validStateBody">
@@ -55,15 +53,15 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="information-form__action">
+      </div>
+      <div class="information-form__action">
         <b-button variant="success" @click="onUpdate">
           更新する
         </b-button>
         <b-button @click="onCancel">
           キャンセル
         </b-button>
-      </p>
+      </div>
     </div>
   </b-overlay>
 </template>
@@ -75,10 +73,11 @@ import { required, maximunLength } from '@/composable/form-validators'
 import { InformationType } from '@/types/content-type'
 import { useInformationData } from '@/composable/use-information-data'
 import FileInput from '@/components/atoms/file-input.vue'
+import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
 
 export default defineComponent({
   name: 'InformationForm',
-  components: { FileInput },
+  components: { FileInput, WysiwsgEditor },
   setup(_props, { emit }) {
     const { information, loadInformation, updateInformation, loading } = useInformationData()
     const informationForm = useValidation({

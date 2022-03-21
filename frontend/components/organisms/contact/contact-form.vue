@@ -1,7 +1,7 @@
 <template>
   <b-overlay :show="loading">
     <div class="contact-form"> 
-      <p class="contact-form__input">
+      <div class="contact-form__input">
         <label for="contact-form-input-image">タイトル背景画像</label>
         <file-input
           id="contact-form-input-image"
@@ -14,8 +14,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="contact-form__input">
+      </div>
+      <div class="contact-form__input">
         <label for="contact-form-input-title">タイトル</label>
         <b-form-input
           id="contact-form-input-title"
@@ -27,8 +27,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="contact-form__input">
+      </div>
+      <div class="contact-form__input">
         <label for="contact-form-input-subtitle">サブタイトル</label>
         <b-form-input
           id="contact-form-input-subtitle"
@@ -40,14 +40,12 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="contact-form__input">
+      </div>
+      <div class="contact-form__input">
         <label for="contact-form-input-body">本文</label>
-        <b-form-textarea
+        <wysiwsg-editor
           id="contact-form-input-body"
           v-model="contactForm.body.$value"
-          rows="6"
-          max-rows="18"
           :state="validStateBody"
         />
         <b-form-invalid-feedback :state="validStateBody">
@@ -55,15 +53,15 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="contact-form__action">
+      </div>
+      <div class="contact-form__action">
         <b-button variant="success" @click="onUpdate">
           更新する
         </b-button>
         <b-button @click="onCancel">
           キャンセル
         </b-button>
-      </p>
+      </div>
     </div>
   </b-overlay>
 </template>
@@ -74,10 +72,11 @@ import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useContactData } from '~/composable/use-contact-data'
 import FileInput from '@/components/atoms/file-input.vue'
+import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
 
 export default defineComponent({
   name: 'ContactForm',
-  components: { FileInput },
+  components: { FileInput, WysiwsgEditor },
   props: {
     dataId: {
       type: Number,

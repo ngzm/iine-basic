@@ -1,7 +1,7 @@
 <template>
   <b-overlay :show="loading">
     <div class="service-form"> 
-      <p class="service-form__input">
+      <div class="service-form__input">
         <label for="service-form-input-image">タイトル背景画像</label>
         <file-input
           id="service-form-input-image"
@@ -14,8 +14,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="service-form__input">
+      </div>
+      <div class="service-form__input">
         <label for="service-form-input-title">タイトル</label>
         <b-form-input
           id="service-form-input-title"
@@ -27,14 +27,12 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="service-form__input">
+      </div>
+      <div class="service-form__input">
         <label for="service-form-input-body">本文</label>
-        <b-form-textarea
+        <wysiwsg-editor
           id="service-form-input-body"
           v-model="serviceForm.body.$value"
-          rows="6"
-          max-rows="18"
           :state="validStateBody"
         />
         <b-form-invalid-feedback :state="validStateBody">
@@ -42,7 +40,7 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
+      </div>
       <div class="service-form__action">
         <div class="service-form__action--left">
           <b-button v-show="action === 'moddel'" variant="outline-danger" @click="confirmDelete = true">
@@ -86,10 +84,11 @@ import { required, maximunLength } from '@/composable/form-validators'
 import { useServiceData } from '~/composable/use-service-data'
 import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import FileInput from '@/components/atoms/file-input.vue'
+import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
 
 export default defineComponent({
   name: 'ServiceForm',
-  components: { FileInput },
+  components: { FileInput, WysiwsgEditor },
   props: {
     action: {
       type: String as PropType<ContentActionType>,

@@ -1,7 +1,7 @@
 <template>
   <b-overlay :show="loading">
     <div class="eyecatcher-form"> 
-      <p class="eyecatcher-form__input">
+      <div class="eyecatcher-form__input">
         <label for="eyecatcher-form-input-image">トップ背景画像</label>
         <file-input
           id="eyecatcher-form-input-image"
@@ -14,8 +14,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="eyecatcher-form__input">
+      </div>
+      <div class="eyecatcher-form__input">
         <label for="eyecatcher-form-input-title">トップタイトル</label>
         <b-form-input
           id="eyecatcher-form-input-title"
@@ -27,8 +27,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="eyecatcher-form__input">
+      </div>
+      <div class="eyecatcher-form__input">
         <label for="eyecatcher-form-input-subtitle">サブタイトル</label>
         <b-form-input
           id="eyecatcher-form-input-subtitle"
@@ -40,15 +40,15 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="eyecatcher-form__action">
+      </div>
+      <div class="eyecatcher-form__action">
         <b-button variant="success" @click="onUpdate">
           更新する
         </b-button>
         <b-button @click="onCancel">
           キャンセル
         </b-button>
-      </p>
+      </div>
     </div>
   </b-overlay>
 </template>

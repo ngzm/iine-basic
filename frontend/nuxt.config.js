@@ -46,6 +46,8 @@ export default {
     '@nuxtjs/axios',
     // https://github.com/rigor789/vue-scrollto
     ['vue-scrollto/nuxt', { duration: 600 }],
+    // https://www.vue2editor.com/
+    "vue2-editor/nuxt",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
