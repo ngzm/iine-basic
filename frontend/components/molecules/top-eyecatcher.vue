@@ -3,10 +3,6 @@
     <div class="top-eye-catcher__titles">
       <slot />
     </div>
-
-    <div v-if="$slots.editActivator" class="top-eye-catcher__edit-activator">
-      <slot name="editActivator" />
-    </div>
   </div>
 </template>
 
@@ -38,11 +34,6 @@ export default defineComponent({
     bottom: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-  &__edit-activator {
-    position: absolute;
-    top: calc($nav-header-height + 1rem);
-    right: 1rem;
   }
 }
 

@@ -380,7 +380,7 @@ export const fetchContact = (userId, contactId) => {
   return new Promise((resolve) => setTimeout(() => {
     const contact = conatctFetchData(contactId) || initContact()
     resolve(contact)
-  }, 1000)) 
+  }, 4000)) 
 }
 
 export const saveContact = (updateNews, imageFile) => {

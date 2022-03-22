@@ -1,5 +1,5 @@
 <template>
-  <contents-wrap :loading="loading" class="type2-services">
+  <contents-wrap :overlay="loading" class="type2-services">
     <contents-grid :contents-list="serviceList">
       <template #default="{ content }">
         <h5 class="type2-services__content-title">

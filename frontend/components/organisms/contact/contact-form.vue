@@ -1,6 +1,6 @@
 <template>
-  <b-overlay :show="loading">
-    <div class="contact-form"> 
+  <contentsform-wrap :overlay="loading">
+    <form class="contact-form"> 
       <div class="contact-form__input">
         <label for="contact-form-input-image">タイトル背景画像</label>
         <file-input
@@ -62,8 +62,8 @@
           キャンセル
         </b-button>
       </div>
-    </div>
-  </b-overlay>
+    </form>
+  </contentsform-wrap>
 </template>
 
 <script lang="ts">
@@ -71,12 +71,13 @@ import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useContactData } from '~/composable/use-contact-data'
+import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
 
 export default defineComponent({
   name: 'ContactForm',
-  components: { FileInput, WysiwsgEditor },
+  components: { ContentsformWrap, FileInput, WysiwsgEditor },
   props: {
     dataId: {
       type: Number,

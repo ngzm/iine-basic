@@ -1,6 +1,6 @@
 <template>
-  <b-overlay :show="loading">
-    <div class="service-form"> 
+  <contentsform-wrap :overlay="loading || confirmDelete">
+    <form class="service-form"> 
       <div class="service-form__input">
         <label for="service-form-input-image">タイトル背景画像</label>
         <file-input
@@ -58,23 +58,22 @@
             キャンセル
           </b-button>
         </div>
-        <b-overlay :show="confirmDelete" opacity="0.75" no-wrap>
-          <template #overlay>
-            <div class="text-center">
-              <b-icon icon="exclamation-circle" variant="danger" font-scale="3" animation="cylon" />
-              <p class="my-3">本当に削除しますか？</p>
-              <b-button variant="danger" @click="onDelete">
-                削除する
-              </b-button>
-              <b-button variant="secondary" @click="confirmDelete = false">
-                やめる
-              </b-button>
-            </div>
-          </template>
-        </b-overlay>
       </div>
-    </div>
-  </b-overlay>
+    </form>
+
+    <template v-if="confirmDelete" #overlay>
+      <div class="text-center">
+        <b-icon icon="exclamation-circle" variant="danger" font-scale="3" animation="cylon" />
+        <p class="my-3">本当に削除しますか？</p>
+        <b-button variant="danger" @click="onDelete">
+          削除する
+        </b-button>
+        <b-button variant="secondary" @click="confirmDelete = false">
+          やめる
+        </b-button>
+      </div>
+    </template>
+  </contentsform-wrap>
 </template>
 
 <script lang="ts">
@@ -83,12 +82,13 @@ import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useServiceData } from '~/composable/use-service-data'
 import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
+import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
 
 export default defineComponent({
   name: 'ServiceForm',
-  components: { FileInput, WysiwsgEditor },
+  components: { ContentsformWrap, FileInput, WysiwsgEditor },
   props: {
     action: {
       type: String as PropType<ContentActionType>,

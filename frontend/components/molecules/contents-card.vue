@@ -1,6 +1,6 @@
 <template>
   <div class="contents-card">
-    <b-overlay :show="loading">
+    <b-overlay :show="overlay">
       <div class="contents-card__innner">
         <slot />
       </div>
@@ -17,7 +17,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 export default defineComponent({
   name: 'ContentsCard',
   props: {
-    loading: {
+    overlay: {
       type: Boolean,
       default: false
     }

@@ -1,28 +1,33 @@
 <template>
-  <b-overlay :show="loading">
+  <contents-wrap
+    :overlay="loading"
+    no-gap
+    activator-position-top="9rem"
+    activator-position-right="2rem"
+  >
     <top-eyecatcher :background-image="eyecatch.image" class="type1-top-eyecatcher">
-      <template #default>
-        <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
-        <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
-      </template>
-
-      <template #editActivator>
-        <content-edit-activator :type="types.eyecatch" :action="actions.update" />
-      </template>
+      <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
+      <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
     </top-eyecatcher>
-  </b-overlay>
+
+    <template #editActivator>
+      <content-edit-activator :type="types.eyecatch" :action="actions.update" />
+    </template>
+  </contents-wrap>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
+import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1TopEyecatcher',
   components: {
+    ContentsWrap,
     TopEyecatcher,
     ContentEditActivator
   },

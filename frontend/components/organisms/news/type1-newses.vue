@@ -1,5 +1,5 @@
 <template>
-  <contents-card :loading="loading">
+  <contents-card :overlay="loading">
     <contents-card-body>
       <news-list :newses="newsList">
         <template #editActivator="{ news }">

@@ -1,10 +1,14 @@
 <template>
-  <div class="contents-wrap">
-    <b-overlay :show="loading">
+  <div class="contents-wrap" :class="{ 'contents-gap': !noGap }">
+    <b-overlay :show="overlay">
       <div class="contents-wrap__innner">
         <slot />
       </div>
-      <div v-if="$slots.editActivator" class="contents-wrap__edit-activator">
+      <div
+        v-if="$slots.editActivator"
+        class="contents-wrap__edit-activator"
+        :style="{ top: activatorPositionTop, right: activatorPositionRight }"
+      >
         <slot name="editActivator" />
       </div>
     </b-overlay>
@@ -17,9 +21,21 @@ import { defineComponent } from '@nuxtjs/composition-api'
 export default defineComponent({
   name: 'ContentsWrap',
   props: {
-    loading: {
+    overlay: {
       type: Boolean,
       default: false
+    },
+    noGap: {
+      type: Boolean,
+      default: false
+    },
+    activatorPositionTop: {
+      type: [Number, String],
+      default: 0,
+    },
+    activatorPositionRight: {
+      type: [Number, String],
+      default: '2rem',
     }
   }
 })
@@ -44,9 +60,13 @@ export default defineComponent({
   }
 }
 
-@media only screen and (min-width: $grid-breakpoint-md) {
-  .contents-wrap {
-    width: 98%;
+.contents-gap {
+  width: 94%;
+}
+
+@media only screen and (max-width: $grid-breakpoint-md) {
+  .contents-gap {
+    width: 100%;
   }
 }
 </style>

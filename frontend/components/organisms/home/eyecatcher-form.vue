@@ -1,6 +1,6 @@
 <template>
-  <b-overlay :show="loading">
-    <div class="eyecatcher-form"> 
+  <contentsform-wrap :overlay="loading">
+    <form class="eyecatcher-form"> 
       <div class="eyecatcher-form__input">
         <label for="eyecatcher-form-input-image">トップ背景画像</label>
         <file-input
@@ -49,8 +49,8 @@
           キャンセル
         </b-button>
       </div>
-    </div>
-  </b-overlay>
+    </form>
+  </contentsform-wrap>
 </template>
 
 <script lang="ts">
@@ -58,11 +58,12 @@ import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
+import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
   name: 'EyeCatcherForm',
-  components: { FileInput },
+  components: { ContentsformWrap, FileInput },
   setup(_props, { emit }) {
     const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(1)
     const eyecatcherForm = useValidation({
