@@ -8,6 +8,7 @@ export interface ContentType {
   body?: string
   image?: string
   link?: string
+  position?: number
   removed?: boolean
 }
 
@@ -53,4 +54,13 @@ export interface EyecatchType {
   title?: string
   subtitle?: string
   image?: string
+}
+
+
+/**
+ * ContentListOption
+ */
+export interface ContentPosition {
+  id: number
+  position: number
 }

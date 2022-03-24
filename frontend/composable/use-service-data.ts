@@ -100,6 +100,12 @@ export const useServiceList = (userId: number = 0) => {
     })
   }
 
+  const changeServicesPosition = (updatedList: ServiceType[]) => {
+    // TODO: position を更新した場合のAPI仕様策定
+    // TODO: 同期して更新すべきデータの同期処理
+    listRef.value = updatedList
+  }
+
   watch(syncCreated, () => {
     listRef.value.push(syncData.value)
 
@@ -126,5 +132,6 @@ export const useServiceList = (userId: number = 0) => {
     serviceList: listRef,
     loading,
     loadServiceList,
+    changeServicesPosition
   }
 }

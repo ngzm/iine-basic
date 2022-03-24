@@ -1,0 +1,14 @@
+{
+  "name": "iine-api",
+  "version": "1.0.0",
+  "description": "THis is iine-api. iine is a web-page-service-platform.",
+  "author": "Long Live Net",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}

@@ -1,6 +1,9 @@
 <template>
   <contents-wrap :overlay="loading" class="type2-services">
-    <contents-grid :contents-list="serviceList">
+    <contents-grid-draggable
+      :contents-list="serviceList"
+      @change="(list) => changeServicesPosition(list)"
+    >
       <template #default="{ content }">
         <h5 class="type2-services__content-title">
           {{ content.title }}
@@ -23,7 +26,7 @@
           size="1.6rem"
         />
       </template>
-    </contents-grid>
+    </contents-grid-draggable>
 
     <template #editActivator>
       <content-edit-activator :type="types.service" :action="actions.create" />
@@ -36,7 +39,7 @@ import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { contentDataTypes, contentActionTypes } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
-import ContentsGrid from '@/components/molecules/contents-grid.vue'
+import ContentsGridDraggable from '@/components/molecules/contents-grid-draggable.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
@@ -44,12 +47,12 @@ export default defineComponent({
   name: 'Type1Services',
   components: {
     ContentsWrap,
-    ContentsGrid,
+    ContentsGridDraggable,
     SectionContentEyecatcher,
     ContentEditActivator
   },
   setup() {
-    const { serviceList, loading, loadServiceList } = useServiceList()
+    const { serviceList, loading, loadServiceList, changeServicesPosition } = useServiceList()
 
     onMounted(() => {
       loadServiceList()
@@ -58,6 +61,7 @@ export default defineComponent({
     return {
       serviceList,
       loading,
+      changeServicesPosition,
       types: contentDataTypes,
       actions: contentActionTypes,
     }
