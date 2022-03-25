@@ -33,4 +33,4 @@ COPY . .
 RUN npm update npm && npm update yarn && yarn install
 
 EXPOSE 3003
-CMD /sbin/tini -- node index.js
+CMD /sbin/tini -- node index.mjs

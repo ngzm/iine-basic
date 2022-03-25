@@ -1,0 +1,12 @@
+{
+  "type": "development",
+  "appConfig": {
+    "port": 3003,
+    "logLevel": "trace"
+  },
+  "dbConfig": {
+    "host": "mongo",
+    "port": 27017,
+    "database": "iinedb"
+  }
+}

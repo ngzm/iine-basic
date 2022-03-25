@@ -113,8 +113,3 @@ Session.vim
 !.env_sample
 
 .bash_history
-
-### iine ###
-docker_mongo.env
-docker_minio.env
-docker-mongo-init.js
