@@ -1,10 +1,14 @@
 import { reactive, ref, toRefs, computed, watch, useStore } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
-import { initContent, ContentSynchronizer } from '@/composable/content-helper'
+import { ContentSynchronizer } from '@/composable/content-helper'
 import { fetchNews, saveNews, removeNews } from '@/utils/data-service'
 
 const initNews = (): NewsType => ({
-  ...initContent(),
+  id: 0,
+  title: '',
+  body: '',
+  image: '',
+  link: '',
   category: '',
   publishOn: new Date(),
 })

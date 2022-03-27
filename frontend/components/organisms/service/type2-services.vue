@@ -52,7 +52,7 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { serviceList, loading, loadServiceList, changeServicesPosition } = useServiceList()
+    const { serviceList, loading, loadServiceList, changeServicesPosition } = useServiceList(1)
 
     onMounted(() => {
       loadServiceList()

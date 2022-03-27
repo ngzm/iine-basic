@@ -154,10 +154,10 @@ export default defineComponent({
       if (action === contentActionTypes.create) return
 
       await loadService(dataId)
-      serviceForm.id.$value = service.value.id || 0
-      serviceForm.title.$value = service.value.title || ''
-      serviceForm.image.$value = service.value.image || ''
-      serviceForm.body.$value = service.value.body || ''
+      serviceForm.id.$value = service.id || 0
+      serviceForm.title.$value = service.title || ''
+      serviceForm.image.$value = service.image || ''
+      serviceForm.body.$value = service.body || ''
     })
 
     const onChangeImageFile =(imageFile: File) => {
@@ -174,7 +174,8 @@ export default defineComponent({
         id: 0,
         title: formData.title,
         image: formData.image,
-        body: formData.body
+        body: formData.body,
+        position: 0
       }
       const imageFile = formData.imageFile as File || null
       await createService(serviceData, imageFile)
@@ -187,13 +188,14 @@ export default defineComponent({
 
       const formData = serviceForm.toObject()
       const serviceData = {
-        id: formData.id,
+        id: service.id,
         title: formData.title,
         image: formData.image,
-        body: formData.body
+        body: formData.body,
+        position: service.position
       }
       const imageFile = formData.imageFile as File || null
-      await updateService(serviceData, imageFile)
+      await updateService(dataId, serviceData, imageFile)
       emit('close')
     }
 

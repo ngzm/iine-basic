@@ -18,23 +18,21 @@ export const useContactData = (userId: number = 0) => {
   const dataRef= computed(() => dataReactive)
 
   const loadContact = async (contactId: number) => {
-    await dispatch('buzy/runBuzyJob', {
-      job: async () => {
-        loading.value = true
-        Object.assign(dataReactive, await fetchContact(userId, contactId))
-        loading.value = false
-      }
-    })
+    const job = async () => {
+      loading.value = true
+      Object.assign(dataReactive, await fetchContact(userId, contactId))
+      loading.value = false
+    }
+    await dispatch('buzy/runBuzyJob', { job })
   }
 
   const updateContact = async (updateData: ContactType, imageFile: File | null) => {
-    await dispatch('buzy/runBuzyJob', {
-      job: async () => {
-        loading.value = true
-        syncronizer.onUpdated(await saveContact(updateData, imageFile))
-        loading.value = false
-      }
-    })
+    const job = async () => {
+      loading.value = true
+      syncronizer.onUpdated(await saveContact(updateData, imageFile))
+      loading.value = false
+    }
+    await dispatch('buzy/runBuzyJob', { job })
   }
 
   watch(syncUpdated, () => {

@@ -5,34 +5,32 @@ import IdSequence from './model.sequences.mjs'
 
 const Schema = mongoose.Schema
 
-const newsSchema = new Schema({
+const serviceSchema = new Schema({
   id: { type: Number, required: true, unique: true },
-  userId: { type: Number, required: true, index: true  },
+  userId: { type: Number, required: true, index: true },
   title: { type: String, required: true },
   subtitle: { type: String },
   body: { type: String, required: true },
   image: { type: String },
   link: { type: String },
-  position: { type: Number },
+  position: { type: Number, required: true },
   removed: { type: Boolean, default: false },
-  category: { type: String, required: true },
-  publishOn: { type: Date,  required: true, index: true },
 },{
-  collection: 'newses',
   versionKey: false,
   timestamp: true
 })
 
-newsSchema.pre('validate', async function(next) {
+serviceSchema.pre('validate', async function(next) {
   if (this.isNew) {
     const idSeq = await IdSequence.findOneAndUpdate(
-      { idKey: 'newsId' },
+      { idKey: 'serviceId' },
       { $inc: { idValue: 1 } },
       { new: true, upsert: true }
     )
     this.id = idSeq.idValue
+    this.position ||= this.id
   }
   return next()
 })
 
-export default mongoose.model('newses', newsSchema)
+export default mongoose.model('service', serviceSchema)

@@ -7,7 +7,9 @@ import cors from 'cors'
 import logger, { setLogLevel } from './lib/logger.mjs'
 import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
 
+import usersRouter from './router/router.users.mjs'
 import newsRouter from './router/router.news.mjs'
+import servicesRouter from './router/router.services.mjs'
 
 /**
  * Log4j - set log level
@@ -20,7 +22,7 @@ setLogLevel(config.appConfig.logLevel)
 const app = express()
 const port = config.appConfig.port || 3000
 app.listen(port || 3000, () => {
-  logger.info(`Example app listening on port ${port}`)
+  logger.info(`iine application listening on port ${port}`)
 })
 
 /**
@@ -34,6 +36,7 @@ mongooseConnect(`mongodb://${config.dbConfig.host}:${config.dbConfig.port}/${con
 // ********************************
 // Middlewares for all Routers
 // ********************************
+app.use(express.json())
 app.use(cors());
 
 /**
@@ -47,10 +50,18 @@ app.use((request, response, next) => {
 // ********************************
 // Application Routers
 // ********************************
+app.use('/users', usersRouter);
+app.use('/services', servicesRouter);
+
 app.use('/', newsRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+import BucketHandler from './strage/aws-s3/bucket-handler.mjs'
+
+app.get('/', async (req, res) => {
+  const bucket = new BucketHandler()
+  const data = await bucket.fetchObject('emblemmatic-ll-logo-117_Fotor.png')
+
+  res.send(data)
 })
 
 /**

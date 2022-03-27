@@ -3,9 +3,12 @@
 import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
-const idSequence = new Schema({
-  _id: { type: String, required: true },
-  value: { type: Number, required: true }
+const idSequenceSchema = new Schema({
+  idKey: { type: String, required: true, unique: true },
+  idValue: { type: Number, required: true }
+}, {
+  versionKey: false,
+  timestamp: false
 })
 
-export default mongoose.model('idSequence', idSequence)
+export default mongoose.model('id_sequence', idSequenceSchema)

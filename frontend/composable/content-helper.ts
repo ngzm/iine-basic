@@ -1,18 +1,6 @@
 import { ContentType } from '@/types/content-type'
 
 /**
- * ContentType 初期化データ
- */
-export const initContent = (): ContentType => ({
-  id: 0,
-  title: '',
-  subtitle: '',
-  body: '',
-  image: '',
-  link: '',
-})
-
-/**
  * データ種別 enum
  */
 export const contentDataTypes = {
@@ -40,10 +28,30 @@ export const contentActionTypes = {
 
 export type ContentActionType = typeof contentActionTypes[keyof typeof contentActionTypes];
 
+
+
+
+
+
+/**
+ * ContentType 初期化データ
+ */
+ export const initContent = (): ContentType => ({
+  id: 0,
+  title: '',
+  subtitle: '',
+  body: '',
+  image: '',
+  link: '',
+})
+
+
+
+
 /**
  * データ更新・追加時に同期すべきデータも更新できる仕組みを提供
  */
-export class ContentSynchronizer<T extends { id: number }> {
+export class ContentSynchronizer<T extends ContentType> {
   syncCreated: boolean
   syncUpdated: boolean
   syncDeleted: boolean

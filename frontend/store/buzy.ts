@@ -25,10 +25,14 @@ export const mutations: MutationTree<BuzyState> = {
 }
 
 export const actions: ActionTree<BuzyState, RootState> = {
-  runBuzyJob: async ({ commit }, { job }) => {
-    const buzyId = uuidv4()
+  buzyId: () => uuidv4(),
+  buzyOn: ({ commit }, buzyId) => {
     commit('ADD_BUZY_ID', buzyId)
-    await job()
+
+    // 無限にBuzyになるのを避けるため遅くとも10秒後には解放する
+    setTimeout(() => { commit('REMOVE_BUZY_ID', buzyId)}, 10000)
+  },
+  buzyOff: ({ commit }, buzyId) => { 
     commit('REMOVE_BUZY_ID', buzyId)
   },
   buzyWait: async ({ getters }, timeout = 5000) => {
@@ -40,5 +44,12 @@ export const actions: ActionTree<BuzyState, RootState> = {
     for (let i = 0; getters.isBuzy && i <= imax; i++) {
       await sleep(interbal)
     }
-  }
+  },
+  // TODO: depricate
+  runBuzyJob: async ({ commit }, { job }) => {
+    const buzyId = uuidv4()
+    commit('ADD_BUZY_ID', buzyId)
+    await job()
+    commit('REMOVE_BUZY_ID', buzyId)
+  },
 }

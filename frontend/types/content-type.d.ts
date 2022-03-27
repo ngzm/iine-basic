@@ -3,6 +3,7 @@
  */
 export interface ContentType {
   id: number
+  userId?: number
   title?: string
   subtitle?: string
   body?: string
@@ -21,6 +22,8 @@ export interface InformationType extends ContentType {}
  * News
  */
 export interface NewsType extends ContentType {
+  title: string
+  body: string
   category: string
   publishOn: Date
 }
@@ -28,7 +31,9 @@ export interface NewsType extends ContentType {
 /**
  * Service
  */
-export interface ServiceType extends ContentType {}
+export interface ServiceType extends ContentType {
+  position: number
+}
 
 /**
  * Work
@@ -49,13 +54,7 @@ export interface ContactType extends ContentType {}
 /**
  * Eyecatcher
  */
-export interface EyecatchType {
-  id: number
-  title?: string
-  subtitle?: string
-  image?: string
-}
-
+export interface EyecatchType extends ContentType {}
 
 /**
  * ContentListOption

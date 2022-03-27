@@ -1,7 +1,7 @@
 'use strict'
 
 import express from 'express'
-import { getNewsList } from '../db/mongo/db.news.mjs'
+import { getNewsList } from '../db/mongo/store.news.mjs'
 
 const router = express.Router();
 
