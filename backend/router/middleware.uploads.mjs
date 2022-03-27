@@ -5,7 +5,7 @@ import multer from 'multer'
 import moment from 'moment'
 import logger from '../lib/logger.mjs'
 import { zeroPaddingString, getFileExtension } from '../lib/utils.mjs'
-import BucketHandler from '../strage/aws-s3/bucket-handler.mjs'
+import StrageHandler from '../strage/aws-s3/strage.s3handler.mjs'
 
 /**
  * Uploader based on multer
@@ -23,7 +23,7 @@ export const upload = multer({ storage })
 /**
  * Image ファイルを Bucket Strage にアップロードする
  */
-const bucketHandler = new BucketHandler()
+const strageHandler = new StrageHandler()
 export const uploadToBucket = async (request, response, next) => {
   try {
     const userId = request.query.userId
@@ -34,7 +34,7 @@ export const uploadToBucket = async (request, response, next) => {
     const objectName = getBucketObjectName(prefix, file.originalname)
     const contentType = file.mimetype || 'application/octet-stream'
     const localFilePath = file.path
-    await bucketHandler.uploadFile(objectName, contentType, localFilePath)
+    await strageHandler.uploadFile(objectName, contentType, localFilePath)
     request.body.imageObjectName = objectName
     logger.trace('imageObjectName: ', request.body.imageObjectName)
     next()
