@@ -90,4 +90,5 @@ sw.*
 *.swp
 
 ## iine
-uploads/
+uploads/*
+!uploads/.keep
