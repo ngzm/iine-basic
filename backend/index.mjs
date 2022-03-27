@@ -43,8 +43,12 @@ app.use(cors());
  * check is DB Connected middleware function
  */
 app.use((request, response, next) => {
-  tryMongoose();
-  next();
+  try {
+    tryMongoose()
+    next()
+  } catch (error) {
+    next(error)
+  }
 })
 
 // ********************************
@@ -55,13 +59,8 @@ app.use('/services', servicesRouter);
 
 app.use('/', newsRouter);
 
-import BucketHandler from './strage/aws-s3/bucket-handler.mjs'
-
 app.get('/', async (req, res) => {
-  const bucket = new BucketHandler()
-  const data = await bucket.fetchObject('emblemmatic-ll-logo-117_Fotor.png')
-
-  res.send(data)
+  res.send('This is the iine-dot-website')
 })
 
 /**

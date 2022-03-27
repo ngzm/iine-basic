@@ -46,3 +46,13 @@ export const validateBodyRequired = (request, response, next) => {
   }
   next()
 }
+
+/**
+ * request body Service 一覧 position データチェック Middleware
+ */
+export const validatePositions = (request, response, next) => {
+  if (!request.body || !Array.isArray(request.body)) {
+    return next(new AppError(`400 Bad Request. positions data is not Array: [${positions}]`, 400))
+  }
+  next()
+}

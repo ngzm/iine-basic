@@ -12,8 +12,7 @@ const s3Config = {
   signatureVersion: 'v4'
 }
 if (process.env.NODE_ENV === 'development') {
-  // minio の場合に必要となる
-  // なぜかは不明だけどとにかく必要
+  // minio の場合に必要となる、なぜかは不明だけどとにかく必要
   s3Config.s3ForcePathStyle = true
 }
 const s3 = new AWS.S3(s3Config)
@@ -39,16 +38,12 @@ class BucketHandler {
    * @param {*} localFilePath アップロード対象のローカルに保存されたファイルパス
    */
   async uploadFile(objectName, contentType, localFilePath) {
-    console.log('up1', objectName)
-    console.log('up2', contentType)
-    console.log('up3', localFilePath)
     const params = {
       Bucket: this.bucket,
       Key: `${this.folder}/${objectName}`,
       ContentType: contentType,
       Body: fs.readFileSync(localFilePath)
     };
-    console.log('up4', params)
     return await s3.upload(params).promise()
   }
 

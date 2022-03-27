@@ -4,7 +4,7 @@ import express from 'express'
 import logger from '../lib/logger.mjs'
 import AppError from '../lib/app-error.mjs'
 import userStore from '../db/mongo/store.user.mjs'
-import { validateParamsId } from './common-validator.mjs'
+import { validateParamsId } from './middleware.validators.mjs'
 
 // ########################
 // Validators

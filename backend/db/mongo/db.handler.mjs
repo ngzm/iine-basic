@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
  * connect mongodb through Mongoose
  */
 export const mongooseConnect = async function(url, options) {
-  console.log(url, options)
   await mongoose.connect(url, {
     user: options.user,
     pass: options.pass,

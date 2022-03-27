@@ -1,72 +1,11 @@
 'use strict'
 
 import express from 'express'
-import config from 'config'
 import logger from '../lib/logger.mjs'
 import AppError from '../lib/app-error.mjs'
-import { upload } from './common-utils.mjs'
-import { toPaddedString, getBucketObjectName } from '../lib/utils.mjs'
-import BucketHandler from '../strage/aws-s3/bucket-handler.mjs'
+import { upload, uploadToBucket, contentJsonToBody } from './middleware.uploads.mjs'
 import serviceStore from '../db/mongo/store.service.mjs'
-import { validateQueryUserId, validateParamsId, validateBodyRequired } from './common-validator.mjs'
-
-// ########################
-// Middlewares
-// ########################
-const bucketHandler = new BucketHandler();
-
-/*
- * Image ファイルを Bucket Strage にアップロードする
- */
-const uploadToBucket = async (request, response, next) => {
-  try {
-    const userId = request.query.userId
-    const file = request.file
-    if (!userId || !file) return next()
-
-    const prefix = toPaddedString(request.query.userId, 6)
-    const objectName = getBucketObjectName(prefix, file.originalname)
-    const contentType = file.mimetype || 'application/octet-stream'
-    const localFilePath = file.path
-    await bucketHandler.uploadFile(objectName, contentType, localFilePath)
-    request.body.imageObjectName = objectName
-    logger.trace('imageObjectName: ', request.body.imageObjectName)
-    next()
-  } catch (error) {
-      next(error)
-  }
-}
-
-/**
- * Multipart で送信された場合の contentJson に入った JSON データをパースしてBODYにセットする
- */
-const contentJsonToBody = (request, response, next) => {
-  try {
-    const contentData = JSON.parse(request.body.contentJson || '{}')
-    for (const [key, value] of Object.entries(contentData)) {
-      request.body[key] = value
-    }
-    request.body.image = `${config.bucketConfig.BucketUrl}/${request.body.imageObjectName}`
-    logger.trace('request.body.image: ', request.body.image)
-    next()
-  } catch (error) {
-    next(error)
-  }
-}
-
-/**
- * request body Service 一覧 position データチェック Middleware
- */
- const validatePositions = (request, response, next) => {
-  if (!request.body || !Array.isArray(request.body)) {
-    return next(new AppError(`400 Bad Request. positions data is not Array: [${positions}]`, 400))
-  }
-  next()
-}
-
-// ########################
-// Routers
-// ########################
+import { validateQueryUserId, validateParamsId, validateBodyRequired, validatePositions } from './middleware.validators.mjs'
 
 const router = express.Router();
 
@@ -149,7 +88,6 @@ router.post(
  router.delete('/:id', validateBodyRequired, async(request, response, next) => {
   try {
     const ret = await serviceStore.logicalDeleteService(parseInt(request.params.id))
-    console.log('ret', ret)
     if (!ret) throw new AppError('該当する情報は見つかりませんでした', 404)
 
     response.status(204).send();
