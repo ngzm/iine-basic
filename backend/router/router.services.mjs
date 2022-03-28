@@ -1,9 +1,7 @@
 'use strict'
 
 import express from 'express'
-import logger from '../lib/logger.mjs'
 import AppError from '../lib/app-error.mjs'
-import { upload, uploadToBucket, contentJsonToBody } from './middleware.uploads.mjs'
 import serviceStore from '../db/mongo/store.service.mjs'
 import { validateQueryUserId, validateParamsId, validateBodyRequired, validatePositions } from './middleware.validators.mjs'
 
@@ -50,15 +48,8 @@ router.get('/', validateQueryUserId, async(request, response, next) => {
 /**
  * Service追加
  */
-router.post(
-   '/',
-  validateQueryUserId,
-  upload.single('imagefile'),
-  uploadToBucket,
-  contentJsonToBody,
-  async (request, response, next) => {
+router.post('/', validateQueryUserId, async (request, response, next) => {
     try {
-      logger.trace(request.body)
       const service = await serviceStore.createService(request.body)
       response.json(service)
     } catch (error) {

@@ -32,10 +32,12 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { eyecatch, loading, loadEyecatch } = useEyecatchData(1)
+    const userId = 1
+    const contentId = 1
+    const { eyecatch, loading, loadEyecatch } = useEyecatchData(userId)
 
     onMounted(() => {
-      loadEyecatch(1)
+      loadEyecatch(contentId)
     })
 
     return {

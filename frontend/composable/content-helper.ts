@@ -38,6 +38,7 @@ export type ContentActionType = typeof contentActionTypes[keyof typeof contentAc
  */
  export const initContent = (): ContentType => ({
   id: 0,
+  userId: 0,
   title: '',
   subtitle: '',
   body: '',

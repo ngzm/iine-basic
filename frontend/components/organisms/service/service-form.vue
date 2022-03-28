@@ -101,6 +101,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { action, dataId } = props
+    const userId = 1
     const {
       service,
       loading,
@@ -108,11 +109,8 @@ export default defineComponent({
       createService,
       updateService,
       deleteService
-    } = useServiceData(1)
+    } = useServiceData(userId)
     const serviceForm = useValidation({
-      id: {
-        $value: ref(0),
-      },
       title: {
         $value: ref(''),
         required: {
@@ -154,7 +152,6 @@ export default defineComponent({
       if (action === contentActionTypes.create) return
 
       await loadService(dataId)
-      serviceForm.id.$value = service.id || 0
       serviceForm.title.$value = service.title || ''
       serviceForm.image.$value = service.image || ''
       serviceForm.body.$value = service.body || ''
@@ -172,6 +169,7 @@ export default defineComponent({
       const formData = serviceForm.toObject()
       const serviceData = {
         id: 0,
+        userId,
         title: formData.title,
         image: formData.image,
         body: formData.body,
@@ -188,7 +186,8 @@ export default defineComponent({
 
       const formData = serviceForm.toObject()
       const serviceData = {
-        id: service.id,
+        id: dataId,
+        userId,
         title: formData.title,
         image: formData.image,
         body: formData.body,

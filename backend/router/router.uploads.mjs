@@ -1,11 +1,18 @@
 'use strict'
 
+import express from 'express'
 import config from 'config'
 import multer from 'multer'
 import moment from 'moment'
+
 import logger from '../lib/logger.mjs'
-import { zeroPaddingString, getFileExtension } from '../lib/utils.mjs'
 import StrageHandler from '../strage/aws-s3/strage.s3handler.mjs'
+import { validateQueryUserId } from './middleware.validators.mjs'
+import { zeroPaddingString, getFileExtension } from '../lib/utils.mjs'
+
+// ********************************
+// Middlewares 
+// ********************************
 
 /**
  * Uploader based on multer
@@ -18,13 +25,13 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   }
 })
-export const upload = multer({ storage })
+const upload = multer({ storage })
 
 /**
  * Image ファイルを Bucket Strage にアップロードする
  */
 const strageHandler = new StrageHandler()
-export const uploadToBucket = async (request, response, next) => {
+const uploadToBucket = async (request, response, next) => {
   try {
     const userId = request.query.userId
     const file = request.file
@@ -44,23 +51,6 @@ export const uploadToBucket = async (request, response, next) => {
 }
 
 /**
- * Multipart で送信された場合の contentJson に入った JSON データをパースしてBODYにセットする
- */
- export const contentJsonToBody = (request, response, next) => {
-  try {
-    const contentData = JSON.parse(request.body.contentJson || '{}')
-    for (const [key, value] of Object.entries(contentData)) {
-      request.body[key] = value
-    }
-    request.body.image = `${config.bucketConfig.BucketUrl}/${request.body.imageObjectName}`
-    logger.trace('request.body.image: ', request.body.image)
-    next()
-  } catch (error) {
-    next(error)
-  }
-}
-
-/**
  * アップロードファイル名からバケットオブジェクト名を返す
  * @param {*} prefix iineではuserIDを使用する
  * @param {*} originalname 
@@ -69,5 +59,27 @@ export const uploadToBucket = async (request, response, next) => {
 const getBucketObjectName = (prefix, originalname) => {
   const timestamp = moment().format("YYYYMMDD-HHmmSS")
   const ext = getFileExtension(originalname);
-  return `${prefix}_${timestamp}.${ext}`;
+  return `${prefix}_${timestamp}.${ext}`
 }
+
+// ********************************
+// Routers
+// ********************************
+const router = express.Router();
+
+/**
+ * 各 content の image file アップロード
+ */
+router.post('/image', validateQueryUserId, upload.single('imagefile'), uploadToBucket, async (request, response, next) => {
+    try {
+      const uploadedFileUrl = `${config.bucketConfig.BucketUrl}/${request.body.imageObjectName}`
+      logger.trace('uploadedFileUrl: ', uploadedFileUrl)
+
+      response.json({ fileUrl: uploadedFileUrl})
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+export default router

@@ -4,9 +4,9 @@ import { ContentType, ContentPosition } from '@/types/content-type'
 type IntilizerFunc<T> = () => T
 
 /**
- * Use Service Data
+ * Use Contet Data
  */
-export function useContentCommon<T extends ContentType>(
+export function useContent<T extends ContentType>(
   userId: number,
   apiEndpoint: string,
   initializer: IntilizerFunc<T>,
@@ -46,21 +46,35 @@ export function useContentCommon<T extends ContentType>(
   }
 
   const createData = async (newData: T, imageFile: File | null) => {
-    const formData = new FormData()
-    formData.append('contentJson', JSON.stringify({ ...newData, userId }))
-    if (imageFile) formData.append("imagefile", imageFile);
-    
     startLoading()
-    const data = await $axios.$post(apiEndpoint, formData, { params: { userId } })
+    const sendData = { ...newData }
+
+    // 最初に画像ファイルアップロード
+    const formData = new FormData()
+    if (imageFile) {
+      formData.append("imagefile", imageFile)
+      const imageUrl = await $axios.$post('/uploads/image', formData, { params: { userId } })
+      sendData.image = imageUrl.fileUrl
+    }
+    // コンテンツデータ登録
+    const data = await $axios.$post(apiEndpoint, sendData, { params: { userId } })
     syncronizer.onCreated(data)
     endLoading()
    }
 
   const updateData = async (dataId: number, modData: T, imageFile: File | null) => {
-    console.log(imageFile)
-
     startLoading()
-    const data = await $axios.$put(`${apiEndpoint}/${dataId}`, modData, { params: { userId } })
+    const sendData = { ...modData }
+
+    // 最初に画像ファイルアップロード
+    const formData = new FormData()
+    if (imageFile) {
+      formData.append("imagefile", imageFile)
+      const imageUrl = await $axios.$post('/uploads/image', formData, { params: { userId } })
+      sendData.image = imageUrl.fileUrl
+    }
+    // コンテンツデータ更新
+    const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, { params: { userId } })
     syncronizer.onUpdated(data)
     endLoading()
   }

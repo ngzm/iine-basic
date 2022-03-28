@@ -65,11 +65,10 @@ export default defineComponent({
   name: 'EyeCatcherForm',
   components: { ContentsformWrap, FileInput },
   setup(_props, { emit }) {
-    const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(1)
+    const contentId = 1
+    const userId = 1
+    const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(userId)
     const eyecatcherForm = useValidation({
-      id: {
-        $value: ref(0),
-      },
       title: {
         $value: ref(''),
         required: {
@@ -101,11 +100,10 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      await loadEyecatch(1)
-      eyecatcherForm.id.$value = eyecatch.value.id || 0
-      eyecatcherForm.title.$value = eyecatch.value.title || ''
-      eyecatcherForm.subtitle.$value = eyecatch.value.subtitle || ''
-      eyecatcherForm.image.$value = eyecatch.value.image || ''
+      await loadEyecatch(contentId)
+      eyecatcherForm.title.$value = eyecatch.title || ''
+      eyecatcherForm.subtitle.$value = eyecatch.subtitle || ''
+      eyecatcherForm.image.$value = eyecatch.image || ''
     })
 
     const validStateTitle = computed(() => !eyecatcherForm.title.$dirty ? null : !eyecatcherForm.title.$anyInvalid)
@@ -123,13 +121,14 @@ export default defineComponent({
 
       const formData = eyecatcherForm.toObject()
       const ecData = {
-        id: formData.id,
+        id: contentId,
+        userId,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
       }
       const imageFile = formData.imageFile as File || null
-      await updateEyecatch(ecData, imageFile)
+      await updateEyecatch(contentId, ecData, imageFile)
       emit('close')
     }
 
