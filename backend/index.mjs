@@ -3,12 +3,11 @@
 import express from 'express'
 import config from 'config'
 import cors from 'cors'
-
 import logger, { setLogLevel } from './lib/logger.mjs'
 import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
-
 import uploadsRouter from './router/router.uploads.mjs'
 import usersRouter from './router/router.users.mjs'
+import eyecatchesRouter from './router/router.eyecatches.mjs'
 import newsRouter from './router/router.news.mjs'
 import servicesRouter from './router/router.services.mjs'
 
@@ -57,6 +56,7 @@ app.use((request, response, next) => {
 // ********************************
 app.use('/uploads', uploadsRouter);
 app.use('/users', usersRouter);
+app.use('/eyecatches', eyecatchesRouter);
 app.use('/services', servicesRouter);
 
 app.use('/', newsRouter);

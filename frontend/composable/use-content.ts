@@ -25,6 +25,10 @@ export function useContent<T extends ContentType>(
   const startLoading = () => {
     loading.value = true
     dispatch('buzy/buzyOn', buzyId)
+
+    // TODO: 暫定
+    // 無限にloadingしないように
+    setTimeout(() => { endLoading() }, 8000)
   }
 
   const endLoading = () => {

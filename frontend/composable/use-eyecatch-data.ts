@@ -2,7 +2,7 @@ import { reactive } from '@nuxtjs/composition-api'
 import { EyecatchType } from '@/types/content-type'
 import { useContent, ContentSynchronizer } from '~/composable/use-content'
 
-const apiEndpoint = '/eyecatch'
+const apiEndpoint = '/eyecatches'
 const syncronizer = reactive(new ContentSynchronizer<EyecatchType>())
 const initEyecatch = (): EyecatchType => ({
   id: 0,
@@ -20,6 +20,7 @@ export const useEyecatchData = (userId: number = 0) => {
     dataReactive,
     loading,
     loadData,
+    createData,
     updateData,
   } = useContent<EyecatchType>(
     userId,
@@ -28,11 +29,19 @@ export const useEyecatchData = (userId: number = 0) => {
     syncronizer
   )
 
+  const updateEyecatch = async (dataId: number, modData: EyecatchType, imageFile: File | null) => {
+    if (dataReactive.id) {
+      await updateData(dataId, modData, imageFile)
+    } else {
+      await createData(modData, imageFile)
+    }
+  }
+
   return {
     eyecatch: dataReactive,
     loading,
     loadEyecatch: loadData,
-    updateEyecatch: updateData
+    updateEyecatch
   }
 }
 

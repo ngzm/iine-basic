@@ -5,25 +5,23 @@ import IdSequence from './model.sequences.mjs'
 
 const Schema = mongoose.Schema
 
-const serviceSchema = new Schema({
+const eyecatchSchema = new Schema({
   id: { type: Number, required: true, unique: true },
   userId: { type: Number, required: true, index: true },
   title: { type: String, required: true },
   subtitle: { type: String },
-  body: { type: String, required: true },
-  image: { type: String, required: true },
-  link: { type: String },
-  position: { type: Number, required: true },
+  image: { type: String },
+  position: { type: Number },
   removed: { type: Boolean, default: false },
 },{
   versionKey: false,
   timestamp: true
 })
 
-serviceSchema.pre('validate', async function(next) {
+eyecatchSchema.pre('validate', async function(next) {
   if (this.isNew) {
     const idSeq = await IdSequence.findOneAndUpdate(
-      { idKey: 'serviceId' },
+      { idKey: 'eyecatchId' },
       { $inc: { idValue: 1 } },
       { new: true, upsert: true }
     )
@@ -33,4 +31,4 @@ serviceSchema.pre('validate', async function(next) {
   return next()
 })
 
-export default mongoose.model('service', serviceSchema)
+export default mongoose.model('eyecatch', eyecatchSchema)
