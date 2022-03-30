@@ -36,8 +36,8 @@ export default defineComponent({
     const contentId = 1
     const { eyecatch, loading, loadEyecatch } = useEyecatchData(customerId)
 
-    onMounted(() => {
-      loadEyecatch(contentId)
+    onMounted(async () => {
+      await loadEyecatch(contentId)
     })
 
     return {
