@@ -7,7 +7,7 @@ import moment from 'moment'
 
 import logger from '../lib/logger.mjs'
 import StrageHandler from '../strage/aws-s3/strage.s3handler.mjs'
-import { validateQueryUserId } from './middleware.validators.mjs'
+import { validateQueryCustomerId } from './middleware.validators.mjs'
 import { zeroPaddingString, getFileExtension } from '../lib/utils.mjs'
 
 // ********************************
@@ -33,11 +33,11 @@ const upload = multer({ storage })
 const strageHandler = new StrageHandler()
 const uploadToBucket = async (request, response, next) => {
   try {
-    const userId = request.query.userId
+    const customerId = request.query.customerId
     const file = request.file
-    if (!userId || !file) return next()
+    if (!customerId || !file) return next()
 
-    const prefix = zeroPaddingString(request.query.userId, 6)
+    const prefix = zeroPaddingString(request.query.customerId, 6)
     const objectName = getBucketObjectName(prefix, file.originalname)
     const contentType = file.mimetype || 'application/octet-stream'
     const localFilePath = file.path
@@ -59,7 +59,7 @@ const uploadToBucket = async (request, response, next) => {
 const getBucketObjectName = (prefix, originalname) => {
   const timestamp = moment().format("YYYYMMDD-HHmmSS")
   const ext = getFileExtension(originalname);
-  return `${prefix}_${timestamp}.${ext}`
+  return `${prefix}/${timestamp}.${ext}`
 }
 
 // ********************************
@@ -70,7 +70,7 @@ const router = express.Router();
 /**
  * 各 content の image file アップロード
  */
-router.post('/image', validateQueryUserId, upload.single('imagefile'), uploadToBucket, async (request, response, next) => {
+router.post('/image', validateQueryCustomerId, upload.single('imagefile'), uploadToBucket, async (request, response, next) => {
     try {
       const uploadedFileUrl = `${config.bucketConfig.BucketUrl}/${request.body.imageObjectName}`
       logger.trace('uploadedFileUrl: ', uploadedFileUrl)

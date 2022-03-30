@@ -3,7 +3,12 @@
 import express from 'express'
 import AppError from '../lib/app-error.mjs'
 import eyecatchStore from '../db/mongo/store.eyecatch.mjs'
-import { validateQueryUserId, validateParamsId, validateBodyRequired, validatePositions } from './middleware.validators.mjs'
+import {
+  validateQueryCustomerId,
+  validateParamsId,
+  validateBodyRequired,
+  validatePositions
+} from './middleware.validators.mjs'
 
 const router = express.Router();
 
@@ -36,9 +41,9 @@ router.get('/:id', validateParamsId, async(request, response, next) => {
 /**
  * Eyecatch一覧情報取得
  */
-router.get('/', validateQueryUserId, async(request, response, next) => {
+router.get('/', validateQueryCustomerId, async(request, response, next) => {
   try {
-    const eyecatches = await eyecatchStore.getContents({ userId: request.query.userId })
+    const eyecatches = await eyecatchStore.getContents({ customerId: request.query.customerId })
     response.json(eyecatches)
   } catch (error) {
     next(error)
@@ -48,7 +53,7 @@ router.get('/', validateQueryUserId, async(request, response, next) => {
 /**
  * Eyecatch追加
  */
-router.post('/', validateQueryUserId, async (request, response, next) => {
+router.post('/', validateQueryCustomerId, async (request, response, next) => {
     try {
       const eyecatch = await eyecatchStore.createContent(request.body)
       response.json(eyecatch)

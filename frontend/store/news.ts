@@ -51,9 +51,9 @@ export const mutations: MutationTree<NewsSate> = {
 }
 
 export const actions: ActionTree<NewsSate, RootState> = {
-  fetchNewsList: async ({ commit }, params: { userId: number, maxLimit?: number }) => {
+  fetchNewsList: async ({ commit }, params: { customerId: number, maxLimit?: number }) => {
     const maxLimit = params.maxLimit || 500
-    const newsList = await fetchNewsList(params.userId, maxLimit)
+    const newsList = await fetchNewsList(params.customerId, maxLimit)
     commit('setNewsList', newsList)
   },
 }

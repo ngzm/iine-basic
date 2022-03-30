@@ -6,7 +6,7 @@ const apiEndpoint = '/services'
 const syncronizer = reactive(new ContentSynchronizer<ServiceType>())
 const initService = () => ({
   id: 0,
-  userId: 0,
+  customerId: 0,
   title: '',
   body: '',
   image: '',
@@ -17,7 +17,7 @@ const initService = () => ({
 /**
  * Use Service Data
  */
-export const useServiceData = (userId: number = 0) => {
+export const useServiceData = (customerId: number = 0) => {
   const {
     dataReactive,
     loading,
@@ -26,7 +26,7 @@ export const useServiceData = (userId: number = 0) => {
     updateData,
     deleteData
   } = useContent<ServiceType>(
-    userId,
+    customerId,
     apiEndpoint,
     initService,
     syncronizer
@@ -45,14 +45,14 @@ export const useServiceData = (userId: number = 0) => {
 /**
  * Use Service List Data
  */
-export const useServiceList = (userId: number = 0) => {
+export const useServiceList = (customerId: number = 0) => {
   const {
     listRef,
     loading,
     loadList,
     changePositions
   } = useContent<ServiceType>(
-    userId,
+    customerId,
     apiEndpoint,
     initService,
     syncronizer

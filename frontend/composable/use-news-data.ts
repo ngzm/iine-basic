@@ -19,7 +19,7 @@ const { /* syncCreated,  */ syncUpdated, syncDeleted, syncData } = toRefs(syncro
 /**
  * Use News Data
  */
-export const useNewsData = (userId: number = 0) => {
+export const useNewsData = (customerId: number = 0) => {
   const { commit, dispatch } = useStore()
   const dataReactive = reactive<NewsType>(initNews())
   const loading = ref(false)
@@ -29,7 +29,7 @@ export const useNewsData = (userId: number = 0) => {
     await dispatch('buzy/runBuzyJob', {
       job: async () => {
         loading.value = true
-        Object.assign(dataReactive, await fetchNews(userId, newsId))
+        Object.assign(dataReactive, await fetchNews(customerId, newsId))
         loading.value = false
       }
     })
@@ -93,7 +93,7 @@ export const useNewsData = (userId: number = 0) => {
 /**
  * Use News List stored using vuex state
  */
-export const useStoreNewsList = (userId: number = 0, limit: number = 10) => {
+export const useStoreNewsList = (customerId: number = 0, limit: number = 10) => {
   const { getters, dispatch } = useStore()
 
   const loading = ref(false)
@@ -118,7 +118,7 @@ export const useStoreNewsList = (userId: number = 0, limit: number = 10) => {
     if (getters['news/isFetched']) return
 
     loading.value = true
-    await dispatch('news/fetchNewsList', { userId, maxLimit: 1000 })
+    await dispatch('news/fetchNewsList', { customerId, maxLimit: 1000 })
     loading.value = false
   }
 

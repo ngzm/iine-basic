@@ -7,7 +7,7 @@ type IntilizerFunc<T> = () => T
  * Use Contet Data
  */
 export function useContent<T extends ContentType>(
-  userId: number,
+  customerId: number,
   apiEndpoint: string,
   initializer: IntilizerFunc<T>,
   syncronizer: ContentSynchronizer<T>
@@ -38,13 +38,13 @@ export function useContent<T extends ContentType>(
 
   const loadList = async () => {
     startLoading()
-    listRef.value = await $axios.$get(apiEndpoint, { params: { userId, limit: listLimit.value } })
+    listRef.value = await $axios.$get(apiEndpoint, { params: { customerId, limit: listLimit.value } })
     endLoading()
   }
 
   const loadData = async (dataId: number) => {
     startLoading()
-    const data = await $axios.$get(`${apiEndpoint}/${dataId}`, { params: { userId } })
+    const data = await $axios.$get(`${apiEndpoint}/${dataId}`, { params: { customerId } })
     Object.assign(dataReactive, data)
     endLoading()
   }
@@ -57,11 +57,11 @@ export function useContent<T extends ContentType>(
     const formData = new FormData()
     if (imageFile) {
       formData.append("imagefile", imageFile)
-      const imageUrl = await $axios.$post('/uploads/image', formData, { params: { userId } })
+      const imageUrl = await $axios.$post('/uploads/image', formData, { params: { customerId } })
       sendData.image = imageUrl.fileUrl
     }
     // コンテンツデータ登録
-    const data = await $axios.$post(apiEndpoint, sendData, { params: { userId } })
+    const data = await $axios.$post(apiEndpoint, sendData, { params: { customerId } })
     syncronizer.onCreated(data)
     endLoading()
    }
@@ -74,18 +74,18 @@ export function useContent<T extends ContentType>(
     const formData = new FormData()
     if (imageFile) {
       formData.append("imagefile", imageFile)
-      const imageUrl = await $axios.$post('/uploads/image', formData, { params: { userId } })
+      const imageUrl = await $axios.$post('/uploads/image', formData, { params: { customerId } })
       sendData.image = imageUrl.fileUrl
     }
     // コンテンツデータ更新
-    const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, { params: { userId } })
+    const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, { params: { customerId } })
     syncronizer.onUpdated(data)
     endLoading()
   }
 
   const deleteData = async (dataId: number) => {
     startLoading()
-    await $axios.delete(`${apiEndpoint}/${dataId}`, { params: { userId } })
+    await $axios.delete(`${apiEndpoint}/${dataId}`, { params: { customerId } })
     syncronizer.onDeleted(dataReactive as T)
     endLoading()
   }
@@ -95,7 +95,7 @@ export function useContent<T extends ContentType>(
     listRef.value = changedList
 
     const positions: ContentPosition[] = changedList.map((d, i) => ({ id: d.id, position: i + 1 } as ContentPosition))
-    listRef.value = await $axios.$put(`${apiEndpoint}/positions`, positions, { params: { userId } })
+    listRef.value = await $axios.$put(`${apiEndpoint}/positions`, positions, { params: { customerId } })
     syncronizer.onPotisonChanged(positions)
   }
 

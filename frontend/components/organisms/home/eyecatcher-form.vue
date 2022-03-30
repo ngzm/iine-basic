@@ -66,8 +66,8 @@ export default defineComponent({
   components: { ContentsformWrap, FileInput },
   setup(_props, { emit }) {
     const contentId = 1
-    const userId = 1
-    const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(userId)
+    const customerId = 1
+    const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(customerId)
     const eyecatcherForm = useValidation({
       title: {
         $value: ref(''),
@@ -122,7 +122,7 @@ export default defineComponent({
       const formData = eyecatcherForm.toObject()
       const ecData = {
         id: contentId,
-        userId,
+        customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,

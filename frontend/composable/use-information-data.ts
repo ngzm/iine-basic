@@ -11,7 +11,7 @@ const { /* syncCreated,  */ syncUpdated, syncData } = toRefs(syncronizer)
 /**
  * Use Information Data
  */
-export const useInformationData = (userId: number = 0) => {
+export const useInformationData = (customerId: number = 0) => {
   const { dispatch } = useStore()
   const dataReactive = reactive<InformationType>(initInformation())
   const loading = ref(false)
@@ -21,7 +21,7 @@ export const useInformationData = (userId: number = 0) => {
     await dispatch('buzy/runBuzyJob', {
       job: async () => {
         loading.value = true
-        Object.assign(dataReactive, await fetchInformation(userId, informationId))
+        Object.assign(dataReactive, await fetchInformation(customerId, informationId))
         loading.value = false
       }
     })

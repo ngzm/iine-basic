@@ -16,8 +16,8 @@ const eyecatchDataArray = () => ([
   }
 ])
 
-export const fetchEyecatches = (userId, limit) => {
-  console.log(userId)
+export const fetchEyecatches = (customerId, limit) => {
+  console.log(customerId)
   console.log(limit)
 
   return new Promise((resolve) => setTimeout(() => {
@@ -26,8 +26,8 @@ export const fetchEyecatches = (userId, limit) => {
   }, 1000)) 
 }
 
-export const fetchEyecatch = (userId, eyecatchId) => {
-  console.log(userId)
+export const fetchEyecatch = (customerId, eyecatchId) => {
+  console.log(customerId)
 
   return new Promise((resolve) => setTimeout(() => {
     const list = eyecatchDataArray()
@@ -99,8 +99,8 @@ const informationDataObject = (id) => {
   return list.find((i) => i.id === id)
 }
 
-export const fetchInformations = (userId, limit) => {
-  console.log(userId)
+export const fetchInformations = (customerId, limit) => {
+  console.log(customerId)
   console.log(limit)
 
   return new Promise((resolve) => setTimeout(() => {
@@ -109,8 +109,8 @@ export const fetchInformations = (userId, limit) => {
   }, 1000)) 
 }
 
-export const fetchInformation = (userId, informationId) => {
-  console.log(userId, informationId)
+export const fetchInformation = (customerId, informationId) => {
+  console.log(customerId, informationId)
 
   return new Promise((resolve) => setTimeout(() => {
     const information = informationDataObject(informationId) || initInformation()
@@ -221,8 +221,8 @@ const newsDataObject = (id = 1) => {
   return list.find((i) => i.id === id)
 }
 
-export const fetchNewsList = (userId, limit) => {
-  console.log(userId)
+export const fetchNewsList = (customerId, limit) => {
+  console.log(customerId)
   console.log(limit)
 
   return new Promise((resolve) => setTimeout(() => {
@@ -231,8 +231,8 @@ export const fetchNewsList = (userId, limit) => {
   }, 1000)) 
 }
 
-export const fetchNews = (userId, newsId) => {
-  console.log(userId, newsId)
+export const fetchNews = (customerId, newsId) => {
+  console.log(customerId, newsId)
 
   return new Promise((resolve) => setTimeout(() => {
     const news = newsDataObject(newsId) || initNews()
@@ -314,8 +314,8 @@ const ServicefetchData = (id) => {
   return list.find((i) => i.id === id)
 }
 
-export const fetchServiceList = (userId, limit) => {
-  console.log(userId)
+export const fetchServiceList = (customerId, limit) => {
+  console.log(customerId)
   console.log(limit)
 
   return new Promise((resolve) => setTimeout(() => {
@@ -324,8 +324,8 @@ export const fetchServiceList = (userId, limit) => {
   }, 4000)) 
 }
 
-export const fetchService = (userId, serviceId) => {
-  console.log(userId, serviceId)
+export const fetchService = (customerId, serviceId) => {
+  console.log(customerId, serviceId)
 
   return new Promise((resolve) => setTimeout(() => {
     const service = ServicefetchData(serviceId) || initService()
@@ -380,8 +380,8 @@ const conatctFetchData = (id) => {
   return list.find((i) => i.id === id)
 }
 
-export const fetchContact = (userId, contactId) => {
-  console.log(userId, contactId)
+export const fetchContact = (customerId, contactId) => {
+  console.log(customerId, contactId)
 
   return new Promise((resolve) => setTimeout(() => {
     const contact = conatctFetchData(contactId) || initContact()

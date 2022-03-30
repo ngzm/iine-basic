@@ -11,7 +11,7 @@ const { /* syncCreated,  */ syncUpdated, syncData } = toRefs(syncronizer)
 /**
  * Use Contact Data
  */
-export const useContactData = (userId: number = 0) => {
+export const useContactData = (customerId: number = 0) => {
   const { dispatch } = useStore()
   const dataReactive = reactive<ContactType>(initContact())
   const loading = ref(false)
@@ -20,7 +20,7 @@ export const useContactData = (userId: number = 0) => {
   const loadContact = async (contactId: number) => {
     const job = async () => {
       loading.value = true
-      Object.assign(dataReactive, await fetchContact(userId, contactId))
+      Object.assign(dataReactive, await fetchContact(customerId, contactId))
       loading.value = false
     }
     await dispatch('buzy/runBuzyJob', { job })

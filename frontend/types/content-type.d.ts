@@ -3,7 +3,7 @@
  */
 export interface ContentType {
   id: number
-  userId?: number
+  customerId?: number
   title: string
   subtitle?: string
   body?: string

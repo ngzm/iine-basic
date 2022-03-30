@@ -7,7 +7,7 @@ const Schema = mongoose.Schema
 
 const serviceSchema = new Schema({
   id: { type: Number, required: true, unique: true },
-  userId: { type: Number, required: true, index: true },
+  customerId: { type: Number, required: true, index: true },
   title: { type: String, required: true },
   subtitle: { type: String },
   body: { type: String, required: true },

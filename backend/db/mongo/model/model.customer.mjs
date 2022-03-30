@@ -5,7 +5,7 @@ import IdSequence from './model.sequences.mjs'
 
 const Schema = mongoose.Schema
 
-const userSchema = new Schema({
+const customerSchema = new Schema({
   id: { type: Number, required: true, unique: true },
   name: { type: String, required: true },
   note: { type: String },
@@ -15,10 +15,10 @@ const userSchema = new Schema({
   timestamp: true
 })
 
-userSchema.pre('validate', async function(next) {
+customerSchema.pre('validate', async function(next) {
   if (this.isNew) {
     const idSeq = await IdSequence.findOneAndUpdate(
-      { idKey: 'userId' },
+      { idKey: 'customerId' },
       { $inc: { idValue: 1 } },
       { new: true, upsert: true }
     )
@@ -27,14 +27,14 @@ userSchema.pre('validate', async function(next) {
   return next()
 })
 
-const userUrlSchema = new Schema({
-  userId: { type: Number, required: true },
+const customerUrlSchema = new Schema({
+  customerId: { type: Number, required: true },
   url: { type: String, required: true, unique: true },
 }, {
   versionKey: false,
   timestamp: false
 })
-// userUrlSchema.index({ userId: 1, url: 1 }, { unique: true });
+customerUrlSchema.index({ customerId: 1, url: 1 })
 
-export const UserModel = mongoose.model('user', userSchema)
-export const UserUrlModel = mongoose.model('user_url', userUrlSchema)
+export const CustomerModel = mongoose.model('customer', customerSchema)
+export const CustomerUrlModel = mongoose.model('customer_url', customerUrlSchema)

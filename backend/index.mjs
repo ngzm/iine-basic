@@ -6,9 +6,8 @@ import cors from 'cors'
 import logger, { setLogLevel } from './lib/logger.mjs'
 import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
 import uploadsRouter from './router/router.uploads.mjs'
-import usersRouter from './router/router.users.mjs'
+import customersRouter from './router/router.customers.mjs'
 import eyecatchesRouter from './router/router.eyecatches.mjs'
-import newsRouter from './router/router.news.mjs'
 import servicesRouter from './router/router.services.mjs'
 
 /**
@@ -54,12 +53,10 @@ app.use((request, response, next) => {
 // ********************************
 // Application Routers
 // ********************************
+app.use('/customers', customersRouter);
 app.use('/uploads', uploadsRouter);
-app.use('/users', usersRouter);
 app.use('/eyecatches', eyecatchesRouter);
 app.use('/services', servicesRouter);
-
-app.use('/', newsRouter);
 
 app.get('/', async (req, res) => {
   res.send('This is the iine-dot-website')

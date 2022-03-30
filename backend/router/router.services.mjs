@@ -3,7 +3,12 @@
 import express from 'express'
 import AppError from '../lib/app-error.mjs'
 import serviceStore from '../db/mongo/store.service.mjs'
-import { validateQueryUserId, validateParamsId, validateBodyRequired, validatePositions } from './middleware.validators.mjs'
+import {
+  validateQueryCustomerId,
+  validateParamsId,
+  validateBodyRequired,
+  validatePositions
+} from './middleware.validators.mjs'
 
 const router = express.Router();
 
@@ -36,9 +41,9 @@ router.get('/:id', validateParamsId, async(request, response, next) => {
 /**
  * Service一覧情報取得
  */
-router.get('/', validateQueryUserId, async(request, response, next) => {
+router.get('/', validateQueryCustomerId, async(request, response, next) => {
   try {
-    const services = await serviceStore.getContents({ userId: request.query.userId })
+    const services = await serviceStore.getContents({ customerId: request.query.customerId })
     response.json(services)
   } catch (error) {
     next(error)
@@ -48,7 +53,7 @@ router.get('/', validateQueryUserId, async(request, response, next) => {
 /**
  * Service追加
  */
-router.post('/', validateQueryUserId, async (request, response, next) => {
+router.post('/', validateQueryCustomerId, async (request, response, next) => {
     try {
       const service = await serviceStore.createContent(request.body)
       response.json(service)

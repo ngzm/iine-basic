@@ -20,17 +20,17 @@ export const validateParamsId = (request, response, next) => {
 }
 
 /**
- * Request query userId 形式チェック Middleware
+ * Request query customerId 形式チェック Middleware
  * **Queryです**
  */
-export const validateQueryUserId = (request, response, next) => {
-  logger.trace('request.query.userId:', request.query.userId)
+export const validateQueryCustomerId = (request, response, next) => {
+  logger.trace('request.query.customerId:', request.query.customerId)
 
-  if (typeof request.query.userId === 'undefined') {
-    return next(new AppError(`400 Bad Request. Missing request userId: [${request.query.userId}]`, 400))
+  if (typeof request.query.customerId === 'undefined') {
+    return next(new AppError(`400 Bad Request. Missing request customerId: [${request.query.customerId}]`, 400))
   }
-  if (!isInt(request.query.userId)) {
-    return next(new AppError(`400 Bad Request. not number of request userId: [${request.query.userId}]`, 400))
+  if (!isInt(request.query.customerId)) {
+    return next(new AppError(`400 Bad Request. not number of request customerId: [${request.query.customerId}]`, 400))
   }
   next()
 }

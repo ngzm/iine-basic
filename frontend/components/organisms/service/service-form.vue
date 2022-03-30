@@ -101,7 +101,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { action, dataId } = props
-    const userId = 1
+    const customerId = 1
     const {
       service,
       loading,
@@ -109,7 +109,7 @@ export default defineComponent({
       createService,
       updateService,
       deleteService
-    } = useServiceData(userId)
+    } = useServiceData(customerId)
     const serviceForm = useValidation({
       title: {
         $value: ref(''),
@@ -169,7 +169,7 @@ export default defineComponent({
       const formData = serviceForm.toObject()
       const serviceData = {
         id: 0,
-        userId,
+        customerId,
         title: formData.title,
         image: formData.image,
         body: formData.body,
@@ -187,7 +187,7 @@ export default defineComponent({
       const formData = serviceForm.toObject()
       const serviceData = {
         id: dataId,
-        userId,
+        customerId,
         title: formData.title,
         image: formData.image,
         body: formData.body,
