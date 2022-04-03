@@ -58,7 +58,7 @@ export default class ContentStore {
     const contentModel = await this.Model.findOne({ id }).exec()
     if (!contentModel) return null
 
-    Object.assign(contentModel, content)
+    Object.assign(contentModel, content, { removed: false })
     return modelToObject(await contentModel.save())
   }
 

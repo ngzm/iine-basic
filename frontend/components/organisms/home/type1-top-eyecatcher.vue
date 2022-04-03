@@ -5,19 +5,36 @@
     activator-position-top="9rem"
     activator-position-right="2rem"
   >
-    <top-eyecatcher :background-image="eyecatch.image" class="type1-top-eyecatcher">
-      <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
-      <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
-    </top-eyecatcher>
+    <template v-if="!notFound">
+      <top-eyecatcher :background-image="eyecatch.image || ''" class="type1-top-eyecatcher">
+        <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
+        <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
+      </top-eyecatcher>
+    </template>
+    <template v-if="!notFound" #editActivator>
+      <content-edit-activator
+        :type="types.eyecatch"
+        :action="action.update"
+        :content-id="1"
+      />
+    </template>
 
-    <template #editActivator>
-      <content-edit-activator :type="types.eyecatch" :action="actions.update" />
+    <template v-else>
+      <top-eyecatcher :background-image="eyecatch.image || ''" class="type1-top-eyecatcher">
+        <p class="my-2">トップ画像が登録されていません</p>
+        <p class="my-2">データを作成してください</p>
+        <content-edit-activator
+          :type="types.eyecatch"
+          :action="action.create"
+          button
+        />
+      </top-eyecatcher>
     </template>
   </contents-wrap>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api'
+import { defineComponent, onMounted, useStore } from '@nuxtjs/composition-api'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
@@ -32,9 +49,10 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const customerId = 1
+    const { getters } = useStore()
+    const customerId = getters['customer/customerId']
     const contentId = 1
-    const { eyecatch, loading, loadEyecatch } = useEyecatchData(customerId)
+    const { eyecatch, loading, notFound, loadEyecatch } = useEyecatchData(customerId)
 
     onMounted(async () => {
       await loadEyecatch(contentId)
@@ -43,8 +61,9 @@ export default defineComponent({
     return {
       eyecatch,
       loading,
+      notFound,
       types: contentDataTypes,
-      actions: contentActionTypes
+      action: contentActionTypes
     }
   }
 })

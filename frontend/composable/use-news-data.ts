@@ -93,7 +93,7 @@ export const useNewsData = (customerId: number = 0) => {
 /**
  * Use News List stored using vuex state
  */
-export const useStoreNewsList = (customerId: number = 0, limit: number = 10) => {
+export const useNewsList = (customerId: number = 0, limit: number = 10) => {
   const { getters, dispatch } = useStore()
 
   const loading = ref(false)

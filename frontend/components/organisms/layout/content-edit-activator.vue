@@ -1,12 +1,19 @@
 <template>
   <div class="content-edit-activator">
-    <b-avatar
-      button
-      :icon="avatorIcon"
-      :size="avatorSize"
-      :variant="avatorVariant"
-      @click="activateToEdit()"
-    />
+    <template v-if="button">
+      <b-button variant="info" @click="activateToEdit">
+        作成する
+      </b-button>
+    </template>
+    <template v-else>
+      <b-avatar
+        button
+        :icon="avatorIcon"
+        :size="avatorSize"
+        :variant="avatorVariant"
+        @click="activateToEdit"
+      />
+    </template>
   </div>
 </template>
 
@@ -45,6 +52,10 @@ export default defineComponent({
     variant: {
       type: String,
       default: ''
+    },
+    button: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {

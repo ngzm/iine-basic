@@ -12,10 +12,11 @@ export const state = (): CustomerState => ({
 
 export const getters: GetterTree<CustomerState, RootState> = {
   customer(state) { return state.customer },
+  customerId(state) { return state.customer.id },
 }
 
 export const mutations: MutationTree<CustomerState> = {
-  setCustomer(state: CustomerState, customer: CustomerType) {
+  SET_CUSTOMER(state: CustomerState, customer: CustomerType) {
     state.customer = customer
   }
 }
@@ -23,7 +24,9 @@ export const mutations: MutationTree<CustomerState> = {
 export const actions: ActionTree<CustomerState, RootState> = {
   async fetchCustomerBySiteUrl({ commit }, siteUrl: string) {
     const customer: CustomerType = await this.$axios.$get('/customers/customer-url', { params: { url: siteUrl } })
-    commit('setCustomer', customer.id)
+    if (!customer || !customer.id) return 0
+
+    commit('SET_CUSTOMER', customer)
     return customer.id
   },
 }

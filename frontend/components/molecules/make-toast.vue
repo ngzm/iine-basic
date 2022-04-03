@@ -3,27 +3,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from '@nuxtjs/composition-api'
-
-interface ToastParams {
-  title: string
-  message: string
-  variant: string
-}
-
-const toastParams: ToastParams = reactive({
-  title: 'Toast',
-  message: 'Completed !',
-  variant: 'default'
-})
-
-const addToast = (params: ToastParams) => {
-  Object.assign(toastParams, params)
-  setAddTrriger(true)
-}
-
-const addTrriger = ref(false)
-const setAddTrriger = (v: boolean) => { addTrriger.value = v }
+import { defineComponent } from '@nuxtjs/composition-api'
+import { toastParams, addTrriger, setAddTrriger } from './make-toast-trigger'
 
 const MakeToast = defineComponent({
   name: 'MakeToast',
@@ -52,5 +33,4 @@ const MakeToast = defineComponent({
 })
 
 export default MakeToast
-export { ToastParams, addToast }
 </script>

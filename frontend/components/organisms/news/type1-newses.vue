@@ -27,7 +27,7 @@
 <script lang='ts'>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
-import { useStoreNewsList } from '@/composable/use-news-data'
+import { useNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import NewsList from '@/components/molecules/news-list.vue'
@@ -42,7 +42,7 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { newsList, loading, loadNewsList, loadMoreNewsList } = useStoreNewsList(1, 5)
+    const { newsList, loading, loadNewsList, loadMoreNewsList } = useNewsList(1, 5)
 
     onMounted(() => {
       loadNewsList()

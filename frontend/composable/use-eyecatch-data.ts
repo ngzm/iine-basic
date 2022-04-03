@@ -19,9 +19,11 @@ export const useEyecatchData = (customerId: number = 0) => {
   const {
     dataReactive,
     loading,
+    notFound,
     loadData,
     createData,
     updateData,
+    endLoading
   } = useContent<EyecatchType>(
     customerId,
     apiEndpoint,
@@ -29,18 +31,13 @@ export const useEyecatchData = (customerId: number = 0) => {
     syncronizer
   )
 
-  const updateEyecatch = async (dataId: number, modData: EyecatchType, imageFile: File | null) => {
-    if (dataReactive.id) {
-      await updateData(dataId, modData, imageFile)
-    } else {
-      await createData(modData, imageFile)
-    }
-  }
-
   return {
     eyecatch: dataReactive,
     loading,
+    notFound,
     loadEyecatch: loadData,
-    updateEyecatch
+    createEyecatch: createData,
+    updateEyecatch: updateData,
+    endLoading
   }
 }

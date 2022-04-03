@@ -1,4 +1,5 @@
 import { ref, reactive, watch, useContext, useStore, Ref } from '@nuxtjs/composition-api'
+import { ToastParams, addToast } from '@/components/molecules/make-toast-trigger'
 import { ContentType, ContentPosition } from '@/types/content-type'
 
 type IntilizerFunc<T> = () => T
@@ -19,7 +20,7 @@ export function useContent<T extends ContentType>(
   const listRef = ref<T[]>([]) as Ref<T[]>
   const listLimit = ref(10)
 
-  const loading = ref(false)
+  const loading = ref(true)
   const buzyId = dispatch('buzy/buzyId')
 
   const startLoading = () => {
@@ -36,15 +37,35 @@ export function useContent<T extends ContentType>(
     dispatch('buzy/buzyOff', buzyId)
   }
 
+  const notFound = ref(false)
+  const resetNotFound = () => { notFound.value = false }
+  const warnNotFound = () => {
+    notFound.value = true
+    addToast({
+      title: '404エラー',
+      message: '情報が見つかりませんでした',
+      variant: 'danger'
+    } as ToastParams)
+  }
+
   const loadList = async () => {
     startLoading()
-    listRef.value = await $axios.$get(apiEndpoint, { params: { customerId, limit: listLimit.value } })
+    resetNotFound()
+
+    const data = await $axios.$get(apiEndpoint, { params: { customerId, limit: listLimit.value } })
+    if (!data || data.length < 1) warnNotFound()
+
+    listRef.value = data
     endLoading()
   }
 
   const loadData = async (dataId: number) => {
     startLoading()
+    resetNotFound()
+
     const data = await $axios.$get(`${apiEndpoint}/${dataId}`, { params: { customerId } })
+    if (!data || !data.id) warnNotFound()
+
     Object.assign(dataReactive, data)
     endLoading()
   }
@@ -68,6 +89,7 @@ export function useContent<T extends ContentType>(
 
   const updateData = async (dataId: number, modData: T, imageFile: File | null) => {
     startLoading()
+    resetNotFound()
     const sendData = { ...modData }
 
     // 最初に画像ファイルアップロード
@@ -79,6 +101,8 @@ export function useContent<T extends ContentType>(
     }
     // コンテンツデータ更新
     const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, { params: { customerId } })
+    if (!data || !data.id) warnNotFound()
+
     syncronizer.onUpdated(data)
     endLoading()
   }
@@ -101,6 +125,12 @@ export function useContent<T extends ContentType>(
 
   watch(() => syncronizer.syncCreated, () => {
     listRef.value.push(syncronizer.syncData)
+
+    // トップ画像が何も登録されていない状態 (id < 1) で、新たにデータが追加された時
+    // この場合は、追加されたデータをロードする
+    if (dataReactive.id < 1) {
+      loadData(syncronizer.syncData.id)
+    }
   })
 
   watch(() => syncronizer.syncUpdated, () => {
@@ -145,6 +175,7 @@ export function useContent<T extends ContentType>(
     listRef,
     listLimit,
     loading,
+    notFound,
     startLoading,
     endLoading,
     loadList,

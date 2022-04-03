@@ -32,6 +32,7 @@ export default defineComponent({
     MakeToast,
     ContentEditModal,
   },
+  middleware: 'current-customer',
 })
 </script>
 

@@ -42,7 +42,10 @@
         </b-form-invalid-feedback>
       </div>
       <div class="eyecatcher-form__action">
-        <b-button variant="success" @click="onUpdate">
+        <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+          作成する
+        </b-button>
+        <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
           更新する
         </b-button>
         <b-button @click="onCancel">
@@ -54,20 +57,41 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
+import { defineComponent, ref, computed, onMounted, PropType, useStore } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
+import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 
 export default defineComponent({
   name: 'EyeCatcherForm',
   components: { ContentsformWrap, FileInput },
-  setup(_props, { emit }) {
-    const contentId = 1
-    const customerId = 1
-    const { eyecatch, loadEyecatch, updateEyecatch, loading } = useEyecatchData(customerId)
+  props: {
+    action: {
+      type: String as PropType<ContentActionType>,
+      required: true
+    },
+    dataId: {
+      type: Number,
+      default: 0
+    }
+  },
+  setup(props, { emit }) {
+    const { action, dataId } = props
+    const { getters } = useStore()
+    const customerId = getters['customer/customerId']
+
+    const {
+      eyecatch,
+      loadEyecatch,
+      createEyecatch,
+      updateEyecatch,
+      loading,
+      endLoading
+    } = useEyecatchData(customerId)
+
     const eyecatcherForm = useValidation({
       title: {
         $value: ref(''),
@@ -100,7 +124,11 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      await loadEyecatch(contentId)
+      if (action === contentActionTypes.create) {
+        endLoading()
+        return
+      }
+      await loadEyecatch(dataId)
       eyecatcherForm.title.$value = eyecatch.title || ''
       eyecatcherForm.subtitle.$value = eyecatch.subtitle || ''
       eyecatcherForm.image.$value = eyecatch.image || ''
@@ -115,20 +143,37 @@ export default defineComponent({
       eyecatcherForm.image.$value = URL.createObjectURL(imageFile)
     }
 
-    const onUpdate = async () => {
+    const onCreate = async () => {
       eyecatcherForm.$touch()
       if (eyecatcherForm.$anyInvalid) return
 
       const formData = eyecatcherForm.toObject()
       const ecData = {
-        id: contentId,
+        id: 0,
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
       }
       const imageFile = formData.imageFile as File || null
-      await updateEyecatch(contentId, ecData, imageFile)
+      await createEyecatch(ecData, imageFile)
+      emit('close')
+    }
+
+    const onUpdate = async () => {
+      eyecatcherForm.$touch()
+      if (eyecatcherForm.$anyInvalid) return
+
+      const formData = eyecatcherForm.toObject()
+      const ecData = {
+        id: dataId,
+        customerId,
+        title: formData.title,
+        subtitle: formData.subtitle,
+        image: formData.image,
+      }
+      const imageFile = formData.imageFile as File || null
+      await updateEyecatch(dataId, ecData, imageFile)
       emit('close')
     }
 
@@ -142,6 +187,7 @@ export default defineComponent({
       validStateSubtitle,
       validStateImage,
       onChangeImageFile,
+      onCreate,
       onUpdate,
       onCancel,
       loading
