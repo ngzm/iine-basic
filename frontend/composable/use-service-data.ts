@@ -1,6 +1,7 @@
 import { reactive } from '@nuxtjs/composition-api'
 import { ServiceType } from '@/types/content-type'
-import { useContent, ContentSynchronizer } from '~/composable/use-content'
+import { useContent } from '@/composable/use-content2'
+import { ContentSynchronizer } from '@/composable/use-content2/syncronizer'
 
 const apiEndpoint = '/services'
 const syncronizer = reactive(new ContentSynchronizer<ServiceType>())
@@ -17,16 +18,17 @@ const initService = () => ({
 /**
  * Use Service Data
  */
-export const useServiceData = (customerId: number = 0) => {
+export const useServiceData = () => {
   const {
     dataReactive,
     loading,
+    notFound,
+    endLoading,
     loadData,
     createData,
     updateData,
     deleteData
   } = useContent<ServiceType>(
-    customerId,
     apiEndpoint,
     initService,
     syncronizer
@@ -35,6 +37,8 @@ export const useServiceData = (customerId: number = 0) => {
   return {
     service: dataReactive,
     loading,
+    notFound,
+    endLoading,
     loadService: loadData,
     createService: createData,
     updateService: updateData,
@@ -45,14 +49,14 @@ export const useServiceData = (customerId: number = 0) => {
 /**
  * Use Service List Data
  */
-export const useServiceList = (customerId: number = 0) => {
+export const useServiceList = () => {
   const {
     listRef,
     loading,
+    notFound,
     loadList,
     changePositions
   } = useContent<ServiceType>(
-    customerId,
     apiEndpoint,
     initService,
     syncronizer
@@ -61,6 +65,7 @@ export const useServiceList = (customerId: number = 0) => {
   return {
     serviceList: listRef,
     loading,
+    notFound,
     loadServiceList: loadList,
     changeServicesPosition: changePositions
   }

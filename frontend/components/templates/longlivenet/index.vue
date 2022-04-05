@@ -1,7 +1,7 @@
 <template>
   <article>
     <div id="index-top-position">
-      <top-eye-catcher />
+      <top-eye-catcher :content-id="1" />
     </div>
 
     <article id="index-information-article">
@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed, watch, useRoute, useRouter, useStore, nextTick } from '@nuxtjs/composition-api'
 import VueScrollTo from "vue-scrollto"
-import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher.vue'
+import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher-detail.vue'
 import Informations from '@/components/organisms/information/type1-informations.vue'
 import Newses from '@/components/organisms/news/type1-newses.vue'
 import Services from '@/components/organisms/service/type2-services.vue'

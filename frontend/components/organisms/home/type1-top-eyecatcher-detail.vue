@@ -1,40 +1,39 @@
 <template>
   <contents-wrap
-    :overlay="loading"
+    :overlay="loading || notFound"
     no-gap
     activator-position-top="9rem"
     activator-position-right="2rem"
   >
-    <template v-if="!notFound">
-      <top-eyecatcher :background-image="eyecatch.image || ''" class="type1-top-eyecatcher">
-        <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
-        <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
-      </top-eyecatcher>
-    </template>
+    <top-eyecatcher :background-image="eyecatch.image || ''" class="type1-top-eyecatcher">
+      <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
+      <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
+    </top-eyecatcher>
+
     <template v-if="!notFound" #editActivator>
       <content-edit-activator
         :type="types.eyecatch"
-        :action="action.update"
-        :content-id="1"
+        :action="actions.update"
+        :content-id="contentId"
       />
     </template>
 
-    <template v-else>
-      <top-eyecatcher :background-image="eyecatch.image || ''" class="type1-top-eyecatcher">
-        <p class="my-2">トップ画像が登録されていません</p>
-        <p class="my-2">データを作成してください</p>
+    <template v-else #overlay>
+      <div class="text-center">
+        <h4 class="my-3">トップ画像コンテンツが登録されていません</h4>
+        <p class="my-3">コンテンツを作成してください</p>
         <content-edit-activator
           :type="types.eyecatch"
-          :action="action.create"
+          :action="actions.create"
           button
         />
-      </top-eyecatcher>
+      </div>
     </template>
   </contents-wrap>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
@@ -42,20 +41,23 @@ import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
-  name: 'Type1TopEyecatcher',
+  name: 'Type1TopEyecatcherDetail',
   components: {
     ContentsWrap,
     TopEyecatcher,
     ContentEditActivator
   },
-  setup() {
-    const { getters } = useStore()
-    const customerId = getters['customer/customerId']
-    const contentId = 1
-    const { eyecatch, loading, notFound, loadEyecatch } = useEyecatchData(customerId)
+  props: {
+    contentId: {
+      type: Number,
+      required: true
+    },
+  },
+  setup(props) {
+    const { eyecatch, loading, notFound, loadEyecatch } = useEyecatchData()
 
     onMounted(async () => {
-      await loadEyecatch(contentId)
+      await loadEyecatch(props.contentId)
     })
 
     return {
@@ -63,7 +65,7 @@ export default defineComponent({
       loading,
       notFound,
       types: contentDataTypes,
-      action: contentActionTypes
+      actions: contentActionTypes
     }
   }
 })

@@ -80,7 +80,8 @@
 import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
-import { useServiceData } from '~/composable/use-service-data'
+import { useServiceData } from '@/composable/use-service-data'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
@@ -101,15 +102,16 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { action, dataId } = props
-    const customerId = 1
+    const { customerId } = useCurrentCustomer()
     const {
       service,
       loading,
+      endLoading,
       loadService,
       createService,
       updateService,
       deleteService
-    } = useServiceData(customerId)
+    } = useServiceData()
     const serviceForm = useValidation({
       title: {
         $value: ref(''),
@@ -149,8 +151,10 @@ export default defineComponent({
     const validStateBody = computed(() => !serviceForm.body.$dirty ? null : !serviceForm.body.$anyInvalid)
 
     onMounted(async() => {
-      if (action === contentActionTypes.create) return
-
+      if (action === contentActionTypes.create) {
+        endLoading()
+        return
+      }
       await loadService(dataId)
       serviceForm.title.$value = service.title || ''
       serviceForm.image.$value = service.image || ''

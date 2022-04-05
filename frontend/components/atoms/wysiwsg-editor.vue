@@ -1,14 +1,14 @@
 <template>
 <div class="wysiwyg-editor" :class="classByStates">
   <div class="wysiwyg-editor__editor">
-    <no-ssr>
+    <client-only>
       <vue-editor
         v-model="valueText"
         :editor-toolbar="wysiwygToolbar"
         @focus="isFocus = true"
         @blur="isFocus = false"
       />
-    </no-ssr>
+    </client-only>
   </div>
   <div class="wysiwyg-editor__icon">
     <b-icon

@@ -1,5 +1,5 @@
 <template>
-  <contents-wrap :overlay="loading" class="type2-services">
+  <contents-wrap :overlay="loading || notFound" class="type2-services">
     <contents-grid-draggable
       :contents-list="serviceList"
       @change="(list) => changeServicesPosition(list)"
@@ -28,8 +28,20 @@
       </template>
     </contents-grid-draggable>
 
-    <template #editActivator>
+    <template v-if="!notFound" #editActivator>
       <content-edit-activator :type="types.service" :action="actions.create" />
+    </template>
+
+    <template v-else #overlay>
+      <div class="text-center">
+        <h4 class="my-3">Services コンテンツが登録されていません</h4>
+        <p class="my-3">コンテンツを作成してください</p>
+        <content-edit-activator
+          :type="types.service"
+          :action="actions.create"
+          button
+        />
+      </div>
     </template>
   </contents-wrap>
 </template>
@@ -52,15 +64,22 @@ export default defineComponent({
     ContentEditActivator
   },
   setup() {
-    const { serviceList, loading, loadServiceList, changeServicesPosition } = useServiceList(1)
+    const {
+      serviceList,
+      loading,
+      notFound,
+      loadServiceList,
+      changeServicesPosition
+    } = useServiceList()
 
-    onMounted(() => {
-      loadServiceList()
+    onMounted(async () => {
+      await loadServiceList()
     })
 
     return {
       serviceList,
       loading,
+      notFound,
       changeServicesPosition,
       types: contentDataTypes,
       actions: contentActionTypes,

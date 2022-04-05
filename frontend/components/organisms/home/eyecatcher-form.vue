@@ -57,10 +57,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, PropType, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, onMounted, PropType } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
@@ -80,9 +81,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { action, dataId } = props
-    const { getters } = useStore()
-    const customerId = getters['customer/customerId']
-
+    const { customerId } = useCurrentCustomer()
     const {
       eyecatch,
       loadEyecatch,
@@ -90,7 +89,7 @@ export default defineComponent({
       updateEyecatch,
       loading,
       endLoading
-    } = useEyecatchData(customerId)
+    } = useEyecatchData()
 
     const eyecatcherForm = useValidation({
       title: {
