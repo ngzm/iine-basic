@@ -1,9 +1,13 @@
 <template>
-  <contents-card :overlay="loading">
+  <contents-card :overlay="loading || notFound">
     <template #default>
       <section-eyecatcher :background-image="contact.image">
-        <h4 class="type1-contact__header--title">{{ contact.title }}</h4>
-        <p class="type1-contact__header--subtitle">{{ contact.subtitle }}</p>
+        <h4 class="type1-contact__header--title">
+          {{ contact.title }}
+        </h4>
+        <p class="type1-contact__header--subtitle">
+          {{ contact.subtitle }}
+        </p>
       </section-eyecatcher>
 
       <contents-card-body>
@@ -20,8 +24,20 @@
       </contents-card-body>
     </template>
 
-    <template #editActivator>
+    <template v-if="!notFound" #editActivator>
       <content-edit-activator :type="types.contact" :action="actions.update" :content-id="1" />
+    </template>
+
+    <template v-if="notFound" #overlay>
+      <div class="text-center">
+        <h4 class="my-3">コンタクト情報が登録されていません</h4>
+        <p class="my-3">情報を作成してください</p>
+        <content-edit-activator
+          :type="types.contact"
+          :action="actions.create"
+          button
+        />
+      </div>
     </template>
   </contents-card>
 </template>
@@ -37,28 +53,40 @@ import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
-  name: 'Type1Contact',
+  name: 'Type1ContactDetail',
   components: {
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
     ContentEditActivator
   },
-  setup() {
-    const { contact, loading, loadContact } = useContactData()
-
-    onMounted(() => {
-      loadContact(1)
-    })
+  props: {
+    contentId: {
+      type: Number,
+      required: true
+    },
+  },
+  setup(props) {
+    const {
+      contact,
+      loading,
+      notFound,
+      loadContact
+    } = useContactData()
 
     // TODO: need sanitize!
-    const contactHtml = computed(() => contact.value.body)
+    const contactHtml = computed(() => contact.body)
+
+    onMounted(async () => {
+      await loadContact(props.contentId)
+    })
 
     return {
       sidebarIdName,
       contact,
       contactHtml,
       loading,
+      notFound,
       types: contentDataTypes,
       actions: contentActionTypes
     }

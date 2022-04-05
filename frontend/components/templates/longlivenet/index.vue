@@ -43,7 +43,7 @@
     <article id="index-contact-article">
       <section class="article-margin">
         <h4 class="section-title"><span>Contact</span></h4>
-        <contact />
+        <contact-detail :content-id="1" />
       </section>
     </article>
   </article>
@@ -56,7 +56,7 @@ import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher-deta
 import InformationDetail from '~/components/organisms/information/type1-information-detail.vue'
 import Newses from '@/components/organisms/news/type1-newses.vue'
 import Services from '@/components/organisms/service/type2-services.vue'
-import Contact from '@/components/organisms/contact/type1-contact.vue'
+import ContactDetail from '~/components/organisms/contact/type1-contact-detail.vue'
 
 export default defineComponent({
   name: 'LongLivenetIndex',
@@ -65,7 +65,7 @@ export default defineComponent({
     InformationDetail,
     Newses,
     Services,
-    Contact,
+    ContactDetail,
   },
   setup() {
     const route = useRoute()

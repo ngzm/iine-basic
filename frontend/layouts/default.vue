@@ -9,7 +9,7 @@
     <footer>
       <default-footer />
     </footer>
-    <contact-sidebar />
+    <contact-form-sidebar />
     <make-toast />
     <content-edit-modal />
   </div>
@@ -19,7 +19,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import DefaultHeader from '@/components/organisms/layout/default-header.vue'
 import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
-import ContactSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
+import ContactFormSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
 import ContentEditModal from '@/components/organisms/layout/content-edit-modal.vue'
 
@@ -28,7 +28,7 @@ export default defineComponent({
   components: {
     DefaultHeader,
     DefaultFooter,
-    ContactSidebar,
+    ContactFormSidebar,
     MakeToast,
     ContentEditModal,
   },

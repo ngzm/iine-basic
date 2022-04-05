@@ -1,14 +1,12 @@
 <template>
   <contents-card :overlay="loading || notFound">
     <template #default>
-      <section-eyecatcher
-        :background-image="information.image"
-        class="type1-information__header"
-      >
+      <section-eyecatcher :background-image="information.image">
         <h4 class="type1-information__header--title">
           {{ information.title }}
         </h4>
       </section-eyecatcher>
+
       <contents-card-body>
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="informationHtml" />
@@ -81,8 +79,8 @@ export default defineComponent({
     // TODO: need sanitize!
     const informationHtml = computed(() => information.body)
 
-    onMounted(() => {
-      loadInformation(props.contentId)
+    onMounted(async () => {
+      await loadInformation(props.contentId)
     })
 
     return {

@@ -33,20 +33,26 @@ import InquireFormResult from '@/components/organisms/inquire/inquire-form-resul
 export const sidebarIdName = 'inquire-form-sidebar'
 
 export default defineComponent({
-  name: 'ContactSidebar',
+  name: 'ContactFormSidebar',
   components: {
     InquireForm,
     InquireFormResult,
   },
-  setup() {
+  props: {
+    contentId: {
+      type: Number,
+      default: 1
+    },
+  },
+  setup(props) {
     const { contact, loadContact } = useContactData()
 
-    onMounted(() => {
-      loadContact(1)
+    onMounted(async () => {
+      await loadContact(props.contentId)
     })
 
     // TODO: need sanitize!
-    const contactBody = computed(() => contact.value.body || '')
+    const contactBody = computed(() => contact.body || '')
 
     const sendInquirMail = (data: InquireFormType) => {
       console.log(data)

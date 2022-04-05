@@ -10,6 +10,7 @@ import customersRouter from './router/router.customers.mjs'
 import eyecatchesRouter from './router/router.eyecatches.mjs'
 import informationsRouter from './router/router.informations.mjs'
 import servicesRouter from './router/router.services.mjs'
+import contactsRouter from './router/router.contacts.mjs'
 
 /**
  * Log4j - set log level
@@ -54,14 +55,15 @@ app.use((request, response, next) => {
 // ********************************
 // Application Routers
 // ********************************
-app.use('/customers', customersRouter);
-app.use('/uploads', uploadsRouter);
-app.use('/eyecatches', eyecatchesRouter);
-app.use('/informations', informationsRouter);
-app.use('/services', servicesRouter);
+app.use('/customers', customersRouter)
+app.use('/uploads', uploadsRouter)
+app.use('/eyecatches', eyecatchesRouter)
+app.use('/informations', informationsRouter)
+app.use('/services', servicesRouter)
+app.use('/contacts', contactsRouter)
 
 app.get('/', async (req, res) => {
-  res.send('This is the iine-dot-website')
+  res.send('The IINE-dot-WEBSITE')
 })
 
 /**

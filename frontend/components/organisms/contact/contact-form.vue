@@ -55,7 +55,10 @@
         </b-form-invalid-feedback>
       </div>
       <div class="contact-form__action">
-        <b-button variant="success" @click="onUpdate">
+        <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+          作成する
+        </b-button>
+        <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
           更新する
         </b-button>
         <b-button @click="onCancel">
@@ -67,10 +70,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
+import { defineComponent, ref, computed, onMounted, PropType } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useContactData } from '~/composable/use-contact-data'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -79,17 +84,28 @@ export default defineComponent({
   name: 'ContactForm',
   components: { ContentsformWrap, FileInput, WysiwsgEditor },
   props: {
+    action: {
+      type: String as PropType<ContentActionType>,
+      required: true
+    },
     dataId: {
       type: Number,
       required: true
     }
   },
   setup(props, { emit }) {
-    const { contact, loading, loadContact, updateContact } = useContactData(1)
+    const { action, dataId } = props
+    const { customerId } = useCurrentCustomer()
+    const {
+      contact,
+      loading,
+      loadContact,
+      createContact,
+      updateContact,
+      endLoading
+    } = useContactData()
+
     const contactForm = useValidation({
-      id: {
-        $value: ref(0),
-      },
       title: {
         $value: ref(''),
         required: {
@@ -141,17 +157,38 @@ export default defineComponent({
     const validStateBody = computed(() => !contactForm.body.$dirty ? null : !contactForm.body.$anyInvalid)
 
     onMounted(async() => {
-      await loadContact(props.dataId)
-      contactForm.id.$value = contact.value.id || 0
-      contactForm.title.$value = contact.value.title || ''
-      contactForm.subtitle.$value = contact.value.subtitle || ''
-      contactForm.image.$value = contact.value.image || ''
-      contactForm.body.$value = contact.value.body || ''
+      if (action === contentActionTypes.create) {
+        endLoading()
+        return
+      }
+      await loadContact(dataId)
+      contactForm.title.$value = contact.title || ''
+      contactForm.subtitle.$value = contact.subtitle || ''
+      contactForm.image.$value = contact.image || ''
+      contactForm.body.$value = contact.body || ''
     })
 
     const onChangeImageFile =(imageFile: File) => {
       contactForm.imageFile.$value = imageFile
       contactForm.image.$value = URL.createObjectURL(imageFile)
+    }
+
+    const onCreate = async () => {
+      contactForm.$touch()
+      if (contactForm.$anyInvalid) return
+
+      const formData = contactForm.toObject()
+      const contactData = {
+        id: 0,
+        customerId,
+        title: formData.title,
+        subtitle: formData.subtitle,
+        image: formData.image,
+        body: formData.body
+      }
+      const imageFile = formData.imageFile as File || null
+      await createContact(contactData, imageFile)
+      emit('close')
     }
 
     const onUpdate = async () => {
@@ -160,14 +197,15 @@ export default defineComponent({
 
       const formData = contactForm.toObject()
       const contactData = {
-        id: formData.id,
+        id: dataId,
+        customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
         body: formData.body
       }
       const imageFile = formData.imageFile as File || null
-      await updateContact(contactData, imageFile)
+      await updateContact(dataId, contactData, imageFile)
       emit('close')
     }
 
@@ -182,6 +220,7 @@ export default defineComponent({
       validStateImage,
       validStateBody,
       onChangeImageFile,
+      onCreate,
       onUpdate,
       onCancel,
       loading,
