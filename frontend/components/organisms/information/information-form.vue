@@ -55,7 +55,10 @@
         </b-form-invalid-feedback>
       </div>
       <div class="information-form__action">
-        <b-button variant="success" @click="onUpdate">
+        <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+          作成する
+        </b-button>
+        <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
           更新する
         </b-button>
         <b-button @click="onCancel">
@@ -67,11 +70,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
+import { defineComponent, onMounted, ref, computed, PropType } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { InformationType } from '@/types/content-type'
 import { useInformationData } from '@/composable/use-information-data'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -79,12 +84,29 @@ import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
 export default defineComponent({
   name: 'InformationForm',
   components: { ContentsformWrap, FileInput, WysiwsgEditor },
-  setup(_props, { emit }) {
-    const { information, loadInformation, updateInformation, loading } = useInformationData()
+  props: {
+    action: {
+      type: String as PropType<ContentActionType>,
+      required: true
+    },
+    dataId: {
+      type: Number,
+      default: 0
+    }
+  },
+  setup(props, { emit }) {
+    const { action, dataId } = props
+    const { customerId } = useCurrentCustomer()
+    const {
+      information,
+      loadInformation,
+      createInformation,
+      updateInformation,
+      loading,
+      endLoading,
+    } = useInformationData()
+
     const informationForm = useValidation({
-      id: {
-        $value: ref(0),
-      },
       title: {
         $value: ref(''),
         required: {
@@ -127,12 +149,15 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      await loadInformation(1)
-      informationForm.id.$value = information.value.id || 0
-      informationForm.title.$value = information.value.title || ''
-      informationForm.subtitle.$value = information.value.subtitle || ''
-      informationForm.image.$value = information.value.image || ''
-      informationForm.body.$value = information.value.body || ''
+      if (action === contentActionTypes.create) {
+        endLoading()
+        return
+      }
+      await loadInformation(dataId)
+      informationForm.title.$value = information.title || ''
+      informationForm.subtitle.$value = information.subtitle || ''
+      informationForm.image.$value = information.image || ''
+      informationForm.body.$value = information.body || ''
     })
 
     const validStateTitle = computed(() => !informationForm.title.$dirty ? null : !informationForm.title.$anyInvalid)
@@ -145,20 +170,39 @@ export default defineComponent({
       informationForm.image.$value = URL.createObjectURL(imageFile)
     }
 
-    const onUpdate = async () => {
+    const onCreate = async () => {
       informationForm.$touch()
       if (informationForm.$anyInvalid) return
 
       const formData = informationForm.toObject()
-      const updateData: InformationType = {
-        id: formData.id,
+      const infomationData = {
+        id: 0,
+        customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
         body: formData.body
       }
       const imageFile = formData.imageFile as File || null
-      await updateInformation(updateData, imageFile)
+      await createInformation(infomationData, imageFile)
+      emit('close')
+    }
+
+    const onUpdate = async () => {
+      informationForm.$touch()
+      if (informationForm.$anyInvalid) return
+
+      const formData = informationForm.toObject()
+      const infomationData: InformationType = {
+        id: dataId,
+        customerId,
+        title: formData.title,
+        subtitle: formData.subtitle,
+        image: formData.image,
+        body: formData.body
+      }
+      const imageFile = formData.imageFile as File || null
+      await updateInformation(dataId, infomationData, imageFile)
       emit('close')
     }
 
@@ -173,6 +217,7 @@ export default defineComponent({
       validStateImage,
       validStateBody,
       onChangeImageFile,
+      onCreate,
       onUpdate,
       onCancel,
       loading

@@ -1,5 +1,5 @@
 <template>
-  <contents-card :overlay="loading">
+  <contents-card :overlay="loading || notFound">
     <template #default>
       <section-eyecatcher
         :background-image="information.image"
@@ -24,12 +24,24 @@
       </contents-card-body>
     </template>
 
-    <template #editActivator>
+    <template  v-if="!notFound" #editActivator>
       <content-edit-activator
         :type="types.information"
         :action="actions.update"
         :content-id="1"
       />
+    </template>
+
+    <template v-if="notFound" #overlay>
+      <div class="text-center">
+        <h4 class="my-3">記事が登録されていません</h4>
+        <p class="my-3">記事を作成してください</p>
+        <content-edit-activator
+          :type="types.information"
+          :action="actions.create"
+          button
+        />
+      </div>
     </template>
   </contents-card>
 </template>
@@ -45,21 +57,32 @@ import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
-  name: 'Type1Iformations',
+  name: 'Type1IformationDetail',
   components: {
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
     ContentEditActivator
   },
-  setup() {
-    const { information, loading, loadInformation } = useInformationData(1)
+  props: {
+    contentId: {
+      type: Number,
+      required: true
+    },
+  },
+  setup(props) {
+    const {
+      information,
+      loading,
+      notFound,
+      loadInformation
+    } = useInformationData()
 
     // TODO: need sanitize!
-    const informationHtml = computed(() => information.value.body)
+    const informationHtml = computed(() => information.body)
 
     onMounted(() => {
-      loadInformation(1)
+      loadInformation(props.contentId)
     })
 
     return {
@@ -67,6 +90,7 @@ export default defineComponent({
       information,
       informationHtml,
       loading,
+      notFound,
       types: contentDataTypes,
       actions: contentActionTypes
     }

@@ -8,7 +8,6 @@ const initNews = (): NewsType => ({
   title: '',
   body: '',
   image: '',
-  link: '',
   category: '',
   publishOn: new Date(),
 })

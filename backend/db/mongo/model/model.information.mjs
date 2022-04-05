@@ -5,24 +5,23 @@ import IdSequence from './model.sequences.mjs'
 
 const Schema = mongoose.Schema
 
-const serviceSchema = new Schema({
+const informationSchema = new Schema({
   id: { type: Number, required: true, unique: true },
   customerId: { type: Number, required: true, index: true },
   title: { type: String, required: true },
   subtitle: { type: String },
   body: { type: String, required: true },
   image: { type: String, required: true },
-  position: { type: Number, required: true },
   removed: { type: Boolean, default: false },
 },{
   versionKey: false,
   timestamp: true
 })
 
-serviceSchema.pre('validate', async function(next) {
+informationSchema.pre('validate', async function(next) {
   if (this.isNew) {
     const idSeq = await IdSequence.findOneAndUpdate(
-      { idKey: 'serviceId' },
+      { idKey: 'informationId' },
       { $inc: { idValue: 1 } },
       { new: true, upsert: true }
     )
@@ -32,4 +31,4 @@ serviceSchema.pre('validate', async function(next) {
   return next()
 })
 
-export default mongoose.model('service', serviceSchema)
+export default mongoose.model('information', informationSchema)

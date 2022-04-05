@@ -8,6 +8,7 @@ import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
 import uploadsRouter from './router/router.uploads.mjs'
 import customersRouter from './router/router.customers.mjs'
 import eyecatchesRouter from './router/router.eyecatches.mjs'
+import informationsRouter from './router/router.informations.mjs'
 import servicesRouter from './router/router.services.mjs'
 
 /**
@@ -56,6 +57,7 @@ app.use((request, response, next) => {
 app.use('/customers', customersRouter);
 app.use('/uploads', uploadsRouter);
 app.use('/eyecatches', eyecatchesRouter);
+app.use('/informations', informationsRouter);
 app.use('/services', servicesRouter);
 
 app.get('/', async (req, res) => {

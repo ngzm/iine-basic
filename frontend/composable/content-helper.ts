@@ -43,7 +43,6 @@ export type ContentActionType = typeof contentActionTypes[keyof typeof contentAc
   subtitle: '',
   body: '',
   image: '',
-  link: '',
 })
 
 

@@ -7,7 +7,7 @@
     <article id="index-information-article">
       <section class="article-margin top-margin">
         <h4 class="section-title"><span>Message</span></h4>
-        <informations>
+        <information-detail :content-id="1">
           <template #action>
             <b-button
               v-scroll-to="{ el:'#index-contact-article', offset: -180 }"
@@ -18,7 +18,7 @@
               お問合せ
             </b-button>
           </template>
-        </informations>
+        </information-detail>
       </section>
     </article>
 
@@ -53,7 +53,7 @@
 import { defineComponent, onMounted, ref, computed, watch, useRoute, useRouter, useStore, nextTick } from '@nuxtjs/composition-api'
 import VueScrollTo from "vue-scrollto"
 import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher-detail.vue'
-import Informations from '@/components/organisms/information/type1-informations.vue'
+import InformationDetail from '~/components/organisms/information/type1-information-detail.vue'
 import Newses from '@/components/organisms/news/type1-newses.vue'
 import Services from '@/components/organisms/service/type2-services.vue'
 import Contact from '@/components/organisms/contact/type1-contact.vue'
@@ -62,7 +62,7 @@ export default defineComponent({
   name: 'LongLivenetIndex',
   components: {
     TopEyeCatcher,
-    Informations,
+    InformationDetail,
     Newses,
     Services,
     Contact,

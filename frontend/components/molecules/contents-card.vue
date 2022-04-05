@@ -4,9 +4,14 @@
       <div class="contents-card__innner">
         <slot />
       </div>
+
       <div v-if="$slots.editActivator" class="contents-card__edit-activator">
         <slot name="editActivator" />
       </div>
+
+      <template v-if="$slots.overlay" #overlay>
+        <slot name="overlay" />
+      </template>
     </b-overlay>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <contents-wrap :overlay="loading || notFound" class="type2-services">
+  <contents-wrap :overlay="loading || notFound">
     <contents-grid-draggable
       :contents-list="serviceList"
       @change="(list) => changeServicesPosition(list)"

@@ -8,7 +8,6 @@ export interface ContentType {
   subtitle?: string
   body?: string
   image?: string
-  link?: string
   position?: number
   removed?: boolean
 }

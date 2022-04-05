@@ -1,7 +1,10 @@
 <template>
   <div class="content-edit-activator">
     <template v-if="button">
-      <b-button variant="info" @click="activateToEdit">
+      <b-button
+        :variant="activatorVariant"
+        @click="activateToEdit"
+      >
         作成する
       </b-button>
     </template>
@@ -9,8 +12,8 @@
       <b-avatar
         button
         :icon="avatorIcon"
-        :size="avatorSize"
-        :variant="avatorVariant"
+        :size="activatorSize"
+        :variant="activatorVariant"
         @click="activateToEdit"
       />
     </template>
@@ -19,7 +22,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRefs, reactive, computed } from '@vue/composition-api'
-import { contentDataTypes, ContentDataType, contentActionTypes, ContentActionType } from '@/composable/content-helper'
+import {
+  contentDataTypes,
+  contentActionTypes,
+  ContentDataType,
+  ContentActionType
+} from '@/composable/content-helper'
 
 const activator = reactive({
   show: false,
@@ -75,8 +83,8 @@ export default defineComponent({
     } as const
 
     const avatorIcon = computed(() => action2icon[action.value])
-    const avatorVariant = computed(() => variant.value || action2variant[action.value])
-    const avatorSize = computed(() => size.value)
+    const activatorVariant = computed(() => variant.value || action2variant[action.value])
+    const activatorSize = computed(() => size.value)
 
     const activateToEdit = () => {
       Object.assign(activator, {
@@ -89,8 +97,8 @@ export default defineComponent({
 
     return {
       avatorIcon,
-      avatorVariant,
-      avatorSize,
+      activatorVariant,
+      activatorSize,
       activateToEdit,
     }
   },

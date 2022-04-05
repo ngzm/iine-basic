@@ -11,7 +11,6 @@ const initService = () => ({
   title: '',
   body: '',
   image: '',
-  link: '',
   position: 0
 })
 

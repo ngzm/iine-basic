@@ -8,7 +8,7 @@ const router = express.Router();
 /**
  * NEWS一覧情報取得
  */
- router.get('/news-list', async(request, response, next) => {
+router.get('/news-list', async(request, response, next) => {
   try {
     const newsList = await getNewsList()
     response.json(newsList)
