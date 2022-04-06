@@ -1,11 +1,12 @@
 import { ref } from '@nuxtjs/composition-api'
-import { ToastParams, addToast } from '@/components/molecules/make-toast-trigger'
+import useMakeToast, { ToastParams } from '@/composable/use-make-toast'
 
 export function useContentNotFound() {
   const notFound = ref(false)
 
   const resetNotFound = () => { notFound.value = false }
 
+  const { addToast } = useMakeToast()
   const warnNotFound = () => {
     notFound.value = true
     addToast({

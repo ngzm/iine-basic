@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
-import { ToastParams, addToast } from '@/components/molecules/make-toast-trigger'
+import useMakeToast, { ToastParams } from '@/composable/use-make-toast'
 import { useContactData } from '@/composable/use-contact-data'
 import InquireForm, { InquireFormType } from '@/components/organisms/inquire/inquire-form.vue'
 import InquireFormResult from '@/components/organisms/inquire/inquire-form-result.vue'
@@ -54,6 +54,7 @@ export default defineComponent({
     // TODO: need sanitize!
     const contactBody = computed(() => contact.body || '')
 
+    const { addToast } = useMakeToast()
     const sendInquirMail = (data: InquireFormType) => {
       console.log(data)
 

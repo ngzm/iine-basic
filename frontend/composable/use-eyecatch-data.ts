@@ -1,7 +1,7 @@
 import { reactive } from '@nuxtjs/composition-api'
 import { EyecatchType } from '@/types/content-type'
-import { useContent } from '@/composable/use-content2'
-import { ContentSynchronizer } from '@/composable/use-content2/syncronizer'
+import { useContent } from '@/composable/use-content'
+import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 
 const apiEndpoint = '/eyecatches'
 const syncronizer = reactive(new ContentSynchronizer<EyecatchType>())

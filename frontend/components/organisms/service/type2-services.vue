@@ -14,9 +14,12 @@
           circle
           class="type2-services__content-eyecatcher"
         />
-        <p class="type2-services__content-body">
-          {{ content.body || '' }}
-        </p>
+        <!-- eslint-disable vue/no-v-html -->
+        <p
+          class="type2-services__content-body"
+          v-html="serviceBodyHtml(content.body)"
+        />
+        <!-- eslint-enable -->
       </template>
       <template #editActivator="{ content }">
         <content-edit-activator
@@ -76,8 +79,12 @@ export default defineComponent({
       await loadServiceList()
     })
 
+    // TODO: need sanitize!
+    const serviceBodyHtml = (body: string) => body
+
     return {
       serviceList,
+      serviceBodyHtml,
       loading,
       notFound,
       changeServicesPosition,

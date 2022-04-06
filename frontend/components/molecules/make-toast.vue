@@ -4,11 +4,13 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { toastParams, addTrriger, setAddTrriger } from './make-toast-trigger'
+import useMakeToast from '@/composable/use-make-toast'
 
 const MakeToast = defineComponent({
   name: 'MakeToast',
   setup() {
+    const { addTrriger, toastParams, setAddTrriger } = useMakeToast()
+
     return {
       addTrriger,
       toastParams,
