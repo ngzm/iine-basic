@@ -1,6 +1,6 @@
 <template>
-  <contents-card :overlay="loading">
-    <contents-card-body>
+  <contents-card :overlay="loading || notFound">
+    <contents-card-body class="type1-newses">
       <news-list :newses="newsList">
         <template #editActivator="{ news }">
           <content-edit-activator
@@ -18,8 +18,21 @@
         </slot>
       </div>
     </contents-card-body>
-    <template #editActivator>
+
+    <template v-if="!notFound" #editActivator>
       <content-edit-activator :type="types.news" :action="actions.create" />
+    </template>
+
+    <template v-if="notFound" #overlay>
+      <div class="text-center">
+        <h4 class="my-3">Newsが登録されていません</h4>
+        <p class="my-3">以下のボタンより作成してください</p>
+        <content-edit-activator
+          :type="types.news"
+          :action="actions.create"
+          button
+        />
+      </div>
     </template>
   </contents-card>
 </template>
@@ -41,16 +54,35 @@ export default defineComponent({
     NewsList,
     ContentEditActivator
   },
-  setup() {
-    const { newsList, loading, loadNewsList, loadMoreNewsList } = useNewsList(1, 5)
+  props: {
+    limit: {
+      type: Number,
+      default: 10
+    } 
+  },
+  setup(props) {
+    const {
+      newsList,
+      loading,
+      notFound,
+      loadNewsList,
+      listLimit
+    } = useNewsList()
 
-    onMounted(() => {
-      loadNewsList()
+    onMounted(async () => {
+      listLimit.value = props.limit
+      await loadNewsList()
     })
+
+    const loadMoreNewsList = async () => {
+      listLimit.value += props.limit
+      await loadNewsList()
+    }
 
     return {
       newsList,
       loading,
+      notFound,
       loadMoreNewsList,
       types: contentDataTypes,
       actions: contentActionTypes,
@@ -61,6 +93,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .type1-newses {
+  min-height: 16rem;
   &__action {
     margin-top: 1.5rem;
     text-align: center;

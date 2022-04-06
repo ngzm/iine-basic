@@ -2,8 +2,10 @@
   <article id="news-id-article-top">
     <bread-crumb-nav />
     <section class="news-id-detail">
-      <h4 class="news-id-detail__header"><span>News</span></h4>
-      <news-detail :news-id="newsId" />
+      <h4 class="news-id-detail__header">
+        <span>News</span>
+      </h4>
+      <news-detail :content-id="newsId" />
     </section>
     <bread-crumb-nav />
   </article>

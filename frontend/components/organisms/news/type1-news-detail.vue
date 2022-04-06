@@ -1,5 +1,5 @@
 <template>
-  <contents-card :overlay="loading">
+  <contents-card :overlay="loading || notFound">
     <template #default>
       <section-eyecatcher :background-image="news.image || ''" />
 
@@ -22,8 +22,18 @@
       </contents-card-body>
     </template>
 
-    <template #editActivator>
-      <content-edit-activator :type="types.news" :action="actions.moddel" :content-id="newsId" />
+    <template v-if="!notFound" #editActivator>
+      <content-edit-activator
+        :type="types.news"
+        :action="actions.moddel"
+        :content-id="contentId"
+      />
+    </template>
+    <template v-if="notFound" #overlay>
+      <div class="text-center">
+        <p class="my-3">大変申し訳ございません</p>
+        <p class="my-3">情報が見つかりませんでした</p>
+      </div>
     </template>
   </contents-card>
 </template>
@@ -47,26 +57,32 @@ export default defineComponent({
     ContentEditActivator
   },
   props: {
-    newsId: {
+    contentId: {
       type: Number,
       required: true
     },
   },
   setup(props) {
-    const { news, loading, loadNews } = useNewsData(1)
-
-    onMounted(() => {
-      loadNews(props.newsId)
-    })
+    const {
+      news,
+      loading,
+      notFound,
+      loadNews
+    } = useNewsData()
 
     // TODO: need sanitize!
-    const newsBodyHtml = computed(() => news.value.body )
+    const newsBodyHtml = computed(() => news.body )
+
+    onMounted(async () => {
+      await loadNews(props.contentId)
+    })
 
     return {
       sidebarIdName,
       news,
       newsBodyHtml,
       loading,
+      notFound,
       types: contentDataTypes,
       actions: contentActionTypes,
     }

@@ -22,7 +22,7 @@
       </contents-card-body>
     </template>
 
-    <template  v-if="!notFound" #editActivator>
+    <template v-if="!notFound" #editActivator>
       <content-edit-activator
         :type="types.information"
         :action="actions.update"

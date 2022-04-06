@@ -12,6 +12,7 @@ const contactSchema = new Schema({
   subtitle: { type: String },
   body: { type: String, required: true },
   image: { type: String, required: true },
+  position: { type: Number },
   removed: { type: Boolean, default: false },
 },{
   versionKey: false,

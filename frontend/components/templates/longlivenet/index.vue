@@ -25,7 +25,7 @@
     <article id="index-news-article">
       <section class="article-margin">
         <h4 class="section-title"><span>What's New</span></h4>
-        <newses>
+        <newses :limit="5">
           <template #action>
             <b-link to="/news">and more ...</b-link>
           </template>

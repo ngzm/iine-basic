@@ -28,32 +28,34 @@
           </span>
         </b-form-invalid-feedback>
       </div>
-      <div class="news-form__input">
-        <label for="news-form-input-category">ニュースカテゴリ</label>
-        <b-form-select
-          id="news-form-input-category"
-          v-model="newsForm.category.$value"
-          :options="categoryOptions"
-          :state="validStateCategory"
-        />
-        <b-form-invalid-feedback :state="validStateCategory">
-          <span v-for="(err, inx) in newsForm.category.$errors" :key="inx">
-            {{ err }}<br />
-          </span>
-        </b-form-invalid-feedback>
-      </div>
-      <div class="news-form__input">
-        <label for="news-form-input-publish-on">ニュース公開日</label>
-        <b-form-datepicker
-          id="news-form-input-publish-on"
-          placeholder="公開日選択"
-          :state="validStatePublishOn"
-        />
-        <b-form-invalid-feedback :state="validStatePublishOn">
-          <span v-for="(err, inx) in newsForm.publishOn.$errors" :key="inx">
-            {{ err }}<br />
-          </span>
-        </b-form-invalid-feedback>
+      <div class="news-form__wrap">
+        <div class="news-form__wrap__input">
+          <label for="news-form-input-category">ニュースカテゴリ</label>
+          <b-form-select
+            id="news-form-input-category"
+            v-model="newsForm.category.$value"
+            :options="categoryOptions"
+            :state="validStateCategory"
+          />
+          <b-form-invalid-feedback :state="validStateCategory">
+            <span v-for="(err, inx) in newsForm.category.$errors" :key="inx">
+              {{ err }}<br />
+            </span>
+          </b-form-invalid-feedback>
+        </div>
+        <div class="news-form__wrap__input">
+          <label for="news-form-input-publish-on">ニュース公開日</label>
+          <b-form-datepicker
+            id="news-form-input-publish-on"
+            placeholder="公開日選択"
+            :state="validStatePublishOn"
+          />
+          <b-form-invalid-feedback :state="validStatePublishOn">
+            <span v-for="(err, inx) in newsForm.publishOn.$errors" :key="inx">
+              {{ err }}<br />
+            </span>
+          </b-form-invalid-feedback>
+        </div>
       </div>
       <div class="news-form__input">
         <label for="news-form-input-body">本文</label>
@@ -108,6 +110,7 @@ import { defineComponent, PropType, ref, computed, onMounted } from '@vue/compos
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useNewsData } from '@/composable/use-news-data'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
@@ -128,12 +131,18 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { action, dataId } = props
+    const { customerId } = useCurrentCustomer()
+    const {
+      news,
+      loading,
+      endLoading,
+      loadNews,
+      createNews,
+      updateNews,
+      deleteNews,
+    } = useNewsData()
 
-    const { news, loadNews, createNews, updateNews, deleteNews, loading } = useNewsData(1)
     const newsForm = useValidation({
-      id: {
-        $value: ref(0),
-      },
       title: {
         $value: ref(''),
         required: {
@@ -181,7 +190,6 @@ export default defineComponent({
         },
       },
     })
-
     const validStateTitle = computed(() => !newsForm.title.$dirty ? null : !newsForm.title.$anyInvalid)
     const validStateCategory = computed(() => !newsForm.category.$dirty ? null : !newsForm.category.$anyInvalid)
     const validStatePublishOn = computed(() => !newsForm.publishOn.$dirty ? null : !newsForm.publishOn.$anyInvalid)
@@ -197,15 +205,16 @@ export default defineComponent({
     ]
 
     onMounted(async() => {
-      if (action === contentActionTypes.create) return
-
+      if (action === contentActionTypes.create) {
+        endLoading()
+        return
+      }
       await loadNews(dataId)
-      newsForm.id.$value = news.value.id || 0
-      newsForm.title.$value = news.value.title || ''
-      newsForm.category.$value = news.value.category || ''
-      newsForm.publishOn.$value = news.value.publishOn || new Date() 
-      newsForm.image.$value = news.value.image || ''
-      newsForm.body.$value = news.value.body || ''
+      newsForm.title.$value = news.title || ''
+      newsForm.category.$value = news.category || ''
+      newsForm.publishOn.$value = news.publishOn || new Date() 
+      newsForm.image.$value = news.image || ''
+      newsForm.body.$value = news.body || ''
     })
 
     const onChangeImageFile =(imageFile: File) => {
@@ -220,6 +229,7 @@ export default defineComponent({
       const formData = newsForm.toObject()
       const newsData = {
         id: 0,
+        customerId,
         title: formData.title,
         category: formData.category,
         publishOn: formData.publishOn as Date,
@@ -237,7 +247,8 @@ export default defineComponent({
 
       const formData = newsForm.toObject()
       const newsData = {
-        id: formData.id,
+        id: dataId,
+        customerId,
         title: formData.title,
         category: formData.category,
         publishOn: formData.publishOn as Date,
@@ -245,7 +256,7 @@ export default defineComponent({
         body: formData.body
       }
       const imageFile = formData.imageFile as File || null
-      await updateNews(newsData, imageFile)
+      await updateNews(dataId, newsData, imageFile)
       emit('close')
     }
 
@@ -284,6 +295,14 @@ export default defineComponent({
 .news-form {
   &__input {
     margin-bottom: 1rem;
+  }
+  &__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    &__input {
+      margin-bottom: 1rem;
+      margin-right: 1rem;
+    }
   }
   &__action {
     margin-top: 2rem;

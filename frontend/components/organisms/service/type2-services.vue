@@ -32,7 +32,7 @@
       <content-edit-activator :type="types.service" :action="actions.create" />
     </template>
 
-    <template v-else #overlay>
+    <template v-if="notFound" #overlay>
       <div class="text-center">
         <h4 class="my-3">Services コンテンツが登録されていません</h4>
         <p class="my-3">コンテンツを作成してください</p>

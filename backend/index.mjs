@@ -9,6 +9,7 @@ import uploadsRouter from './router/router.uploads.mjs'
 import customersRouter from './router/router.customers.mjs'
 import eyecatchesRouter from './router/router.eyecatches.mjs'
 import informationsRouter from './router/router.informations.mjs'
+import newsesRouter from './router/router.newses.mjs'
 import servicesRouter from './router/router.services.mjs'
 import contactsRouter from './router/router.contacts.mjs'
 
@@ -59,6 +60,7 @@ app.use('/customers', customersRouter)
 app.use('/uploads', uploadsRouter)
 app.use('/eyecatches', eyecatchesRouter)
 app.use('/informations', informationsRouter)
+app.use('/newses', newsesRouter)
 app.use('/services', servicesRouter)
 app.use('/contacts', contactsRouter)
 
