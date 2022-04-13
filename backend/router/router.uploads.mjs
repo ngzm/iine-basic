@@ -7,7 +7,6 @@ import moment from 'moment'
 
 import logger from '../lib/logger.mjs'
 import StrageHandler from '../strage/aws-s3/strage.s3handler.mjs'
-import { validateQueryCustomerId } from './middleware.validators.mjs'
 import { zeroPaddingString, getFileExtension } from '../lib/utils.mjs'
 
 // ********************************
@@ -70,7 +69,7 @@ const router = express.Router();
 /**
  * 各 content の image file アップロード
  */
-router.post('/image', validateQueryCustomerId, upload.single('imagefile'), uploadToBucket, async (request, response, next) => {
+router.post('/image', upload.single('imagefile'), uploadToBucket, async (request, response, next) => {
     try {
       const uploadedFileUrl = `${config.bucketConfig.BucketUrl}/${request.body.imageObjectName}`
       logger.trace('uploadedFileUrl: ', uploadedFileUrl)

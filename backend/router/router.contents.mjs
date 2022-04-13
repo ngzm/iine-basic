@@ -26,7 +26,7 @@ export default function(router, store) {
    */
   router.get('/:id', validateParamsId, async(request, response, next) => {
     try {
-      const content = await store.getContent(parseInt(request.params.id))
+      const content = await store.getContent(request.id)
       if (!content) throw new AppError('該当する情報は見つかりませんでした', 404)
 
       response.json(content)
@@ -40,7 +40,7 @@ export default function(router, store) {
    */
   router.get('/', validateQueryCustomerId, async(request, response, next) => {
     try {
-      const contents = await store.getContents({ customerId: request.query.customerId })
+      const contents = await store.getContents({ customerId: request.customerId })
       response.json(contents)
     } catch (error) {
       next(error)
@@ -65,7 +65,7 @@ export default function(router, store) {
    */
   router.put('/:id', validateParamsId, validateBodyRequired, async(request, response, next) => {
     try {
-      const content = await store.updateContent(parseInt(request.params.id), request.body)
+      const content = await store.updateContent(request.id, request.body)
       if (!content) throw new AppError('該当する情報は見つかりませんでした', 404)
 
       response.json(content)
@@ -80,7 +80,7 @@ export default function(router, store) {
    */
   router.delete('/:id', validateBodyRequired, async(request, response, next) => {
     try {
-      const ret = await store.logicalDeleteContent(parseInt(request.params.id))
+      const ret = await store.logicalDeleteContent(request.id)
       if (!ret) throw new AppError('該当する情報は見つかりませんでした', 404)
 
       response.status(204).send();

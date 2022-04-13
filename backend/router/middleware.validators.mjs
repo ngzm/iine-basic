@@ -2,23 +2,22 @@
 
 import logger from '../lib/logger.mjs'
 import AppError from '../lib/app-error.mjs'
-import { isInt } from '../lib/utils.mjs'
+import { isDefined, isInt } from '../lib/utils.mjs'
 
 /**
  * Request params id 形式チェック Middleware
  */
 export const validateParamsId = (request, response, next) => {
   logger.trace('request.params.id:', request.params.id)
+  try {
+    if (!isDefined(request.params.id)) throw new AppError('400 Bad Request. Missing request id', 400)
+    if (!isInt(request.params.id)) throw new AppError('400 Bad Request. not number of request id', 400)
 
-  if (typeof request.params.id === 'undefined') {
-    return next(new AppError(`400 Bad Request. Missing request id: [${request.params.id}]`, 400))
+    request.id = parseInt(request.params.id)
+    next()
+  } catch (error) {
+    next(error)
   }
-  if (!isInt(request.params.id)) {
-    return next(new AppError(`400 Bad Request. not number of request id: [${request.params.id}]`, 400))
-  }
-
-  request.id = parseInt(request.params.id)
-  next()
 }
 
 /**
@@ -27,15 +26,15 @@ export const validateParamsId = (request, response, next) => {
  */
 export const validateQueryCustomerId = (request, response, next) => {
   logger.trace('request.query.customerId:', request.query.customerId)
+  try {
+    if (!isDefined(request.query.customerId)) throw new AppError('400 Bad Request. Missing request customerId', 400)
+    if (!isInt(request.query.customerId)) throw new AppError('400 Bad Request. not number of request customerId', 400)
 
-  if (typeof request.query.customerId === 'undefined') {
-    return next(new AppError(`400 Bad Request. Missing request customerId: [${request.query.customerId}]`, 400))
+    request.customerId = parseInt(request.query.customerId)
+    next()
+  } catch (error) {
+    next(error)
   }
-  if (!isInt(request.query.customerId)) {
-    return next(new AppError(`400 Bad Request. not number of request customerId: [${request.query.customerId}]`, 400))
-  }
-  request.customerIdNumber = parseInt(request.query.customerId)
-  next()
 }
 
 /**
@@ -43,19 +42,24 @@ export const validateQueryCustomerId = (request, response, next) => {
  */
 export const validateBodyRequired = (request, response, next) => {
   logger.trace('request.body:', JSON.stringify(request.body, null, 2))
-
-  if (typeof request.body === 'undefined') {
-    return next(new AppError('400 Bad Request. Missing request body', 400))
+  try {
+    if (!isDefined(request.body)) throw new AppError('400 Bad Request. Missing request body', 400)
+    next()
+  } catch (error) {
+    next(error)
   }
-  next()
 }
 
 /**
  * request body Service 一覧 position データチェック Middleware
  */
 export const validatePositions = (request, response, next) => {
-  if (!request.body || !Array.isArray(request.body)) {
-    return next(new AppError(`400 Bad Request. positions data is not Array: [${positions}]`, 400))
+  try {
+    if (!isDefined(request.body)) throw new AppError('400 Bad Request. Missing request body', 400)
+    if (!Array.isArray(request.body)) throw new AppError('400 Bad Request. positions data is not Array', 400)
+
+    next()
+  } catch(error) {
+    next(error)
   }
-  next()
 }
