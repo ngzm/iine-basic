@@ -6,7 +6,7 @@ import IdSequence from './model.sequences.mjs'
 const Schema = mongoose.Schema
 
 const informationSchema = new Schema({
-  id: { type: Number, required: true, unique: true },
+  id: { type: Number, required: true, index: true, unique: true },
   customerId: { type: Number, required: true, index: true },
   title: { type: String, required: true },
   subtitle: { type: String },

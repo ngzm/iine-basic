@@ -4,6 +4,22 @@
       <top-eye-catcher :content-id="1" />
     </div>
 
+    <div>
+      {{ authInfo }}
+      <nuxt-link to="/auth/logout">
+        check
+      </nuxt-link>
+      <b-button @click="checkToken">
+        検証
+      </b-button> 
+      <b-button v-if="$auth.loggedIn" variant="warning" @click="$auth.logout()">
+        ログアウトする
+      </b-button> 
+      <b-button v-else variant="warning" to="/auth/login">
+        ログインする
+      </b-button> 
+    </div>
+
     <article id="index-information-article">
       <section class="article-margin top-margin">
         <h4 class="section-title"><span>Message</span></h4>
@@ -50,7 +66,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed, watch, useRoute, useRouter, useStore, nextTick } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  computed,
+  watch,
+  useRoute,
+  useRouter,
+  useStore,
+  useContext,
+  nextTick
+} from '@nuxtjs/composition-api'
 import VueScrollTo from "vue-scrollto"
 import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher-detail.vue'
 import InformationDetail from '~/components/organisms/information/type1-information-detail.vue'
@@ -91,6 +118,20 @@ export default defineComponent({
       }
       stop()
     })
+
+    // TEST
+    const { $auth, $axios } = useContext()
+    const authInfo = computed(() => {
+      console.log("$auth", $auth)
+      return $auth.user
+    })
+    const checkToken = async () => {
+      const data = await $axios.$get('/test')
+      console.log("$data", data)
+      return data
+    }
+
+    return { authInfo, checkToken }
   }
 })
 </script>

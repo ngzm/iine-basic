@@ -5,11 +5,11 @@ import IdSequence from './model.sequences.mjs'
 
 const Schema = mongoose.Schema
 
+// TODO: Add template
 const customerSchema = new Schema({
-  id: { type: Number, required: true, unique: true },
+  id: { type: Number, required: true, index: true, unique: true },
   name: { type: String, required: true },
   note: { type: String },
-  removed: { type: Boolean, default: false },
 }, {
   versionKey: false,
   timestamp: true
@@ -28,8 +28,8 @@ customerSchema.pre('validate', async function(next) {
 })
 
 const customerUrlSchema = new Schema({
-  customerId: { type: Number, required: true },
-  url: { type: String, required: true, unique: true },
+  customerId: { type: Number, required: true, index: true },
+  url: { type: String, required: true, index: true, unique: true },
 }, {
   versionKey: false,
   timestamp: false

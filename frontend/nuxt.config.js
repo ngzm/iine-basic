@@ -1,4 +1,13 @@
 export default {
+  // Nuxt environments
+  publicRuntimeConfig: {
+    baseURL: process.env.BASE_URL || 'http://locahost:3000',
+    auth0: {
+      domain: process.env.AUTH0_DOMAIN,
+      clientId: process.env.AUTH0_CLIENT_ID,
+    },
+  },
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -42,13 +51,10 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
-    // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://github.com/rigor789/vue-scrollto
+    '@nuxtjs/auth-next',
     ['vue-scrollto/nuxt', { duration: 600 }],
-    // https://www.vue2editor.com/
     "vue2-editor/nuxt",
   ],
 
@@ -56,7 +62,29 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: 'process.env.API_ENDPOINT_URL',
-    baseURL: 'http://localhost:3003',
+    baseURL: process.env.BASE_URL || 'http://locahost:3000',
+  },
+
+  // Auth with Auth0
+  auth: {
+    // cookie: false,
+    redirect: {
+      login: '/auth/login',
+      logout: '/auth/logout',
+      callback: '/auth/callback',
+      home: '/',
+    },
+    strategies: {
+      auth0: {
+        domain: 'lln-jiman.us.auth0.com',
+        clientId: 'kjxl4Va7cAMra4qyfcvbl4mGJIUndrjq',
+        // audience: 'https://lln-jiman.us.auth0.com',
+        // scope: ['openid', 'profile', 'email', 'offline_access'],
+        // responseType: 'token id_token',
+        // grantType: 'implicit',
+        // codeChallengeMethod: 'S256',
+      },
+    },
   },
 
   // BootstrapVUe icons

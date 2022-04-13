@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <%- include('./head'); %>
+  </head>
+  <body class="container">
+    <h2>顧客一覧</h2>
+    <p style="margin-bottom: 2rem;">
+      [<a href="/admin/customers/new">顧客追加</a>]
+    </p>
+    <% customers.forEach(function(customer) { %>
+      <li>
+        <%= customer.id %>,
+        <a href="/admin/customers/<%= customer.id %>">
+          <strong><%= customer.name %></strong>
+        </a>,
+        <%= customer.note %>,
+        <%= customer.urls && customer.urls.map((u) => u.url).join(' / ') %>
+      </li>
+    <% }); %>
+   </body>
+</html>

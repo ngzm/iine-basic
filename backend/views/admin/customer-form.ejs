@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <%- include('./head'); %>
+  </head>
+  <body class="container">
+    <% if (method === 'put' && customer.id) { %>
+      <h2><%= customer.name %> 情報フォーム</h2>
+    <% } else { %>
+      <h2>顧客登録フォーム</h2>
+    <% } %>
+    <p style="margin-bottom: 1rem;">
+      [<a href="/admin/customers">顧客一覧</a>]
+    </p>
+    <form action="/admin/customers/<%= customer.id %>" method="POST">
+      <div>
+        <p>
+          <label>Customer ID</label>: <%= customer.id || 'no-ID' %>
+          <% if (method === 'put' && customer.id) { %>
+            [<a href="/admin/customers/<%= customer.id %>/users">ユーザ一覧</a>]
+          <% } %>
+        </p>
+        <% if (method === 'put' && customer.id) { %>
+          <input name="id" type="hidden" value="<%= customer.id || '' %>">
+        <% } %>
+      </div>
+      <div>
+        <p><label>name</label</p>
+        <p><input name="name" type="text" value="<%= customer.name || '' %>"></p>
+      </div>
+      <div>
+        <p><label>note</label></p>
+        <p><input name="note" type="text" value="<%= customer.note || '' %>"></p>
+      </div>
+      <div>
+        <p><label>url1</label></p>
+        <p><input name="urls" type="text" value="<%= customer.urls && customer.urls[0] ? customer.urls[0].url : '' %>"></p>
+      </div>
+      <div>
+        <p><label>url2</label></p>
+        <p><input name="urls" type="text" value="<%= customer.urls && customer.urls[1] ? customer.urls[1].url : '' %>"></p>
+      </div>
+      <div>
+        <p><label>url3</label></p>
+        <p><input name="urls" type="text" value="<%= customer.urls && customer.urls[2] ? customer.urls[2].url : '' %>"></p>
+      </div>
+      <div>
+        <p><label>url4</label></p>
+        <p><input name="urls" type="text" value="<%= customer.urls && customer.urls[3] ? customer.urls[3].url : '' %>"></p>
+      </div>
+      <div>
+        <button type="submit">登録する</button>
+        <% if (method === 'put' && customer.id) { %>
+          <button type="button" onclick="location.href='/admin/customers/delete/<%= customer.id %>'">削除する</button>
+        <% } %>
+      </div>
+    </form>
+   </body>
+</html>

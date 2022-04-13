@@ -22,6 +22,15 @@ export const isInt = (value) => {
 };
 
 /**
+ * 値が存在すること (null や undefined や '' でない) ことをチェック
+ * @param {*} value
+ * @returns null: false, undefined: false, '': false, []: true, {}: true, 0: true 
+ */
+ export const isPresent = (value) => {
+  return isDefined(value) && '' !== value
+}
+
+/**
  * 数字を指定桁でセロ埋めした文字列に変換
  */
 export const zeroPaddingString = (num, length) => (

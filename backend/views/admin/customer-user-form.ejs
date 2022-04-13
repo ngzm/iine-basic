@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <%- include('./head'); %>
+  </head>
+  <body class="container">
+    <% if (method === 'put' && user.id) { %>
+      <h2><%= customer.name %> / ユーザID: <%= user.id %> 情報フォーム</h2>
+    <% } else { %>
+      <h2><%= customer.name %> / ユーザ登録フォーム</h2>
+    <% } %>
+    <p style="margin-bottom: 1rem;">
+      [<a href="/admin/customers/">顧客一覧</a>]
+      [<a href="/admin/customers/<%= customer.id %>">顧客情報</a>]
+      [<a href="/admin/customers/<%= customer.id %>/users">ユーザ一覧</a>]
+    </p>
+    <form action="/admin/customers/<%= customer.id %>/users/<%= user.id %>" method="POST">
+      <div>
+        <p>
+          <label>User ID</label>: <%= user.id || 'no-ID' %>
+        </p>
+        <% if (method === 'put' && user.id) { %>
+          <input name="id" type="hidden" value="<%= user.id || '' %>">
+        <% } %>
+        <input name="customerId" type="hidden" value="<%= customer.id || '' %>">
+      </div>
+      <div>
+        <p><label>email</label</p>
+        <p><input name="email" type="email" value="<%= user.email || '' %>"></p>
+      </div>
+      <div>
+        <p><label>name</label</p>
+        <p><input name="name" type="text" value="<%= user.name || '' %>"></p>
+      </div>
+      <div>
+        <p><label>note</label></p>
+        <p><input name="note" type="text" value="<%= user.note || '' %>"></p>
+      </div>
+      <div>
+        <p><label>password</label></p>
+        <p><input name="password" type="password" value=""></p>
+      </div>
+      <div>
+        <button type="submit">登録する</button>
+        <% if (method === 'put' && user.id) { %>
+          <button
+            type="button"
+            onclick="location.href='/admin/customers/<%= customer.id %>/users/delete/<%= user.id %>'"
+          >削除する</button>
+        <% } %>
+      </div>
+    </form>
+   </body>
+</html>

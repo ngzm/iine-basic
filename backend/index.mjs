@@ -5,6 +5,7 @@ import config from 'config'
 import cors from 'cors'
 import logger, { setLogLevel } from './lib/logger.mjs'
 import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
+
 import uploadsRouter from './router/router.uploads.mjs'
 import customersRouter from './router/router.customers.mjs'
 import eyecatchesRouter from './router/router.eyecatches.mjs'
@@ -12,6 +13,9 @@ import informationsRouter from './router/router.informations.mjs'
 import newsesRouter from './router/router.newses.mjs'
 import servicesRouter from './router/router.services.mjs'
 import contactsRouter from './router/router.contacts.mjs'
+
+import adminCustomersRouter from './router/admin/router.customers.mjs'
+import adminCustomerUsersRouter from './router/admin/router.customer-users.mjs'
 
 /**
  * Log4j - set log level
@@ -35,10 +39,16 @@ mongooseConnect(`mongodb://${config.dbConfig.host}:${config.dbConfig.port}/${con
   pass: process.env['IINE_DB_PASSWORD']
 })
 
+/**
+ * Template engine
+ */
+app.set('view engine', 'ejs');
+
 // ********************************
 // Middlewares for all Routers
 // ********************************
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 /**
@@ -54,7 +64,7 @@ app.use((request, response, next) => {
 })
 
 // ********************************
-// Application Routers
+// Api Routers
 // ********************************
 app.use('/customers', customersRouter)
 app.use('/uploads', uploadsRouter)
@@ -64,9 +74,42 @@ app.use('/newses', newsesRouter)
 app.use('/services', servicesRouter)
 app.use('/contacts', contactsRouter)
 
-app.get('/', async (req, res) => {
-  res.send('The IINE-dot-WEBSITE')
+// ********************************
+// Admin pages Routers
+// ********************************
+app.use('/admin/customers', adminCustomersRouter)
+app.use('/admin/customers', adminCustomerUsersRouter)
+
+
+import passport from 'passport'
+import BearerStrategy from 'passport-http-bearer'
+
+passport.use(new BearerStrategy(
+  function(token, done) {
+    console.log('token', token)
+    if (token.length > 20) {
+      return done(null, { id: 1, email: 'nagazumi@longlivenet.com', nickname: 'Naoki', fullname: '長住直樹' }, { scope: 'read' });
+    } else {
+      return done(new Error('401: --- unauthrized ---'));
+    }
+  }
+));
+
+
+app.get('/need', passport.authenticate('bearer', { session: false }), async (req, res, next) => {
+  console.log('req', req)
+
+  res.send('OK!');
 })
+
+app.get('/login', async (req, res) => {
+  res.oidc.login({ returnTo: '/' })
+})
+
+app.get('/logouted', async (req, res) => {
+  res.send('logouted bye')
+})
+
 
 /**
  * 共通エラーハンドラー

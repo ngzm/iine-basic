@@ -16,6 +16,8 @@ export const validateParamsId = (request, response, next) => {
   if (!isInt(request.params.id)) {
     return next(new AppError(`400 Bad Request. not number of request id: [${request.params.id}]`, 400))
   }
+
+  request.id = parseInt(request.params.id)
   next()
 }
 
@@ -32,6 +34,7 @@ export const validateQueryCustomerId = (request, response, next) => {
   if (!isInt(request.query.customerId)) {
     return next(new AppError(`400 Bad Request. not number of request customerId: [${request.query.customerId}]`, 400))
   }
+  request.customerIdNumber = parseInt(request.query.customerId)
   next()
 }
 

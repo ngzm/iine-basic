@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 const idSequenceSchema = new Schema({
-  idKey: { type: String, required: true, unique: true },
+  idKey: { type: String, required: true, index: true, unique: true },
   idValue: { type: Number, required: true }
 }, {
   versionKey: false,
