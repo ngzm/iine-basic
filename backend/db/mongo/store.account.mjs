@@ -1,5 +1,6 @@
 'use strict'
 
+import { v4 as uuidv4 } from 'uuid'
 import { AccountModel } from './model/model.account.mjs'
 import { modelToObject } from './db.handler.mjs'
 import { generateHash } from '../../lib/auth.mjs'
@@ -41,9 +42,24 @@ const updateAccount = async (username, account) => {
  */
 const deleteAccount = async (username) => await AccountModel.deleteOne({ username }).exec()
 
+/**
+ * アカウント認証
+ */
+const authorize = async (username, password) => {
+  const hash = generateHash(password, 'utf8')
+  const accountModel = await AccountModel.findOne({ username, password: hash }).exec()
+  if (!accountModel) return null
+
+  // 認証できたのでtokenを更新
+  accountModel.token = `${uuidv4()}-${uuidv4()}` 
+  accountModel.exchangeCode = uuidv4()
+  return modelToObject(await accountModel.save())
+}
+
 export default {
   getAccount,
   createAccount,
   updateAccount,
-  deleteAccount
+  deleteAccount,
+  authorize
 }

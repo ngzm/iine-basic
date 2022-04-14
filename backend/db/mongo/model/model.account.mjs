@@ -11,6 +11,7 @@ const accountSchema = new Schema({
   userId: { type: Number },
   token: { type: String, required: true, index: true, unique: true },
   tokenExpired: { type: Date, default: null },
+  exchangeCode: { type: String },
 }, {
   versionKey: false,
   timestamp: false

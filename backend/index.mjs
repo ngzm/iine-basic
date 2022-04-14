@@ -6,6 +6,14 @@ import cors from 'cors'
 import logger, { setLogLevel } from './lib/logger.mjs'
 import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
 
+// Admin pages Routers
+import adminCustomersRouter from './router/admin/router.customers.mjs'
+import adminCustomerUsersRouter from './router/admin/router.customer-users.mjs'
+
+// Auth Pages Routers
+import authCustomerUsersRouter from './router/auth/router.customer-user.mjs'
+
+// API Routers
 import uploadsRouter from './router/router.uploads.mjs'
 import customersRouter from './router/router.customers.mjs'
 import eyecatchesRouter from './router/router.eyecatches.mjs'
@@ -13,9 +21,6 @@ import informationsRouter from './router/router.informations.mjs'
 import newsesRouter from './router/router.newses.mjs'
 import servicesRouter from './router/router.services.mjs'
 import contactsRouter from './router/router.contacts.mjs'
-
-import adminCustomersRouter from './router/admin/router.customers.mjs'
-import adminCustomerUsersRouter from './router/admin/router.customer-users.mjs'
 
 /**
  * Log4j - set log level
@@ -64,6 +69,17 @@ app.use((request, response, next) => {
 })
 
 // ********************************
+// Admin pages Routers
+// ********************************
+app.use('/admin/customers', adminCustomersRouter)
+app.use('/admin/customers', adminCustomerUsersRouter)
+
+// ********************************
+// Auth pages Routers
+// ********************************
+app.use('/auth/customers', authCustomerUsersRouter)
+
+// ********************************
 // Api Routers
 // ********************************
 app.use('/customers', customersRouter)
@@ -73,12 +89,6 @@ app.use('/informations', informationsRouter)
 app.use('/newses', newsesRouter)
 app.use('/services', servicesRouter)
 app.use('/contacts', contactsRouter)
-
-// ********************************
-// Admin pages Routers
-// ********************************
-app.use('/admin/customers', adminCustomersRouter)
-app.use('/admin/customers', adminCustomerUsersRouter)
 
 
 import passport from 'passport'
