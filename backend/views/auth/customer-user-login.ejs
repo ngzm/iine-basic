@@ -33,6 +33,7 @@
         font-weight: bold;
         line-height: 50px;
         box-shadow: 0 3px 0 #0e8c73;
+        cursor: pointer;
       }
       .login-form__action button:hover {
         background-color: #31c8aa;
@@ -46,15 +47,23 @@
         margin-bottom: 1rem;
         color: red;
       }
+      .result-logout {
+        margin-bottom: 1rem;
+        color: green;
+      }
     </style>
   </head>
   <body>
-    <dev class="login-wrap">
+    <div class="login-wrap">
       <section class="login-section">
         <h2>サイト管理者ログイン</h2>
-        <% if (result) { %>
+        <% if (result == 1) { %>
           <p class="result-errors">
             ログインできませんでした
+          </p>
+        <% } else if (result == 11) { %>
+          <p class="result-logout">
+            ログアウトしました
           </p>
         <% } %>
         <form action="/auth/customers" method="POST">
@@ -71,6 +80,6 @@
           </div>
         </form>
       </section>
-    </dev>
+    </div>
   </body>
 </html>

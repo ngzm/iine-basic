@@ -1,6 +1,7 @@
 'use strict'
 
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import config from 'config'
 import cors from 'cors'
 import logger, { setLogLevel } from './lib/logger.mjs'
@@ -53,8 +54,9 @@ app.set('view engine', 'ejs');
 // Middlewares for all Routers
 // ********************************
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(cors())
 
 /**
  * check is DB Connected middleware function

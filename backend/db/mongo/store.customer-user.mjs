@@ -26,10 +26,17 @@ const getCustomerUsers = async (customerId, select = { _id: 0 }, sort = { id: 1 
 
 /**
  * 顧客管理ユーザ取得
- * @param {object} select 取得フィールド
  * @param {number} id 取得対象ID
+ * @param {object} select 取得フィールド
  */
 const getCustomerUser = async (id, select = { _id: 0 }) => modelToObject(await CustomerUserModel.findOne({ id }, select).exec())
+
+/**
+ * 顧客管理ユーザ取得
+ * @param {string} email 取得対象ユーザのEmail
+ * @param {object} select 取得フィールド
+ */
+const getCustomerUserByEmail = async (email, select = { _id: 0 }) => modelToObject(await CustomerUserModel.findOne({ email }, select).exec())
 
 /**
  * 顧客管理ユーザ追加
@@ -61,6 +68,7 @@ const deleteCustomerUser = async (id) => await CustomerUserModel.deleteOne({ id 
 export default {
   getCustomerUsers,
   getCustomerUser,
+  getCustomerUserByEmail,
   createCustomerUser,
   updateCustomerUser,
   deleteCustomerUser,

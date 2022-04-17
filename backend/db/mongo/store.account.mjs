@@ -19,6 +19,7 @@ const getAccount = async (username, select = { _id: 0 }) => modelToObject(await 
 const createAccount = async (account) => {
   const accountModel = new AccountModel(account)
   accountModel.password = generateHash(account.password, 'utf8')
+  accountModel.token = `${uuidv4()}-${uuidv4()}` 
   return modelToObject(await accountModel.save())
 }
 
@@ -43,23 +44,52 @@ const updateAccount = async (username, account) => {
 const deleteAccount = async (username) => await AccountModel.deleteOne({ username }).exec()
 
 /**
- * アカウント認証
+ * ログイン認証
  */
-const authorize = async (username, password) => {
+const login = async (username, password) => {
   const hash = generateHash(password, 'utf8')
   const accountModel = await AccountModel.findOne({ username, password: hash }).exec()
   if (!accountModel) return null
 
   // 認証できたのでtokenを更新
   accountModel.token = `${uuidv4()}-${uuidv4()}` 
+
+  // TODO: set tokenExpire
+
   accountModel.exchangeCode = uuidv4()
   return modelToObject(await accountModel.save())
 }
 
+/**
+ * ログアウト処理
+ */
+ const logout = async (token) => {
+  const accountModel = await AccountModel.findOne({ token }).exec()
+  if (!accountModel) return null
+
+  // tokenを更新
+  accountModel.token = `${uuidv4()}-${uuidv4()}` 
+  accountModel.exchangeCode = null
+  return modelToObject(await accountModel.save())
+}
+
+/**
+ * token 認証処理
+ * @param {string} itoken
+ */
+const authorize = async (token) => {
+  const account = await AccountModel.findOne({ token },  { _id: 0 }).exec()
+  // TODO: expire チェック
+
+  return modelToObject(account)
+}
+
 export default {
   getAccount,
+  authorize,
   createAccount,
   updateAccount,
   deleteAccount,
-  authorize
+  login,
+  logout
 }

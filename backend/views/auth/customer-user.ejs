@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <%- include('./head'); %>
+    <style>
+      .customer-user-wrap {
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      .customer-user-info {
+        white-space: nowrap;
+      }
+      .customer-user-section {
+        background-color: white;
+        padding: 1.5rem;
+      }
+      .customer-user-action {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+      .customer-user-action p {
+        margin-bottom: 1rem;
+      }
+      .customer-user-action p button {
+        width: 100%;
+        position: relative;
+        border: none;
+        background-color: #1abc9c;
+        border-radius: 4px;
+        color: #fff;
+        font-weight: bold;
+        line-height: 50px;
+        box-shadow: 0 3px 0 #0e8c73;
+        cursor: pointer;
+      }
+      .customer-user-action p button:hover {
+        background-color: #31c8aa;
+        box-shadow: 0 3px 0 #23a188;
+      }
+      .customer-user-action p button:active {
+        top: 3px;
+        box-shadow: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="customer-user-wrap">
+      <section class="customer-user-section">
+        <h2>ようこそ <%= user.name %> さん</h2>
+        <p class="customer-user-info">
+          あなたは <%= customer.name %> ホームページ管理者です
+        </p>
+        <div class="customer-user-action">
+          <p>
+            <button type="button" onclick="location.href='/auth/customers/homepage'">ホームページを管理する</button>
+          </p>
+          <p>
+            <button type="button">パスワードを変更する</button>
+          </p>
+          <p>
+            <button type="button" onclick="location.href='/auth/customers/logout'">ログアウトする</button>
+          </p>
+        </div>
+      </section>
+    </dev>
+  </body>
+</html>
