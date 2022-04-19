@@ -79,7 +79,7 @@ app.use('/admin/customers', adminCustomerUsersRouter)
 // ********************************
 // Auth pages Routers
 // ********************************
-app.use('/auth/customers', authCustomerUsersRouter)
+app.use('/member/login', authCustomerUsersRouter)
 
 // ********************************
 // Api Routers
@@ -134,6 +134,7 @@ app.use((error, request, response, next) => {
     logger.warn(error.message);
   } else {
     logger.error(error.message);
+    logger.info(error.stack);
   }
   response.status(status).json({ message: error.message });
 });

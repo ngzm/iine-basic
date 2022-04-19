@@ -161,9 +161,7 @@ router.post(
       })
 
       if (isPresent(request.body.password)) {
-        await accountStore.updateAccount(user.email, {
-          password: request.body.password,
-        })
+        await accountStore.updatePassword(user.email, request.body.password)
       }
 
       response.redirect(`/admin/customers/${customer.id}/users`)

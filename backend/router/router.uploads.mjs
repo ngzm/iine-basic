@@ -3,7 +3,7 @@
 import express from 'express'
 import config from 'config'
 import multer from 'multer'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import logger from '../lib/logger.mjs'
 import StrageHandler from '../strage/aws-s3/strage.s3handler.mjs'
@@ -56,7 +56,7 @@ const uploadToBucket = async (request, response, next) => {
  * @returns 
  */
 const getBucketObjectName = (prefix, originalname) => {
-  const timestamp = moment().format("YYYYMMDD-HHmmSS")
+  const timestamp = dayjs().format("YYYYMMDD-HHmmSS")
   const ext = getFileExtension(originalname);
   return `${prefix}/${timestamp}.${ext}`
 }

@@ -53,13 +53,13 @@
         </p>
         <div class="customer-user-action">
           <p>
-            <button type="button" onclick="location.href='/auth/customers/homepage'">ホームページを管理する</button>
+            <button type="button" onclick="location.href='/member/login/homepage'">ホームページを管理する</button>
           </p>
           <p>
-            <button type="button">パスワードを変更する</button>
+            <button type="button" onclick="location.href='/member/login/<%= user.id %>/password'">パスワードを変更する</button>
           </p>
           <p>
-            <button type="button" onclick="location.href='/auth/customers/logout'">ログアウトする</button>
+            <button type="button" onclick="location.href='/member/login/logout'">ログアウトする</button>
           </p>
         </div>
       </section>

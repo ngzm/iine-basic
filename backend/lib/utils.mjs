@@ -46,3 +46,16 @@ export const getFileExtension = (filename) => {
   const found = filename.lastIndexOf('.') + 1
   return found > 0 ? filename.substr(found) : ''
 }
+
+/**
+ * password 複雑度チェッカ
+ * @param {*} value 
+ * @returns 
+ */
+export const passwordComplexity = (value) => {
+  if (value === null || value === undefined || value.length <= 0) return false
+  if (!/[a-z]/.test(value)) return false
+  if (!/[A-Z]/.test(value)) return false
+  if (!/\d/.test(value)) return false
+  return true
+}

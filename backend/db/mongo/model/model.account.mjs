@@ -9,7 +9,8 @@ const accountSchema = new Schema({
   userId: { type: Number, required: true },
   token: { type: String, required: true, index: true, unique: true },
   tokenExpired: { type: Date, default: null },
-  exchangeCode: { type: String },
+  exchangeCode: { type: String, default: null },
+  codeExpired: { type: Date, default: null },
 }, {
   versionKey: false,
   timestamp: false
