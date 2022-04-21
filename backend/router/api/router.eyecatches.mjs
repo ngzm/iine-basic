@@ -1,7 +1,7 @@
 'use strict'
 
 import express from 'express'
-import eyecatchStore from '../db/mongo/store.eyecatch.mjs'
+import eyecatchStore from '../../db/mongo/store.eyecatch.mjs'
 import contentesRouter from './router.contents.mjs'
 
 const router = express.Router()

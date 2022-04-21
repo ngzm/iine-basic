@@ -6,17 +6,8 @@
 
     <div>
       {{ authInfo }}
-      <nuxt-link to="/auth/logout">
-        check
-      </nuxt-link>
-      <b-button @click="checkToken">
-        検証
-      </b-button> 
       <b-button v-if="$auth.loggedIn" variant="warning" @click="$auth.logout()">
         ログアウトする
-      </b-button> 
-      <b-button v-else variant="warning" to="/auth/login">
-        ログインする
       </b-button> 
     </div>
 
@@ -120,18 +111,13 @@ export default defineComponent({
     })
 
     // TEST
-    const { $auth, $axios } = useContext()
+    const { $auth } = useContext()
     const authInfo = computed(() => {
       console.log("$auth", $auth)
       return $auth.user
     })
-    const checkToken = async () => {
-      const data = await $axios.$get('/test')
-      console.log("$data", data)
-      return data
-    }
 
-    return { authInfo, checkToken }
+    return { authInfo }
   }
 })
 </script>

@@ -5,9 +5,9 @@ import config from 'config'
 import multer from 'multer'
 import dayjs from 'dayjs'
 
-import logger from '../lib/logger.mjs'
-import StrageHandler from '../strage/aws-s3/strage.s3handler.mjs'
-import { zeroPaddingString, getFileExtension } from '../lib/utils.mjs'
+import logger from '../../lib/logger.mjs'
+import { zeroPaddingString, getFileExtension } from '../../lib/utils.mjs'
+import StrageHandler from '../../strage/aws-s3/strage.s3handler.mjs'
 
 // ********************************
 // Middlewares 

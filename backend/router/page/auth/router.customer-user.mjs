@@ -1,13 +1,13 @@
 'use strict'
 
 import express from 'express'
-import logger from '../../lib/logger.mjs'
-import AppError from '../../lib/app-error.mjs'
-import { passwordComplexity } from '../../lib/utils.mjs'
-import customerStore from '../../db/mongo/store.customer.mjs'
-import customerUserStore from '../../db/mongo/store.customer-user.mjs'
-import accountStore from '../../db/mongo/store.account.mjs'
-import { validateParamsId } from '../middleware.validators.mjs'
+import logger from '../../../lib/logger.mjs'
+import AppError from '../../../lib/app-error.mjs'
+import { passwordComplexity } from '../../../lib/utils.mjs'
+import customerStore from '../../../db/mongo/store.customer.mjs'
+import customerUserStore from '../../../db/mongo/store.customer-user.mjs'
+import accountStore from '../../../db/mongo/store.account.mjs'
+import { validateParamsId } from '../../middleware.validators.mjs'
 
 // ########################
 // Validators
@@ -55,8 +55,8 @@ const router = express.Router();
     const { exchangeCode } = await accountStore.generateExchangeCode(account.token)
     logger.info('ExchangeCode:', exchangeCode)
 
-    // const hpUrl = `http://${urls[0]}?code=${exchangeCode}`
-    const hpUrl = `http://longlivenet.iine.website:4000?code=${exchangeCode}`
+    // const hpUrl = `http://${urls[0]}/auth/customer-user?code=${exchangeCode}`
+    const hpUrl = `http://longlivenet.iine.website:4000/auth/customer-user?code=${exchangeCode}`
     response.redirect(hpUrl)
   } catch(error) {
     next(error)

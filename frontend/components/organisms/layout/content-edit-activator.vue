@@ -37,6 +37,14 @@ const activator = reactive({
 })
 
 export const getActivator = () => activator
+export const inactivate = () => {
+  Object.assign(activator, {
+    show: false,
+    type: contentDataTypes.none as ContentDataType,
+    action: contentActionTypes.none as ContentActionType,
+    id: 0
+  })
+}
 
 export default defineComponent({
   name: 'ContentEditActivator',

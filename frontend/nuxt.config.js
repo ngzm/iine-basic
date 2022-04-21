@@ -61,28 +61,35 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    // baseURL: 'process.env.API_ENDPOINT_URL',
     baseURL: process.env.BASE_URL || 'http://locahost:3000',
   },
 
   // Auth with Auth0
   auth: {
-    // cookie: false,
+    cookie: false,
     redirect: {
-      login: '/auth/login',
+      callback: false,
+      login: '/auth/logout',
       logout: '/auth/logout',
-      callback: '/auth/callback',
       home: '/',
     },
     strategies: {
-      auth0: {
-        domain: 'lln-jiman.us.auth0.com',
-        clientId: 'kjxl4Va7cAMra4qyfcvbl4mGJIUndrjq',
-        // audience: 'https://lln-jiman.us.auth0.com',
-        // scope: ['openid', 'profile', 'email', 'offline_access'],
-        // responseType: 'token id_token',
-        // grantType: 'implicit',
-        // codeChallengeMethod: 'S256',
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/customer-user',
+            method: 'post',
+            propertyName: 'token',
+          },
+          // logout: {
+          //   url: '/auth/customer-user',
+          //   method: 'delete',
+          // },
+          user: {
+            url: '/auth/customer-user',
+            method: 'get',
+          },
+        },
       },
     },
   },
