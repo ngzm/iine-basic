@@ -40,6 +40,7 @@
 
 <script lang='ts'>
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
+import { sanitizer } from '@/utils/common-utils'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useNewsData } from '@/composable/use-news-data'
@@ -70,12 +71,11 @@ export default defineComponent({
       loadNews
     } = useNewsData()
 
-    // TODO: need sanitize!
-    const newsBodyHtml = computed(() => news.body )
-
     onMounted(async () => {
       await loadNews(props.contentId)
     })
+
+    const newsBodyHtml = computed(() => sanitizer(news.body))
 
     return {
       sidebarIdName,

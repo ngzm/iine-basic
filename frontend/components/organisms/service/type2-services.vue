@@ -51,6 +51,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { sanitizer } from '@/utils/common-utils'
 import { contentDataTypes, contentActionTypes } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
@@ -79,8 +80,7 @@ export default defineComponent({
       await loadServiceList()
     })
 
-    // TODO: need sanitize!
-    const serviceBodyHtml = (body: string) => body
+    const serviceBodyHtml = (body: string) => sanitizer(body)
 
     return {
       serviceList,

@@ -44,6 +44,7 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
+import { sanitizer } from '@/utils/common-utils'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useContactData } from '@/composable/use-contact-data'
@@ -74,12 +75,11 @@ export default defineComponent({
       loadContact
     } = useContactData()
 
-    // TODO: need sanitize!
-    const contactHtml = computed(() => contact.body)
-
     onMounted(async () => {
       await loadContact(props.contentId)
     })
+
+    const contactHtml = computed(() => sanitizer(contact.body))
 
     return {
       sidebarIdName,

@@ -1,3 +1,13 @@
+import dayjs, { extend } from 'dayjs'
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import sanitizeHtml from 'sanitize-html'
+
+// Day.js set default timezone
+extend(utc)
+extend(timezone)
+dayjs.tz.setDefault("Asia/Tokyo")
+
 /**
  * Timezone を意識しながら Date フォーマットする
  * @param  baseDate Date (UTC など Timezone 付き)
@@ -5,9 +15,8 @@
  * @returns 
  */
 export const formatLocalDates = (baseDate: Date|string, fmt = 'YYYY/MM/DD HH:mm') => {
-  const moment = require('moment-timezone')
-  const timezone = process.env.LOCAL_TIMEZONE || 'Asia/Tokyo'
-  return moment.utc(baseDate).tz(timezone).format(fmt)
+  const tz = process.env.LOCAL_TIMEZONE || 'Asia/Tokyo'
+  return dayjs(baseDate).tz(tz).format(fmt)
 }
 
 /**
@@ -21,3 +30,15 @@ export const sleep = (sleepms: number) => {
     resolve('OK')
   }, sleepms))
 }
+
+/**
+ * HTML を Sanitize する
+ */
+export const sanitizer = (htmlText: string | undefined) => (
+  sanitizeHtml(htmlText || '', {
+    allowedAttributes: {
+      '*': ["class", "style"],
+      'a': [ 'href', 'name', 'target', 'rel' ],
+    }
+  })
+)
