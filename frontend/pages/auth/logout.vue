@@ -3,14 +3,14 @@
     <div class="infomation-card">
       <h5>管理ユーザをログアウトしました</h5>
       <p>ページの閲覧は可能です</p>
-      <p>
-        <b-btn class="mt-4" @click="redirect">TOPページへ</b-btn>
+      <p class="mt-4">
+        <b-btn @click="redirect">TOPページへ</b-btn>
       </p>
     </div>
   </div>
 </template>
   
-<script>
+<script lang="ts">
 import { defineComponent, useRouter, } from '@nuxtjs/composition-api'
 
 export default defineComponent({

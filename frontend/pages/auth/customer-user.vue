@@ -7,40 +7,46 @@
       <p>申し訳ございません</p>
       <p>管理ユーザ権限を確認できませんでした</p>
       <p class="mt-4">
-        <b-btn @click="redirect">TOPページへ</b-btn>
+        <b-btn @click="$router.push('/')">TOPページへ</b-btn>
       </p>
     </div>
   </div>
 </template>
   
-<script>
-import { defineComponent } from '@nuxtjs/composition-api'
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  useRoute,
+  useRouter,
+  useContext
+} from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'AuthCustomerUser',
   layout: 'simple',
-  data() {
-    return {
-      status: 'authorizing'
-    }
-  },
-  mounted: async function() { // eslint-disable-line object-shorthand
-    const code = this.$route.query ? this.$route.query.code : ''
-    if (this.$route.query.code) {
-      this.$router.replace({ query: {} })
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+    const { $auth } = useContext()
+    const status = ref('authorizing')
 
-      await this.$auth.loginWith('local', { data: { code } }).catch(() => {
-        this.status = 'authError'
-      })
-    } else {
-      this.status = 'authError'
-    }
+    onMounted(async () => {
+      if (route.value.query && route.value.query.code) {
+        const code = route.value.query ? route.value.query.code : ''
+        router.replace({ query: {} })
+
+        await $auth.loginWith('local', { data: { code } }).catch(() => {
+          status.value = 'authError'
+        })
+      } else {
+        status.value = 'authError'
+      }
+    })
+
+    return { status }
   },
-  methods: {
-    redirect () {
-      return this.$router.push('/')
-    }
-  }
 })
 </script>
   

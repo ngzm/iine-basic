@@ -13,7 +13,7 @@
       @drop.prevent="onDropFile"
     >
       <div class="file-input__drag-drop--img">
-        <img :src="imageUrl" :alt="imageUrl" />
+        <img :src="displayImage" :alt="displayImage" />
       </div>
       <div class="file-input__drag-drop--nav">
         <p>
@@ -39,7 +39,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from '@vue/composition-api'
+import { defineComponent, ref, computed, onMounted } from '@nuxtjs/composition-api'
+import { noImage } from '@/utils/common-utils'
 
 export default defineComponent({
   name: 'FilrInput',
@@ -53,10 +54,14 @@ export default defineComponent({
       default: null
     }
   },
-  setup(_props, { emit, refs }) {
+  setup(props, { emit, refs }) {
     const isDragEnter = ref(false)
     const fileInputInput = ref<HTMLInputElement>()
     const imageFile = ref<File>()
+
+    const displayImage = computed(() => (
+      props.imageUrl && props.imageUrl.length > 0 ? props.imageUrl : noImage
+    ))
 
     onMounted(() => {
       // TODO: refs
@@ -90,6 +95,7 @@ export default defineComponent({
 
     return {
       isDragEnter,
+      displayImage,
       onDragEnter,
       onDragLeave,
       onDragOver,

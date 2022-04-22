@@ -42,3 +42,8 @@ export const sanitizer = (htmlText: string | undefined) => (
     }
   })
 )
+
+/**
+ * no image assets 画像読み込み
+ */
+export const noImage = require('@/assets/image/no-image.jpg')

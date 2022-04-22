@@ -1,13 +1,15 @@
 <template>
-  <div class="container mt-5">
-    <b-card title="エラーが発生しました">
-      申し訳ありません。エラーが発生しました。
+  <div class="frame-wrap">
+    <div class="infomation-card">
+      <h5>エラーが発生しました</h5>
+      <p>申し訳ありません。エラーが発生しました。</p>
 
-      <p class="mt-5">statusCode: {{ error.statusCode }}</p>
-      <p>message: {{ error.message }}</p>
-
-      <b-btn class="mt-5" @click="redirect">TOPページへ</b-btn>
-    </b-card>
+      <p class="mt-4">statusCode: {{ error ? error.statusCode : 'no code' }}</p>
+      <p>message: {{ error ? error.message : 'no message' }}</p>
+      <p class="mt-4" >
+        <b-btn @click="redirect">TOPページへ</b-btn>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -30,3 +32,19 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.frame-wrap {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.infomation-card {
+  background-color: white;
+  padding: 2.5rem;
+}
+</style>

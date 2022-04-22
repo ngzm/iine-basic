@@ -44,17 +44,18 @@ router.post('/customer-user', async(request, response, next) => {
     console.log('request.body', request.body)
 
     if (!isDefined(request.body) || !isPresent(request.body.code)) {
-      throw new AppError('ユーザ認証できませんでした', 401)
+      throw new AppError('Bad Request - No Body', 400)
     }
 
+    // ここでは 401エラーを返さないこと
     const account = await accountStore.exchangeToken(request.body.code)
-    if (!account) throw new AppError('ユーザ認証できませんでした', 401)
+    if (!account) throw new AppError('ユーザ認証できませんでした', 400)
 
     const user = await customerUserStore.getCustomerUserByEmail(account.username)
-    if (!user) throw new AppError('ユーザは見つかりませんでした', 401)
+    if (!user) throw new AppError('ユーザは見つかりませんでした', 400)
 
     const customer = await customerStore.getCustomer(user.customerId)
-    if (!customer) throw new AppError('顧客情報は見つかりませんでした', 401)
+    if (!customer) throw new AppError('顧客情報は見つかりませんでした', 400)
 
     logger.trace('account:', { ...account, password: '!!MASK!!' });
     response.json({ token: account.token })
