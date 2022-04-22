@@ -11,23 +11,16 @@
 </template>
   
 <script>
-import { defineComponent, onMounted, useRouter, } from '@nuxtjs/composition-api'
-import { inactivate } from '@/components/organisms/layout/content-edit-activator.vue'
+import { defineComponent, useRouter, } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'AuthLogout',
   layout: 'simple',
   setup() {
     const router = useRouter()
-
-    onMounted(() => {
-      inactivate()
-    })
-
     const redirect = () => {
       router.push({ name: 'index' })
     }
-
     return { redirect }
   }
 })

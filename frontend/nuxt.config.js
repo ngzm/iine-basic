@@ -81,10 +81,10 @@ export default {
             method: 'post',
             propertyName: 'token',
           },
-          // logout: {
-          //   url: '/auth/customer-user',
-          //   method: 'delete',
-          // },
+          logout: {
+            url: '/auth/customer-user',
+            method: 'delete',
+          },
           user: {
             url: '/auth/customer-user',
             method: 'get',

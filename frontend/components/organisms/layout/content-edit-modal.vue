@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, toRefs } from '@vue/composition-api'
+import { defineComponent, computed, toRefs, useContext } from '@nuxtjs/composition-api'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
@@ -46,8 +46,14 @@ export default defineComponent({
     ContactForm,
   },
   setup() {
+    const { $auth } = useContext()
     const { show, type, action, id } = toRefs(getActivator())
+
     const formComponentName = computed(() => editType2Component[type.value])
+    const showModal = computed({
+      get: () => $auth.loggedIn && show.value,
+      set: (value: boolean) => { show.value = value }
+    })
     const modalTitle = computed(() => (
       action.value === contentActionTypes.create
         ? 'コンテンツの追加'
@@ -55,10 +61,11 @@ export default defineComponent({
           ? 'コンテンツの編集・削除'
           : 'コンテンツの編集'
     ))
+
     const close = () => { show.value = false }
 
     return {
-      showModal: show,
+      showModal,
       action,
       dataId: id,
       formComponentName,

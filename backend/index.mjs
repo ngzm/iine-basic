@@ -106,9 +106,10 @@ app.use((error, request, response, next) => {
   const status = error.status || 500;
   if (status < 500) {
     logger.warn(error.message);
+    logger.warn(error.stack);
   } else {
     logger.error(error.message);
-    logger.info(error.stack);
+    logger.error(error.stack);
   }
   response.status(status).json({ message: error.message });
 });

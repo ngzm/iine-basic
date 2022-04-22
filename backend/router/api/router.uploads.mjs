@@ -56,7 +56,7 @@ const uploadToBucket = async (request, response, next) => {
  * @returns 
  */
 const getBucketObjectName = (prefix, originalname) => {
-  const timestamp = dayjs().format("YYYYMMDD-HHmmSS")
+  const timestamp = dayjs().format("YYYYMMDD-HHmmss-SSS")
   const ext = getFileExtension(originalname);
   return `${prefix}/${timestamp}.${ext}`
 }

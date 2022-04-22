@@ -1,5 +1,5 @@
 <template>
-  <div class="content-edit-activator">
+  <div v-if="$auth.loggedIn" class="content-edit-activator">
     <template v-if="button">
       <b-button
         :variant="activatorVariant"
