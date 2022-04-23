@@ -21,12 +21,20 @@
         <nav-link :scroll-to="toContact.scrollTo" :to="toContact.to" class="default-header__nav-link mr-2">
           Contact
         </nav-link>
+        <customer-user-tools
+          v-show="$auth.loggedIn"
+          class="ml-2"
+        />
       </div>
     </template>
     <template #narrow>
       <div>
+        <customer-user-tools
+          v-show="$auth.loggedIn"
+          :with-name="false"
+        />
         <b-button variant="light" @click="openSidebar">
-          <b-icon icon="list" variant="dark" style="width: 1.5rem; height: 1.5rem;" />
+          <b-icon icon="list" variant="dark" style="width: 1.5rem; height: 18px;" />
         </b-button>
       </div>
       <b-sidebar
@@ -97,12 +105,14 @@
 import { defineComponent, ref, computed, useRoute } from '@nuxtjs/composition-api'
 import NavBar from '@/components/atoms/nav-bar.vue'
 import NavLink from '@/components/atoms/nav-link.vue'
+import CustomerUserTools from '@/components/organisms/layout/customer-user-tools.vue'
 
 export default defineComponent({
   name: 'DefaultHeader',
   components: {
     NavBar,
-    NavLink
+    NavLink,
+    CustomerUserTools,
   },
   setup() {
     const route = useRoute()

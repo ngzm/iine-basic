@@ -4,15 +4,8 @@
       <top-eye-catcher :content-id="1" />
     </div>
 
-    <div>
-      {{ authInfo }}
-      <b-button v-if="$auth.loggedIn" variant="warning" @click="$auth.logout()">
-        ログアウトする
-      </b-button> 
-    </div>
-
     <article id="index-information-article">
-      <section class="article-margin top-margin">
+      <section class="article-margin">
         <h4 class="section-title"><span>Message</span></h4>
         <information-detail :content-id="1">
           <template #action>
@@ -66,7 +59,6 @@ import {
   useRoute,
   useRouter,
   useStore,
-  useContext,
   nextTick
 } from '@nuxtjs/composition-api'
 import VueScrollTo from "vue-scrollto"
@@ -109,15 +101,6 @@ export default defineComponent({
       }
       stop()
     })
-
-    // TEST
-    const { $auth } = useContext()
-    const authInfo = computed(() => {
-      console.log("$auth", $auth)
-      return $auth.user
-    })
-
-    return { authInfo }
   }
 })
 </script>
@@ -131,9 +114,5 @@ export default defineComponent({
 
 .article-margin {
   @include index-article-margin;
-}
-
-.top-margin {
-  margin-top: 7rem;
 }
 </style>
