@@ -1,32 +1,38 @@
 <template>
   <ul class="news-list-wrapper">
     <li
-      v-for="news in newsList"
+      v-for="news in newses"
       :key="news.id"
     >
+      <p class="edit-activator">
+        <slot name="editActivator" :news="news" />
+      </p>
       <p class="news-header">
         <span>{{ jstDateString(news.publishOn) }}</span>
         <news-category-badge :category="news.category" class="ml-2" />
       </p>
       <p class="news-title">
-        <a href="">{{news.title}}</a>
+        <a href="" @click.prevent.stop="$router.push(`/news/${news.id}`)">{{news.title}}</a>
       </p>
     </li>
   </ul> 
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api'
-import { formatLocalDates } from '@/plugins/common-utils'
-import { NewsListItem } from '~/types/news-type'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { NewsType } from '@/types/content-type'
+import { formatLocalDates } from '@/utils/common-utils'
 import NewsCategoryBadge from '@/components/molecules/news-category-badge.vue'
+
 
 export default defineComponent({
   name: 'NewsList',
-  components: { NewsCategoryBadge },
+  components: {
+    NewsCategoryBadge,
+  },
   props: {
-    newsList: {
-      type: Array as PropType<NewsListItem[]>,
+    newses: {
+      type: Array as PropType<NewsType[]>,
       required: true
     }
   },
@@ -51,6 +57,10 @@ ul.news-list-wrapper {
     p {
       margin: 2px;
       padding: 0.4rem; 
+    }
+    p.edit-activator{
+      margin: 0;
+      padding: 0;
     }
     p.news-header {
       text-align: center;

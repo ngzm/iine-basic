@@ -1,4 +1,13 @@
 export default {
+  // Nuxt environments
+  publicRuntimeConfig: {
+    baseURL: process.env.BASE_URL || 'http://locahost:3000',
+    auth0: {
+      domain: process.env.AUTH0_DOMAIN,
+      clientId: process.env.AUTH0_CLIENT_ID,
+    },
+  },
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -26,7 +35,9 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    '@/plugins/axios.js',
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -40,18 +51,52 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
-    // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://github.com/rigor789/vue-scrollto
+    '@nuxtjs/auth-next',
     ['vue-scrollto/nuxt', { duration: 600 }],
+    "vue2-editor/nuxt",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: process.env.BASE_URL || 'http://locahost:3000',
+  },
+
+  // Auth with Auth0
+  auth: {
+    cookie: false,
+    redirect: {
+      callback: false,
+      login: '/auth/logout',
+      logout: '/auth/logout',
+      home: '/',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/customer-user',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: {
+            url: '/auth/customer-user',
+            method: 'delete',
+          },
+          user: {
+            url: '/auth/customer-user',
+            method: 'get',
+          },
+        },
+      },
+    },
+  },
+
+  // BootstrapVUe icons
+  bootstrapVue: {
+    icons: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

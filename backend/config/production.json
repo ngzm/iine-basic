@@ -1,0 +1,19 @@
+{
+  "type": "production",
+  "appConfig": {
+    "port": 3003,
+    "logLevel": "info"
+  },
+  "dbConfig": {
+    "host": "mongo",
+    "port": 27017,
+    "database": "iinedb"
+  },
+  "bucketConfig": {
+    "AwsRegion": "ap-northeast-1",
+    "Endpoint": null,
+    "Bucket": "iine-bucket",
+    "Folder": "uploads",
+    "BucketUrl": "http://minio:9000/iine-bucket/uploads"
+  }
+}

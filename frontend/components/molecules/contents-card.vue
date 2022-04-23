@@ -1,22 +1,32 @@
 <template>
   <div class="contents-card">
-    <div v-if="$slots.header" class="contents-card__header">
-      <slot name="header" />
-    </div>
-    <div class="contents-card__text">
-      <slot />
-    </div>
-    <div v-if="$slots.footer" class="contents-card__footer">
-      <slot name="footer" />
-    </div>
+    <b-overlay :show="overlay">
+      <div class="contents-card__innner">
+        <slot />
+      </div>
+
+      <div v-if="$slots.editActivator" class="contents-card__edit-activator">
+        <slot name="editActivator" />
+      </div>
+
+      <template v-if="$slots.overlay" #overlay>
+        <slot name="overlay" />
+      </template>
+    </b-overlay>
   </div>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'ContentsCard',
+  props: {
+    overlay: {
+      type: Boolean,
+      default: false
+    }
+  }
 })
 </script>
 
@@ -24,29 +34,27 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 .contents-card {
+  position: relative;
   width: 100%;
   min-width: 18rem;
   margin: 0 auto;
   background-color: white;
-  &__header {
-    margin: 0 auto;
+  &__inner {
+    margin: 0;
+    padding: 0;
   }
-  &__text {
-    // max-width: 54rem;
-    margin: 0 auto;
-    padding: 2.5rem;
-  }
-  &__footer {
-    margin: 0 auto;
+  &__edit-activator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 }
 
 @media only screen and (min-width: $grid-breakpoint-md) {
   .contents-card {
     width: 90%;
-    // border-radius: 12px;
+    border-radius: 12px;
     overflow: hidden;
   }
 }
 </style>
-

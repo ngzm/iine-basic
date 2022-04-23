@@ -1,0 +1,94 @@
+ローカルからdocker commpose を通して mongo ユーザを作成するコマンド
+
+```
+$ docker-compose exec mongo sh -c 'mongo -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --eval "db.createUser({ user: \"${MONGO_IINE_UERNAME}\", pwd: \"${MONGO_IINE_PASSWORD}\", roles: [{ role: \"readWrite\", db: \"${MONGO_INITDB_DATABASE}\"}] })"'
+```
+
+接続テスト
+```
+mongo mongodb://localhost:27017
+
+> db.auth("iine", "a1234567")
+1
+
+> show collections
+test
+
+> show databases
+iinedb  0.000GB
+
+> db.test.insert({"item" : "card3", "qty" : 16})
+WriteResult({ "nInserted" : 1 })
+
+> db.test.find()
+{ "_id" : ObjectId("623d247e25232493ac46b255"), "item" : "card2", "qty" : 15 }
+{ "_id" : ObjectId("623d2814c0c8480d58594189"), "item" : "card3", "qty" : 16 }
+```
+
+あるいは、以下でも接続できた test が謎・・
+```
+mongosh --username "iine" --password --authenticationDatabase test --authenticationMechanism SCRAM-SHA-256
+```
+
+作成したユーザは db:test となっているようだ test とは？
+```
+test> show users
+[
+  {
+    _id: 'test.iine',
+    userId: UUID("4b3ce21e-bef1-4328-b6b2-fa5d4445f76d"),
+    user: 'iine',
+    db: 'test',
+    roles: [ { role: 'readWrite', db: 'iinedb' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  }
+]
+```
+
+なんか変！！
+```
+db.createUser({user: "user1", pwd: "abc123", roles: [{role: "readWriteAnyDatabase", db: "admin"}]})
+db.createUser({user: "user2", pwd: "abc123", roles: [{role: "readWrite", db: "iinedb"}]})
+
+{ ok: 1 }
+test> show users
+[
+  {
+    _id: 'test.iine',
+    userId: UUID("4b3ce21e-bef1-4328-b6b2-fa5d4445f76d"),
+    user: 'iine',
+    db: 'test',
+    roles: [ { role: 'readWrite', db: 'iinedb' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  },
+  {
+    _id: 'test.user1',
+    userId: UUID("00572717-577b-4d17-beaf-ac960d1940ae"),
+    user: 'user1',
+    db: 'test',
+    roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  }
+]
+```
+
+調査の結果、カレントデータベースが "test" であったことから test db にユーザが作成されていた。（そりゃそうか・・）
+ということで、createUser を実行する前に対象のデータベースに移動しておくことが重要だ！
+
+例えば test にユーザ情報が生成された場合は、mongosh ログイン時に "--authenticationDatabase [db]" でユーザ情報があるデータベースを指定することが重要となる！
+
+ということで最終的にはこうなった
+
+```
+$ docker-compose exec mongo sh -c '
+  mongosh -u ${MONGO_INITDB_ROOT_USERNAME}      \
+          -p ${MONGO_INITDB_ROOT_PASSWORD}      \
+          --authenticationDatabase admin        \
+          ${MONGO_INITDB_DATABASE}              \
+          --eval "db.createUser({               \
+            user: \"${MONGO_IINE_UERNAME}\",    \
+            pwd: \"${MONGO_IINE_PASSWORD}\",    \
+            roles: [{ role: \"readWrite\", db: \"${MONGO_INITDB_DATABASE}\"}]  \
+          })"
+  '
+```

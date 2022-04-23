@@ -18,6 +18,7 @@
     "types": [
       "@nuxt/types",
       "@nuxtjs/axios",
+      "@nuxtjs/auth-next",
       "@types/node",
     ]
   },

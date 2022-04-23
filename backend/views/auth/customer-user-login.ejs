@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <%- include('./head'); %>
+    <style>
+      .login-wrap {
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      .login-section {
+        background-color: white;
+        padding: 1.5rem;
+      }
+      .login-form__field {
+        margin-bottom: 1rem;
+      }
+      .login-form__field input {
+        width: 16rem;
+        padding: 0.5rem;
+      }
+      .login-form__action {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+      .login-form__action button {
+        width: 100%;
+        position: relative;
+        border: none;
+        background-color: #1abc9c;
+        border-radius: 4px;
+        color: #fff;
+        font-weight: bold;
+        line-height: 50px;
+        box-shadow: 0 3px 0 #0e8c73;
+        cursor: pointer;
+      }
+      .login-form__action button:hover {
+        background-color: #31c8aa;
+        box-shadow: 0 3px 0 #23a188;
+      }
+      .login-form__action button:active {
+        top: 3px;
+        box-shadow: none;
+      }
+      .result-errors {
+        margin-bottom: 1rem;
+        color: red;
+      }
+      .result-logout {
+        margin-bottom: 1rem;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-wrap">
+      <section class="login-section">
+        <h2>サイト管理者ログイン</h2>
+        <% if (result == 1) { %>
+          <p class="result-errors">
+            ログインできませんでした
+          </p>
+        <% } else if (result == 11) { %>
+          <p class="result-logout">
+            ログアウトしました
+          </p>
+        <% } %>
+        <form action="/member/login" method="POST" autocomplete="off">
+          <div class="login-form__field">
+            <p><label>Email address</label</p>
+            <p><input name="username" type="email" value="" required></p>
+          </div>
+          <div class="login-form__field">
+            <p><label>Password</label></p>
+            <p><input name="password" type="password" value="" required></p>
+          </div>
+          <div class="login-form__action">
+            <button type="submit">ログイン</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>

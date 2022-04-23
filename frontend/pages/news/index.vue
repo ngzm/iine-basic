@@ -1,48 +1,21 @@
 <template>
-  <article  id="news-index-top-position">
-    <div>
-      <nav-bread-brumb />
-    </div>
-
-    <section id="news-grid-section">
-      <h4 class="section-title">
-        <span>{{ title }}</span>
-      </h4>
-      <news-catalog />
-    </section>
-  </article>
+  <component :is="templateName" />
 </template>
 
-<script>
-import { defineComponent, computed } from '@vue/composition-api'
-import NavBreadBrumb from '@/components/organisms/layout/nav-bread-crumb.vue'
-import NewsCatalog from '@/components/organisms/news/news-catalog.vue'
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+import LongLivenetNewsIndex from '~/components/templates/longlivenet/news/index.vue'
 
 export default defineComponent({
   name: 'NewsIndex',
   components: {
-    NavBreadBrumb,
-    NewsCatalog
+    LongLivenetNewsIndex,
   },
   setup() {
-    const title = computed(() => 'NEWS')
-
+    const templateName = 'LongLivenetNewsIndex'
     return {
-      title
+      templateName
     }
-    
-  },
+  }
 })
 </script>
-
-<style lang="scss" scoped>
-@import '@/assets/scss/style.scss';
-
-#news-index-top-position {
-  padding-top: calc($nav-header-height + 0.4rem);
-}
-
-.section-title {
-  @include index-section-title;
-}
-</style>
