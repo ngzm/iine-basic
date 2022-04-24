@@ -99,6 +99,8 @@ export default defineComponent({
 
 .type1-news-detail {
   &__publish {
+    position: relative;
+    top: -1rem;
     text-align: right;
   }
   &__title {
