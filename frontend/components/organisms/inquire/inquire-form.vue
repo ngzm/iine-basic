@@ -1,7 +1,7 @@
 <template>
   <div class="inquire-form">
     <b-form @submit.stop.prevent="onSubmit">
-      <p>
+      <div>
         <label for="inquire-form-input-name">お名前</label>
         <b-form-input
           id="inquire-form-input-name"
@@ -13,8 +13,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p>
+      </div>
+      <div>
         <label for="inquire-form-input-email">メールアドレス</label>
         <b-form-input
           id="inquire-form-input-email"
@@ -27,8 +27,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p>
+      </div>
+      <div>
         <label for="inquire-form-input-phone">電話番号 (任意)</label>
         <b-form-input
           id="inquire-form-input-phone"
@@ -41,8 +41,8 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p>
+      </div>
+      <div>
         <label for="inquire-form-input-inquiry">お問い合わせ内容</label>
         <b-form-textarea
           id="inquire-form-input-inquiry"
@@ -56,15 +56,15 @@
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
-      </p>
-      <p class="inquire-form__action">
+      </div>
+      <div class="inquire-form__action">
         <b-button @click="onReset()">
           リセット
         </b-button>
         <b-button type="submit" variant="primary">
           問い合せメール送信
         </b-button>
-      </p>
+      </div>
     </b-form>
   </div>
 </template>

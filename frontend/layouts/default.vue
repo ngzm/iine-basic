@@ -2,11 +2,13 @@
   <div id="application-base-body">
     <header>
       <default-header />
+      <bread-crumb-nav />
     </header>
     <main>
       <nuxt />
     </main>
     <footer>
+      <bread-crumb-nav />
       <default-footer />
     </footer>
     <contact-form-sidebar />
@@ -19,6 +21,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import DefaultHeader from '@/components/organisms/layout/default-header.vue'
 import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
+import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import ContactFormSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
 import ContentEditModal from '@/components/organisms/layout/content-edit-modal.vue'
@@ -28,6 +31,7 @@ export default defineComponent({
   components: {
     DefaultHeader,
     DefaultFooter,
+    BreadCrumbNav,
     ContactFormSidebar,
     MakeToast,
     ContentEditModal,

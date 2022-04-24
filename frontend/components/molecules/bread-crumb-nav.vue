@@ -1,30 +1,57 @@
 <template>
-  <div class="bread-crumb-nav">
-      <b-breadcrumb :items="items" class="bread-crumb-nav__items" />
+  <div
+    v-if="$route.name !== 'index'"
+    class="bread-crumb-nav"
+  >
+    <b-breadcrumb
+      :items="items"
+      class="bread-crumb-nav__items"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, ref, watch, onMounted, useRoute } from '@nuxtjs/composition-api'
 import { UiComponentOptions } from '@/types/ui-types'
 
 export default defineComponent({
   name: 'BreadCrumbNav',
   setup() {
     const route = useRoute()
-    const detailId = computed(() => route.value.params && route.value.params.id ? route.value.params.id : '')
+    const items = ref([] as UiComponentOptions[])
 
-    interface Route2ItemsDefinder { [key: string]: UiComponentOptions[]; }
-    const route2items: Route2ItemsDefinder = {
-      'index': [{ text: 'HOME', active: true }],
-      'news': [{ text: 'HOME', to: { name: 'index' } }, { text: 'NEWS', active: true }],
-      'news-id': [{ text: 'HOME', to: { name: 'index' } }, { text: 'NEWS', to: { name: 'news' } }, { text: `${detailId.value}`, active: true }],
+    onMounted(() => {
+      const idPath = route.value.params && route.value.params.id ? route.value.params.id : 'ID'
+      items.value = routeItems(route.value.name, idPath )
+    })
+
+    watch(route, (newValue) => {
+      const idPath = newValue.params && newValue.params.id ? newValue.params.id : 'ID'
+      items.value = routeItems(newValue.name, idPath )
+    })
+
+    const routeItems = (name: string | null | undefined, idPath: string) => {
+      switch(name) {
+        case 'index':
+          return [{ text: 'HOME', active: true }]
+
+        case 'news':
+          return [
+            { text: 'HOME', to: { name: 'index' } },
+            { text: 'NEWS', active: true },
+          ]
+
+        case 'news-id':
+          return [
+            { text: 'HOME', to: { name: 'index' } },
+            { text: 'NEWS', to: { name: 'news' } },
+            { text: `${idPath}`, active: true },
+          ]
+      }
+      return []
     }
 
-    const items = computed(() => route2items[route.value.name || 'index'])
-    return {
-      items,
-    }
+    return { items }
   },
 })
 </script>
@@ -35,6 +62,7 @@ export default defineComponent({
 .bread-crumb-nav {
   &__items {
     background-color: transparent;
+    margin-bottom: 0 !important;
   }
 }
 </style>
