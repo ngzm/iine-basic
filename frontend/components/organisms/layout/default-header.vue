@@ -55,7 +55,7 @@
               ロングリブネット
             </nav-link>
           </h4>
-          <p class="default-header__sidebar--item">
+          <div class="default-header__sidebar--item">
             <nav-link
               :scroll-to="toInformation.scrollTo"
               :to="toInformation.to"
@@ -64,8 +64,8 @@
             >
               Message
             </nav-link>
-          </p>
-          <p class="default-header__sidebar--item">
+          </div>
+          <div class="default-header__sidebar--item">
             <nav-link
               :scroll-to="toNews.scrollTo"
               :to="toNews.to"
@@ -74,8 +74,8 @@
             >
               News
             </nav-link>
-          </p>
-          <p class="default-header__sidebar--item">
+          </div>
+          <div class="default-header__sidebar--item">
             <nav-link
               :scroll-to="toServices.scrollTo"
               :to="toServices.to"
@@ -84,8 +84,8 @@
             >
               Services
             </nav-link>
-          </p>
-          <p class="default-header__sidebar--item">
+          </div>
+          <div class="default-header__sidebar--item">
             <nav-link
               :scroll-to="toContact.scrollTo"
               :to="toContact.to"
@@ -94,7 +94,7 @@
             >
               Contact
             </nav-link>
-          </p>
+          </div>
         </div>
       </b-sidebar>
     </template>

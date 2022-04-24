@@ -1,4 +1,4 @@
-import { watch, Ref, UnwrapRef } from '@nuxtjs/composition-api'
+import { watch, Ref, toRefs, UnwrapRef } from '@nuxtjs/composition-api'
 import { ContentType, ContentPosition, PositionObj } from '@/types/content-type'
 
 /**
@@ -9,11 +9,13 @@ export function useContentSyncronizer<T extends ContentType>(
   dataReactive: UnwrapRef<T>,
   listRef: Ref<T[]>
 ) {
-  watch(() => syncronizer.syncCreated, () => {
+  const { syncCreated, syncUpdated, syncDeleted, syncPotisonChanged } = toRefs(syncronizer)
+
+  watch(syncCreated, () => {
     listRef.value.push(syncronizer.syncData)
   })
 
-  watch(() => syncronizer.syncUpdated, () => {
+  watch(syncUpdated, () => {
     const target = listRef.value.find((d) => syncronizer.isTarget(d))
     if (target) {
       Object.assign(target, syncronizer.syncData)
@@ -24,7 +26,7 @@ export function useContentSyncronizer<T extends ContentType>(
     }
   })
 
-  watch(() => syncronizer.syncDeleted, () => {
+  watch(syncDeleted, () => {
     const targetIndex = listRef.value.findIndex((d) => syncronizer.isTarget(d))
     if (targetIndex >= 0) {
       listRef.value.splice(targetIndex, 1)
@@ -35,7 +37,7 @@ export function useContentSyncronizer<T extends ContentType>(
     }
   })
 
-  watch(() => syncronizer.syncPotisonChanged, () => {
+  watch(syncPotisonChanged, () => {
     listRef.value.forEach((d) => {
       const modPosition = syncronizer.syncPositionObj[d.id]
       if (modPosition !== undefined || modPosition !== null) {

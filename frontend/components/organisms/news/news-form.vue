@@ -47,6 +47,7 @@
           <label for="news-form-input-publish-on">ニュース公開日</label>
           <b-form-datepicker
             id="news-form-input-publish-on"
+            v-model="newsForm.publishOn.$value"
             placeholder="公開日選択"
             :state="validStatePublishOn"
           />
@@ -108,6 +109,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
+import { formatLocalDate, localDate } from '@/utils/common-utils'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useNewsData } from '@/composable/use-news-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
@@ -162,7 +164,7 @@ export default defineComponent({
         },
       },
       publishOn: {
-        $value: ref(new Date()),
+        $value: ref(''),
         required: {
           $validator: required,
           $message: ref('公開日を入力してください'),
@@ -210,11 +212,11 @@ export default defineComponent({
         return
       }
       await loadNews(dataId)
-      newsForm.title.$value = news.title || ''
-      newsForm.category.$value = news.category || ''
-      newsForm.publishOn.$value = news.publishOn || new Date() 
+      newsForm.title.$value = news.title
+      newsForm.category.$value = news.category
+      newsForm.publishOn.$value = formatLocalDate(news.publishOn as Date, 'YYYY-MM-DD')
       newsForm.image.$value = news.image || ''
-      newsForm.body.$value = news.body || ''
+      newsForm.body.$value = news.body
     })
 
     const onChangeImageFile =(imageFile: File) => {
@@ -232,7 +234,7 @@ export default defineComponent({
         customerId,
         title: formData.title,
         category: formData.category,
-        publishOn: formData.publishOn as Date,
+        publishOn: localDate(formData.publishOn),
         image: formData.image,
         body: formData.body
       }
@@ -251,7 +253,7 @@ export default defineComponent({
         customerId,
         title: formData.title,
         category: formData.category,
-        publishOn: formData.publishOn as Date,
+        publishOn: localDate(formData.publishOn),
         image: formData.image,
         body: formData.body
       }

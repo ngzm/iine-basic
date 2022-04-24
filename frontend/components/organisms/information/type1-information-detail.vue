@@ -8,6 +8,13 @@
       </section-eyecatcher>
 
       <contents-card-body>
+        <h5
+          v-if="information.subtitle && information.subtitle.length > 0"
+          class="type1-information__subtitle"
+        >
+          <span>{{ information.subtitle }}</span>
+        </h5>
+
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="informationHtml" />
 
@@ -105,6 +112,18 @@ export default defineComponent({
       text-shadow: 1px 1px 6px black; 
       margin: 0;
       padding: 0;
+    }
+  }
+  &__subtitle {
+    position: relative;
+    top: -0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: lightgray;
+    span {
+      font-size: 1.2rem;
+      font-weight: bold;
     }
   }
   &__action {

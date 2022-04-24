@@ -108,8 +108,8 @@ Session.vim
 
 .idea/
 
-# dot_env
+# docoercompose_env
 .env*
-!.env_sample
+!.env.*sample
 
 .bash_history

@@ -30,12 +30,6 @@ html {
   font-size: 100%;  // 16px
 }
 
-@media print, screen and (max-width: $grid-breakpoint-md) {
-  html {
-    font-size: 87.5%; // 14px
-  }
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -67,10 +61,14 @@ a:active {
   text-decoration: none;
 }
 
+small {
+  color: dimgray;
+}
+
 // nav header height
 $nav-header-height: 120px;
 
 @mixin page-article-gap {
-  padding-top: calc($nav-header-height + 0.4rem);
+  padding-top: calc($nav-header-height + 3rem);
   margin-bottom: 4rem;
 }

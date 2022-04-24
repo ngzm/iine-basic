@@ -6,7 +6,7 @@ import sanitizeHtml from 'sanitize-html'
 // Day.js set default timezone
 extend(utc)
 extend(timezone)
-dayjs.tz.setDefault("Asia/Tokyo")
+dayjs.tz.setDefault(process.env.LOCAL_TIMEZONE || 'Asia/Tokyo')
 
 /**
  * Timezone を意識しながら Date フォーマットする
@@ -14,10 +14,18 @@ dayjs.tz.setDefault("Asia/Tokyo")
  * @param fmt 
  * @returns 
  */
-export const formatLocalDates = (baseDate: Date|string, fmt = 'YYYY/MM/DD HH:mm') => {
-  const tz = process.env.LOCAL_TIMEZONE || 'Asia/Tokyo'
-  return dayjs(baseDate).tz(tz).format(fmt)
+export const formatLocalDate = (baseDate: Date|string, fmt = 'YYYY/MM/DD HH:mm') => {
+  return dayjs(baseDate).format(fmt)
 }
+
+/**
+ * Timezone を意識しながら 文字列からDate型に変換する
+ * @param   Datestring - ISO Date 形式
+ * @returns Date
+ */
+ export const localDate = (dateString: string) => {
+  return dayjs(dateString).toDate()
+ }
 
 /**
  * 指定ミリ秒スリープする

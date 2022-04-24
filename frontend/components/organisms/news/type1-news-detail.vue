@@ -4,6 +4,9 @@
       <section-eyecatcher :background-image="news.image || ''" />
 
       <contents-card-body>
+        <p class="type1-news-detail__publish">
+          <small>{{ jstDateString }}</small>
+        </p>
         <h5 class="type1-news-detail__title">
           <span>{{ news.title }}</span>
         </h5>
@@ -40,7 +43,7 @@
 
 <script lang='ts'>
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
-import { sanitizer } from '@/utils/common-utils'
+import { formatLocalDate, sanitizer } from '@/utils/common-utils'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
 import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
 import { useNewsData } from '@/composable/use-news-data'
@@ -75,12 +78,14 @@ export default defineComponent({
       await loadNews(props.contentId)
     })
 
+    const jstDateString = computed(() => formatLocalDate(news.publishOn as Date, 'YYYY/MM/DD'))
     const newsBodyHtml = computed(() => sanitizer(news.body))
 
     return {
       sidebarIdName,
       news,
       newsBodyHtml,
+      jstDateString,
       loading,
       notFound,
       types: contentDataTypes,
@@ -93,9 +98,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 .type1-news-detail {
+  &__publish {
+    position: relative;
+    top: -1rem;
+    text-align: right;
+  }
   &__title {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     span {
       font-weight: bold;

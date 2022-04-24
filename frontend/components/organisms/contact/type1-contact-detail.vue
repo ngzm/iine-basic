@@ -5,14 +5,22 @@
         <h4 class="type1-contact__header--title">
           {{ contact.title }}
         </h4>
-        <p class="type1-contact__header--subtitle">
-          {{ contact.subtitle }}
-        </p>
       </section-eyecatcher>
 
       <contents-card-body>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-html="contactHtml" />
+        <h5
+          v-if="contact.subtitle && contact.subtitle.length > 0"
+          class="type1-contact__subtitle"
+        >
+          <span>{{ contact.subtitle }}</span>
+        </h5>
+
+        <!-- eslint-disable vue/no-v-html -->
+        <div
+          class="type1-contact__body"
+          v-html="contactHtml"
+        />
+        <!-- eslint-enable -->
 
         <div class="type1-contact__action">
           <slot name="action">
@@ -97,16 +105,24 @@ export default defineComponent({
 <style lang="scss" scoped>
 .type1-contact {
   &__header {
-    &--title, &--subtitle {
+    &--title {
       font-size: 1.25rem;
       font-weight: bold;
       text-shadow: 1px 1px 6px black; 
       margin: 0;
       padding: 0;
     }
-    &--subtitle {
-      font-size: 1.0rem;
-      margin-top: 0.5rem;
+  }
+  &__subtitle {
+    position: relative;
+    top: -0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: lightgray;
+    span {
+      font-size: 1.2rem;
+      font-weight: bold;
     }
   }
   &__action {
