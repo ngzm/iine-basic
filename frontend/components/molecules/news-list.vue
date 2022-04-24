@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
-import { formatLocalDates } from '@/utils/common-utils'
+import { formatLocalDate } from '@/utils/common-utils'
 import NewsCategoryBadge from '@/components/molecules/news-category-badge.vue'
 
 
@@ -37,7 +37,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const jstDateString = (pdate: Date) => formatLocalDates(pdate, 'YYYY/MM/DD')
+    const jstDateString = (pdate: Date) => formatLocalDate(pdate, 'YYYY/MM/DD')
     return { jstDateString }
   },
 })

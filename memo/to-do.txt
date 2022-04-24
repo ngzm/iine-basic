@@ -1,0 +1,27 @@
+## 20220424
+
+#### Front
+[済][4/24] メールコンテンツフォーム公開日周りの再作成、メール詳細画面に公開日追加
+
+各コンテンツサブタイトル表示エリア追加
+パンクズリストの表示位置を見直し fixed に含める？
+mode を SSR に変更する
+front draggable と draggable しないモードを整備
+front eslint の prittier 対応と prettier エラーコード修正
+nuxt auth expire 時間が短い問題
+
+#### Back
+customer-url メイン URL とサブ URL の区分けと、ログイン時メインURLへのリダイレクト
+問い合わせメール送信部分の実装
+
+#### Infra
+本番環境インフラ構築
+本番環境セットアップ手順確立
+本番環境 CI 環境構築
+
+#### 開発環境
+github リポジトリを個人の方に移動する
+
+#### 将来
+Nuxt3 - Vue3 完全対応（多分基本部分を作り直す）
+content 周りの設計を見直し、front component を選らんで任意にページ構成を組み立てられるようなUIに変更

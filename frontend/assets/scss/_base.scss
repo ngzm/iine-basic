@@ -30,12 +30,6 @@ html {
   font-size: 100%;  // 16px
 }
 
-@media print, screen and (max-width: $grid-breakpoint-md) {
-  html {
-    font-size: 87.5%; // 14px
-  }
-}
-
 body {
   margin: 0;
   padding: 0;
