@@ -3,9 +3,9 @@
     <div class="infomation-card">
       <h5>管理ユーザをログアウトしました</h5>
       <p>ページの閲覧は可能です</p>
-      <p class="mt-4">
+      <div class="mt-4">
         <b-btn @click="redirect">TOPページへ</b-btn>
-      </p>
+      </div>
     </div>
   </div>
 </template>

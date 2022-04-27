@@ -1,5 +1,5 @@
-import { ref, reactive, watch, useContext, Ref } from '@nuxtjs/composition-api'
-import { useContentSyncronizer, ContentSynchronizer } from './syncronizer'
+import { ref, reactive, toRefs, watch, useContext, Ref } from '@nuxtjs/composition-api'
+import { ContentSynchronizer } from './syncronizer'
 import { useContentLoading } from './loading'
 import { useContentNotFound } from './not-found'
 import { ContentType, ContentPosition } from '@/types/content-type'
@@ -20,7 +20,7 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
   const { customerId } = useCurrentCustomer()
 
   // data syncronizer watch functions
-  useContentSyncronizer(syncronizer, dataReactive, listRef)
+  const { syncCreated, syncUpdated, syncDeleted, syncPotisonChanged } = toRefs(syncronizer)
 
   // data loading
   const { loading, startLoading, endLoading } = useContentLoading()
@@ -114,23 +114,66 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
     syncronizer.onPotisonChanged(positions)
   }
 
-  watch(() => syncronizer.syncCreated, () => {
-    // トップ画像が何も登録されていない状態 (notFound) で、
-    // 新たにデータが追加された時
-    // この場合は、追加されたデータをロードする
-    if (notFound) {
-      loadData(syncronizer.syncData.id)
+  watch(syncCreated, async () => {
+    if (process.client) {
+      // リストリロード
+      await loadList()
+
+      if (notFound) {
+        // トップ画像が何も登録されていない状態 (notFound) で、
+        // 新たにデータが追加された時
+        // この場合は、追加されたデータをロードする
+        await loadData(syncronizer.syncData.id)
+      }
     }
   })
 
+  watch(syncUpdated, () => {
+    const target = listRef.value.find((d) => syncronizer.isTarget(d))
+    if (target) {
+      Object.assign(target, syncronizer.syncData)
+    }
+
+    if (syncronizer.isTarget(dataReactive  as T)) {
+      Object.assign(dataReactive, syncronizer.syncData)
+    }
+  })
+
+  watch(syncDeleted, () => {
+    const targetIndex = listRef.value.findIndex((d) => syncronizer.isTarget(d))
+    if (targetIndex >= 0) {
+      listRef.value.splice(targetIndex, 1)
+    }
+
+    if (syncronizer.isTarget(dataReactive  as T)) {
+      Object.assign(dataReactive, { removed: true })
+    }
+  })
+
+  watch(syncPotisonChanged, () => {
+    listRef.value.forEach((d) => {
+      const modPosition = syncronizer.syncPositionObj[d.id]
+      if (modPosition !== undefined || modPosition !== null) {
+        d.position = modPosition
+      }
+    })
+
+    const modPosition = syncronizer.syncPositionObj[dataReactive.id]
+    if (modPosition !== undefined || modPosition !== null) {
+      dataReactive.position = modPosition
+    }
+  })
+ 
   return {
     dataReactive,
     listRef,
     listLimit,
     loading,
-    notFound,
     startLoading,
     endLoading,
+    notFound,
+    resetNotFound,
+    warnNotFound,
     loadList,
     loadData,
     createData,

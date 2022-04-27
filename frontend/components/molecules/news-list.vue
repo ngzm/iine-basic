@@ -4,16 +4,16 @@
       v-for="news in newses"
       :key="news.id"
     >
-      <p class="edit-activator">
+      <div class="edit-activator">
         <slot name="editActivator" :news="news" />
-      </p>
-      <p class="news-header">
+      </div>
+      <div class="news-header">
         <span>{{ jstDateString(news.publishOn) }}</span>
         <news-category-badge :category="news.category" class="ml-2" />
-      </p>
-      <p class="news-title">
+      </div>
+      <div class="news-title">
         <a href="" @click.prevent.stop="$router.push(`/news/${news.id}`)">{{news.title}}</a>
-      </p>
+      </div>
     </li>
   </ul> 
 </template>
@@ -54,21 +54,21 @@ ul.news-list-wrapper {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    p {
+    div {
       margin: 2px;
       padding: 0.4rem; 
     }
-    p.edit-activator{
+    div.edit-activator{
       margin: 0;
       padding: 0;
     }
-    p.news-header {
+    div.news-header {
       text-align: center;
       width: 14rem;
       min-width: 14rem;
       background-color: #ccccff;
     }
-    p.news-title {
+    div.news-title {
       text-align: left;
       white-space: nowrap;
       overflow: hidden;

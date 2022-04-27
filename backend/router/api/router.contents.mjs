@@ -11,18 +11,6 @@ import {
 
 export default function(router, store) {
   /**
-   * Content 一覧の position 変更
-   */
-  router.put('/positions', passport.authenticate('bearer', { session: false }), validateBodyRequired, validatePositions, async(request, response, next) => {
-    try {
-      const contents = await store.updateContentPositions(request.body)
-      response.json(contents)
-    } catch (error) {
-      next(error)
-    }
-  })
-
-  /**
    * Content 情報取得
    */
   router.get('/:id', validateParamsId, async(request, response, next) => {
@@ -62,6 +50,18 @@ export default function(router, store) {
   )
 
   /**
+   * Content 一覧の position 変更
+   */
+  router.put('/positions', passport.authenticate('bearer', { session: false }), validateBodyRequired, validatePositions, async(request, response, next) => {
+    try {
+      const contents = await store.updateContentPositions(request.body)
+      response.json(contents)
+    } catch (error) {
+      next(error)
+    }
+  })
+
+  /**
    * Content変更
    */
   router.put('/:id', passport.authenticate('bearer', { session: false }), validateParamsId, validateBodyRequired, async(request, response, next) => {
@@ -79,7 +79,7 @@ export default function(router, store) {
    * Content削除
    * ここでは論理削除します
    */
-  router.delete('/:id', passport.authenticate('bearer', { session: false }), validateBodyRequired, async(request, response, next) => {
+  router.delete('/:id', passport.authenticate('bearer', { session: false }), validateParamsId, async(request, response, next) => {
     try {
       const ret = await store.logicalDeleteContent(request.id)
       if (!ret) throw new AppError('該当する情報は見つかりませんでした', 404)

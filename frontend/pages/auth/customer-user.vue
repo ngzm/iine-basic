@@ -6,9 +6,9 @@
     <div v-else class="infomation-card">
       <p>申し訳ございません</p>
       <p>管理ユーザ権限を確認できませんでした</p>
-      <p class="mt-4">
+      <div class="mt-4">
         <b-btn @click="$router.push('/')">TOPページへ</b-btn>
-      </p>
+      </div>
     </div>
   </div>
 </template>

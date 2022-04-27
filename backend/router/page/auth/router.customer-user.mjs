@@ -57,7 +57,8 @@ const router = express.Router();
 
     // const hpUrl = `http://${urls[0]}/auth/customer-user?code=${exchangeCode}`
     // const hpUrl = `http://longlivenet.iine.website:4000/auth/customer-user?code=${exchangeCode}`
-    const hpUrl = `http://192.168.8.108:4000/auth/customer-user?code=${exchangeCode}`
+    // const hpUrl = `http://192.168.8.108:4000/auth/customer-user?code=${exchangeCode}`
+    const hpUrl = `http://localhost:4000/auth/customer-user?code=${exchangeCode}`
     response.redirect(hpUrl)
   } catch(error) {
     next(error)
