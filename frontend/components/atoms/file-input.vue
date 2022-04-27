@@ -19,14 +19,14 @@
         <p>
           ここに画像ファイルを<br/>ドラッグ＆ドロップできます
         </p>
-        <p class="file-input__drag-drop--nav-action">
+        <div class="file-input__drag-drop--nav-action">
           <b-button
             variant="primary"
             @click="onClick"
           >
             背景画像ファイルを選択
           </b-button>
-        </p>
+        </div>
       </div>
     </div>
     <input

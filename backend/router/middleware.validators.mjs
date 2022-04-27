@@ -43,7 +43,7 @@ export const validateQueryCustomerId = (request, response, next) => {
 export const validateBodyRequired = (request, response, next) => {
   logger.trace('request.body:', JSON.stringify(request.body, null, 2))
   try {
-    if (!isDefined(request.body)) throw new AppError('400 Bad Request. Missing request body', 400)
+    if (!isDefined(request.body) || !Object.keys(request.body).length) throw new AppError('400 Bad Request. Missing request body', 400)
     next()
   } catch (error) {
     next(error)

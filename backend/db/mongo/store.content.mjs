@@ -1,6 +1,7 @@
 'use strict'
 
 import { modelToObject, modelToArrayObject } from './db.handler.mjs'
+import { isDefined } from '../../lib/utils.mjs'
 
 /**
  * 各種コンテンツのDB操作定義クラス
@@ -20,9 +21,9 @@ export default class ContentStore {
    * @param {number} skip offset 0 以下の時は無視される
    * @param {number} limit limit 0 以下の時は無視される
    */
-  async getContents(filter = {}, select = { _id: 0 }, sort = { id: 1 }, skip = 0, limit = 0) {
+  async getContents(filter = {}, select = { _id: 0 }, sort = {}, skip = 0, limit = 0) {
     const sFilter = { ...filter, removed: false }
-    const sSort = { position: 1, ...sort }
+    const sSort = { ...sort, position: 1, id: 1 }
     let query = this.Model.find(sFilter).select(select).sort(sSort)
     if (skip && skip > 0) query = query.skip(skip)
     if (limit && limit > 0) query = query.limit(limit)
@@ -46,6 +47,19 @@ export default class ContentStore {
    */
    async createContent(content) {
     const contentModel = new this.Model(content)
+
+    if (isDefined(contentModel.position)) {
+      // 既存データの position を 1 つずらす
+      await this.Model.updateMany({
+        removed: false,
+        customerId: contentModel.customerId,
+        id: { $ne: contentModel.id },
+        position: { $gte: contentModel.position }
+      }, {
+        $inc: { position: 1 }
+      })
+    }
+
     return modelToObject(await contentModel.save())
   }
 

@@ -6,9 +6,9 @@
 
       <p class="mt-4">statusCode: {{ error ? error.statusCode : 'no code' }}</p>
       <p>message: {{ error ? error.message : 'no message' }}</p>
-      <p class="mt-4" >
+      <div class="mt-4" >
         <b-btn @click="redirect">TOPページへ</b-btn>
-      </p>
+      </div>
     </div>
   </div>
 </template>

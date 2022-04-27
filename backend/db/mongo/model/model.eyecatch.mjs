@@ -26,7 +26,7 @@ eyecatchSchema.pre('validate', async function(next) {
       { new: true, upsert: true }
     )
     this.id = idSeq.idValue
-    this.position ||= this.id
+    this.position ||= 1
   }
   return next()
 })

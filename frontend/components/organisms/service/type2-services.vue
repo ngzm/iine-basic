@@ -15,7 +15,7 @@
           class="type2-services__content-eyecatcher"
         />
         <!-- eslint-disable vue/no-v-html -->
-        <p
+        <div
           class="type2-services__content-body"
           v-html="serviceBodyHtml(content.body)"
         />
