@@ -6,7 +6,7 @@
 
       <p class="mt-4">statusCode: {{ error ? error.statusCode : 'no code' }}</p>
       <p>message: {{ error ? error.message : 'no message' }}</p>
-      <div class="mt-4" >
+      <div class="mt-4">
         <b-btn @click="redirect">TOPページへ</b-btn>
       </div>
     </div>
@@ -22,14 +22,16 @@ export default defineComponent({
   props: {
     error: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
-    redirect () {
-      return this.$route.name === 'index' ? this.$router.go() : this.$router.push('/')
-    }
-  }
+    redirect() {
+      return this.$route.name === 'index'
+        ? this.$router.go()
+        : this.$router.push('/')
+    },
+  },
 })
 </script>
 

@@ -1,7 +1,7 @@
 /**
  * Customer Data Types
  */
- export interface CustomerType {
+export interface CustomerType {
   id: number
   name: string
   note?: string

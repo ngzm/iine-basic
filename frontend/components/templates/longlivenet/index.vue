@@ -10,7 +10,7 @@
         <information-detail :content-id="1">
           <template #action>
             <b-button
-              v-scroll-to="{ el:'#index-contact-article', offset: -180 }"
+              v-scroll-to="{ el: '#index-contact-article', offset: -180 }"
               :to="{ name: 'index' }"
               variant="primary"
             >
@@ -59,9 +59,9 @@ import {
   useRoute,
   useRouter,
   useStore,
-  nextTick
+  nextTick,
 } from '@nuxtjs/composition-api'
-import VueScrollTo from "vue-scrollto"
+import VueScrollTo from 'vue-scrollto'
 import TopEyeCatcher from '@/components/organisms/home/type1-top-eyecatcher-detail.vue'
 import InformationDetail from '~/components/organisms/information/type1-information-detail.vue'
 import Newses from '@/components/organisms/news/type1-newses.vue'
@@ -88,7 +88,7 @@ export default defineComponent({
     onMounted(() => {
       if (route.value.hash) {
         hash.value = route.value.hash
-        router.replace({ name: 'index', hash: ''})
+        router.replace({ name: 'index', hash: '' })
       }
     })
 
@@ -101,7 +101,7 @@ export default defineComponent({
       }
       stop()
     })
-  }
+  },
 })
 </script>
 

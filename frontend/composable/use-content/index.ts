@@ -1,4 +1,11 @@
-import { ref, reactive, toRefs, watch, useContext, Ref } from '@nuxtjs/composition-api'
+import {
+  ref,
+  reactive,
+  toRefs,
+  watch,
+  useContext,
+  Ref,
+} from '@nuxtjs/composition-api'
 import { ContentSynchronizer } from './syncronizer'
 import { useContentLoading } from './loading'
 import { useContentNotFound } from './not-found'
@@ -10,7 +17,11 @@ type IntilizerFunc<T> = () => T
 /**
  * Use Contet Data
  */
-export function useContent<T extends ContentType>(apiEndpoint: string, initializer: IntilizerFunc<T>, syncronizer: ContentSynchronizer<T>) {
+export function useContent<T extends ContentType>(
+  apiEndpoint: string,
+  initializer: IntilizerFunc<T>,
+  syncronizer: ContentSynchronizer<T>
+) {
   const { $axios, $auth } = useContext()
   const dataReactive = reactive<T>(initializer())
   const listRef = ref<T[]>([]) as Ref<T[]>
@@ -20,7 +31,8 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
   const { customerId } = useCurrentCustomer()
 
   // data syncronizer watch functions
-  const { syncCreated, syncUpdated, syncDeleted, syncPotisonChanged } = toRefs(syncronizer)
+  const { syncCreated, syncUpdated, syncDeleted, syncPotisonChanged } =
+    toRefs(syncronizer)
 
   // data loading
   const { loading, startLoading, endLoading } = useContentLoading()
@@ -32,7 +44,9 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
     startLoading()
     resetNotFound()
 
-    const data = await $axios.$get(apiEndpoint, { params: { customerId, limit: listLimit.value } })
+    const data = await $axios.$get(apiEndpoint, {
+      params: { customerId, limit: listLimit.value },
+    })
     if (!data || data.length < 1) warnNotFound()
 
     listRef.value = data
@@ -43,7 +57,9 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
     startLoading()
     resetNotFound()
 
-    const data = await $axios.$get(`${apiEndpoint}/${dataId}`, { params: { customerId } })
+    const data = await $axios.$get(`${apiEndpoint}/${dataId}`, {
+      params: { customerId },
+    })
     if (!data || !data.id) warnNotFound()
 
     Object.assign(dataReactive, data)
@@ -58,19 +74,27 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
       // 最初に画像ファイルアップロード
       const formData = new FormData()
       if (imageFile) {
-        formData.append("imagefile", imageFile)
-        const imageUrl = await $axios.$post('/uploads/image', formData, { params: { customerId } })
+        formData.append('imagefile', imageFile)
+        const imageUrl = await $axios.$post('/uploads/image', formData, {
+          params: { customerId },
+        })
         sendData.image = imageUrl.fileUrl
       }
       // コンテンツデータ登録
-      sendData = await $axios.$post(apiEndpoint, sendData, { params: { customerId } })
+      sendData = await $axios.$post(apiEndpoint, sendData, {
+        params: { customerId },
+      })
     }
 
     syncronizer.onCreated(sendData)
     endLoading()
-   }
+  }
 
-  const updateData = async (dataId: number, modData: T, imageFile: File | null) => {
+  const updateData = async (
+    dataId: number,
+    modData: T,
+    imageFile: File | null
+  ) => {
     startLoading()
     resetNotFound()
     let sendData = { ...modData }
@@ -79,12 +103,16 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
       // 最初に画像ファイルアップロード
       const formData = new FormData()
       if (imageFile) {
-        formData.append("imagefile", imageFile)
-        const imageUrl = await $axios.$post('/uploads/image', formData, { params: { customerId } })
+        formData.append('imagefile', imageFile)
+        const imageUrl = await $axios.$post('/uploads/image', formData, {
+          params: { customerId },
+        })
         sendData.image = imageUrl.fileUrl
       }
       // コンテンツデータ更新
-      const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, { params: { customerId } })
+      const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, {
+        params: { customerId },
+      })
       if (!data || !data.id) warnNotFound()
 
       sendData = data
@@ -97,7 +125,9 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
   const deleteData = async (dataId: number) => {
     startLoading()
     if ($auth.loggedIn) {
-      await $axios.delete(`${apiEndpoint}/${dataId}`, { params: { customerId } })
+      await $axios.delete(`${apiEndpoint}/${dataId}`, {
+        params: { customerId },
+      })
     }
     syncronizer.onDeleted(dataReactive as T)
     endLoading()
@@ -107,9 +137,13 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
     // 画面がチラチラするので最初に変更された配列をセットしておく
     listRef.value = changedList
 
-    const positions: ContentPosition[] = changedList.map((d, i) => ({ id: d.id, position: i + 1 } as ContentPosition))
+    const positions: ContentPosition[] = changedList.map(
+      (d, i) => ({ id: d.id, position: i + 1 } as ContentPosition)
+    )
     if ($auth.loggedIn) {
-      listRef.value = await $axios.$put(`${apiEndpoint}/positions`, positions, { params: { customerId } })
+      listRef.value = await $axios.$put(`${apiEndpoint}/positions`, positions, {
+        params: { customerId },
+      })
     }
     syncronizer.onPotisonChanged(positions)
   }
@@ -134,7 +168,7 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
       Object.assign(target, syncronizer.syncData)
     }
 
-    if (syncronizer.isTarget(dataReactive  as T)) {
+    if (syncronizer.isTarget(dataReactive as T)) {
       Object.assign(dataReactive, syncronizer.syncData)
     }
   })
@@ -145,7 +179,7 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
       listRef.value.splice(targetIndex, 1)
     }
 
-    if (syncronizer.isTarget(dataReactive  as T)) {
+    if (syncronizer.isTarget(dataReactive as T)) {
       Object.assign(dataReactive, { removed: true })
     }
   })
@@ -163,7 +197,7 @@ export function useContent<T extends ContentType>(apiEndpoint: string, initializ
       dataReactive.position = modPosition
     }
   })
- 
+
   return {
     dataReactive,
     listRef,

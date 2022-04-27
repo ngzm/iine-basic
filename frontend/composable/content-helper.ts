@@ -1,4 +1,3 @@
-
 /**
  * データ種別
  */
@@ -10,19 +9,21 @@ export const contentDataTypes = {
   work: 'work',
   contact: 'contact',
   menu: 'menu',
-  none: 'none'
+  none: 'none',
 } as const
 
-export type ContentDataType = typeof contentDataTypes[keyof typeof contentDataTypes];
+export type ContentDataType =
+  typeof contentDataTypes[keyof typeof contentDataTypes]
 
 /**
  * アクション操作種別
  */
 export const contentActionTypes = {
- create: 'create',
- update: 'update',
- moddel: 'moddel',
- none: 'none'
+  create: 'create',
+  update: 'update',
+  moddel: 'moddel',
+  none: 'none',
 } as const
 
-export type ContentActionType = typeof contentActionTypes[keyof typeof contentActionTypes];
+export type ContentActionType =
+  typeof contentActionTypes[keyof typeof contentActionTypes]

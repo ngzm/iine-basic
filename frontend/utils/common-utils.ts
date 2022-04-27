@@ -1,6 +1,6 @@
 import dayjs, { extend } from 'dayjs'
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import sanitizeHtml from 'sanitize-html'
 
 // Day.js set default timezone
@@ -11,10 +11,13 @@ dayjs.tz.setDefault(process.env.LOCAL_TIMEZONE || 'Asia/Tokyo')
 /**
  * Timezone を意識しながら Date フォーマットする
  * @param  baseDate Date (UTC など Timezone 付き)
- * @param fmt 
- * @returns 
+ * @param fmt dayjs format string
+ * @returns formatted string
  */
-export const formatLocalDate = (baseDate: Date|string, fmt = 'YYYY/MM/DD HH:mm') => {
+export const formatLocalDate = (
+  baseDate: Date | string,
+  fmt = 'YYYY/MM/DD HH:mm'
+): string => {
   return dayjs(baseDate).format(fmt)
 }
 
@@ -23,9 +26,9 @@ export const formatLocalDate = (baseDate: Date|string, fmt = 'YYYY/MM/DD HH:mm')
  * @param   Datestring - ISO Date 形式
  * @returns Date
  */
- export const localDate = (dateString: string) => {
+export const localDate = (dateString: string) => {
   return dayjs(dateString).toDate()
- }
+}
 
 /**
  * 指定ミリ秒スリープする
@@ -34,22 +37,23 @@ export const formatLocalDate = (baseDate: Date|string, fmt = 'YYYY/MM/DD HH:mm')
  * @returns Promise
  */
 export const sleep = (sleepms: number) => {
-  return new Promise((resolve) => setTimeout(() => {
-    resolve('OK')
-  }, sleepms))
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve('OK')
+    }, sleepms)
+  )
 }
 
 /**
  * HTML を Sanitize する
  */
-export const sanitizer = (htmlText: string | undefined) => (
+export const sanitizer = (htmlText: string | undefined) =>
   sanitizeHtml(htmlText || '', {
     allowedAttributes: {
-      '*': ["class", "style"],
-      'a': [ 'href', 'name', 'target', 'rel' ],
-    }
+      '*': ['class', 'style'],
+      a: ['href', 'name', 'target', 'rel'],
+    },
   })
-)
 
 /**
  * no image assets 画像読み込み

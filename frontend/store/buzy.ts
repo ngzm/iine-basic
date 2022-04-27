@@ -4,7 +4,7 @@ import { RootState } from '@/types/store-types'
 import { sleep } from '@/utils/common-utils'
 
 interface BuzyState {
-  buzyIdArray: string[],
+  buzyIdArray: string[]
 }
 
 export const state = (): BuzyState => ({
@@ -12,11 +12,11 @@ export const state = (): BuzyState => ({
 })
 
 export const getters: GetterTree<BuzyState, RootState> = {
-  isBuzy: (state) => state.buzyIdArray.length > 0
+  isBuzy: (state) => state.buzyIdArray.length > 0,
 }
 
 export const mutations: MutationTree<BuzyState> = {
-  ADD_BUZY_ID: (state: BuzyState, buzyId: string ) => {
+  ADD_BUZY_ID: (state: BuzyState, buzyId: string) => {
     state.buzyIdArray.push(buzyId)
   },
   REMOVE_BUZY_ID: (state: BuzyState, buzyId: string) => {
@@ -30,9 +30,11 @@ export const actions: ActionTree<BuzyState, RootState> = {
     commit('ADD_BUZY_ID', buzyId)
 
     // 無限にBuzyになるのを避けるため遅くとも10秒後には解放する
-    setTimeout(() => { commit('REMOVE_BUZY_ID', buzyId)}, 10000)
+    setTimeout(() => {
+      commit('REMOVE_BUZY_ID', buzyId)
+    }, 10000)
   },
-  buzyOff: ({ commit }, buzyId) => { 
+  buzyOff: ({ commit }, buzyId) => {
     commit('REMOVE_BUZY_ID', buzyId)
   },
   buzyWait: async ({ getters }, timeout = 5000) => {
@@ -40,7 +42,7 @@ export const actions: ActionTree<BuzyState, RootState> = {
     await sleep(initialGap)
 
     const interbal = 300
-    const imax =  Math.floor(timeout / interbal)
+    const imax = Math.floor(timeout / interbal)
     for (let i = 0; getters.isBuzy && i <= imax; i++) {
       await sleep(interbal)
     }

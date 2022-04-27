@@ -43,4 +43,3 @@ export class ContentSynchronizer<T extends ContentType> {
     return this.syncData.id && this.syncData.id === target.id
   }
 }
-

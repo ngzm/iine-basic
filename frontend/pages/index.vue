@@ -13,9 +13,7 @@ export default defineComponent({
   },
   setup() {
     const templateName = 'LongLivenetIndex'
-    return {
-      templateName
-    }
-  }
+    return { templateName }
+  },
 })
 </script>

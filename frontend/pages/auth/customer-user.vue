@@ -12,7 +12,7 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts">
 import {
   defineComponent,
@@ -20,7 +20,7 @@ import {
   onMounted,
   useRoute,
   useRouter,
-  useContext
+  useContext,
 } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -49,7 +49,7 @@ export default defineComponent({
   },
 })
 </script>
-  
+
 <style scoped>
 .frame-wrap {
   width: 100%;
