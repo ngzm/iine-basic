@@ -41,11 +41,14 @@
   </contents-card>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { formatLocalDate, sanitizer } from '@/utils/common-utils'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
+import {
+  contentDataTypes,
+  contentActionTypes,
+} from '@/composable/content-helper'
 import { useNewsData } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -58,28 +61,24 @@ export default defineComponent({
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
-    ContentEditActivator
+    ContentEditActivator,
   },
   props: {
     contentId: {
       type: Number,
-      required: true
+      required: true,
     },
   },
   setup(props) {
-    const {
-      news,
-      loading,
-      notFound,
-      loadNews
-    } = useNewsData()
+    const { news, loading, notFound, loadNews } = useNewsData()
+    const jstDateString = computed(() =>
+      formatLocalDate(news.publishOn as Date, 'YYYY/MM/DD')
+    )
+    const newsBodyHtml = computed(() => sanitizer(news.body))
 
     onMounted(async () => {
       await loadNews(props.contentId)
     })
-
-    const jstDateString = computed(() => formatLocalDate(news.publishOn as Date, 'YYYY/MM/DD'))
-    const newsBodyHtml = computed(() => sanitizer(news.body))
 
     return {
       sidebarIdName,
@@ -91,12 +90,11 @@ export default defineComponent({
       types: contentDataTypes,
       actions: contentActionTypes,
     }
-  }
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-
 .type1-news-detail {
   &__publish {
     position: relative;

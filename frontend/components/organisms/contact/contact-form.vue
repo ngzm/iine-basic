@@ -1,6 +1,6 @@
 <template>
   <contentsform-wrap :overlay="loading">
-    <form class="contact-form"> 
+    <form class="contact-form">
       <div class="contact-form__input">
         <label for="contact-form-input-image">タイトル背景画像</label>
         <file-input
@@ -58,24 +58,35 @@
         <b-button v-show="action === 'create'" variant="info" @click="onCreate">
           作成する
         </b-button>
-        <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
+        <b-button
+          v-show="action === 'update' || action === 'moddel'"
+          variant="success"
+          @click="onUpdate"
+        >
           更新する
         </b-button>
-        <b-button @click="onCancel">
-          キャンセル
-        </b-button>
+        <b-button @click="onCancel">キャンセル</b-button>
       </div>
     </form>
   </contentsform-wrap>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, PropType } from '@vue/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  PropType,
+} from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useContactData } from '~/composable/use-contact-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
+import {
+  contentActionTypes,
+  ContentActionType,
+} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -86,12 +97,12 @@ export default defineComponent({
   props: {
     action: {
       type: String as PropType<ContentActionType>,
-      required: true
+      required: true,
     },
     dataId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const { action, dataId } = props
@@ -102,7 +113,7 @@ export default defineComponent({
       loadContact,
       createContact,
       updateContact,
-      endLoading
+      endLoading,
     } = useContactData()
 
     const contactForm = useValidation({
@@ -136,7 +147,7 @@ export default defineComponent({
         },
       },
       imageFile: {
-        $value: ref<File|null>(null),
+        $value: ref<File | null>(null),
       },
       body: {
         $value: ref(''),
@@ -151,12 +162,20 @@ export default defineComponent({
       },
     })
 
-    const validStateTitle = computed(() => !contactForm.title.$dirty ? null : !contactForm.title.$anyInvalid)
-    const validStateSubtitle = computed(() => !contactForm.subtitle.$dirty ? null : !contactForm.subtitle.$anyInvalid)
-    const validStateImage = computed(() => !contactForm.image.$dirty ? null : !contactForm.image.$anyInvalid)
-    const validStateBody = computed(() => !contactForm.body.$dirty ? null : !contactForm.body.$anyInvalid)
+    const validStateTitle = computed(() =>
+      !contactForm.title.$dirty ? null : !contactForm.title.$anyInvalid
+    )
+    const validStateSubtitle = computed(() =>
+      !contactForm.subtitle.$dirty ? null : !contactForm.subtitle.$anyInvalid
+    )
+    const validStateImage = computed(() =>
+      !contactForm.image.$dirty ? null : !contactForm.image.$anyInvalid
+    )
+    const validStateBody = computed(() =>
+      !contactForm.body.$dirty ? null : !contactForm.body.$anyInvalid
+    )
 
-    onMounted(async() => {
+    onMounted(async () => {
       if (action === contentActionTypes.create) {
         endLoading()
         return
@@ -168,7 +187,7 @@ export default defineComponent({
       contactForm.body.$value = contact.body || ''
     })
 
-    const onChangeImageFile =(imageFile: File) => {
+    const onChangeImageFile = (imageFile: File) => {
       contactForm.imageFile.$value = imageFile
       contactForm.image.$value = URL.createObjectURL(imageFile)
     }
@@ -184,9 +203,9 @@ export default defineComponent({
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
-        body: formData.body
+        body: formData.body,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await createContact(contactData, imageFile)
       emit('close')
     }
@@ -202,9 +221,9 @@ export default defineComponent({
         title: formData.title,
         subtitle: formData.subtitle,
         image: formData.image,
-        body: formData.body
+        body: formData.body,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await updateContact(dataId, contactData, imageFile)
       emit('close')
     }

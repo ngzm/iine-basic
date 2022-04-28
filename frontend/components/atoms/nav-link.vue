@@ -4,7 +4,11 @@
       <a :href="href"><slot /></a>
     </template>
     <template v-else-if="to && to.name && to.name.length > 0">
-      <nuxt-link v-if="scrollTo && scrollTo.el && scrollTo.el.length > 0" v-scroll-to="scrollTo" :to="to">
+      <nuxt-link
+        v-if="scrollTo && scrollTo.el && scrollTo.el.length > 0"
+        v-scroll-to="scrollTo"
+        :to="to"
+      >
         <slot />
       </nuxt-link>
       <nuxt-link v-else :to="to">
@@ -18,12 +22,12 @@
 import { defineComponent, PropType } from '@vue/composition-api'
 
 interface NavLinkTo {
-  name: string;
+  name: string
   hash?: string
 }
 
 interface NavLinkScrollTo {
-  el: string;
+  el: string
   offset?: number
 }
 
@@ -32,15 +36,15 @@ export default defineComponent({
   props: {
     href: {
       type: String,
-      default: ''
-    } ,
+      default: '',
+    },
     to: {
       type: Object as PropType<NavLinkTo>,
-      default: () => ({ name: '' })
+      default: () => ({ name: '' }),
     },
     scrollTo: {
       type: Object as PropType<NavLinkScrollTo>,
-      default: () => ({ el: '' })
+      default: () => ({ el: '' }),
     },
   },
 })

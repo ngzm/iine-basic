@@ -16,7 +16,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { ContentType, NewsType, ServiceType, WorkType } from '@/types/content-type'
+import {
+  ContentType,
+  NewsType,
+  ServiceType,
+  WorkType,
+} from '@/types/content-type'
 
 type ColsType = ContentType | NewsType | ServiceType | WorkType
 
@@ -25,9 +30,9 @@ export default defineComponent({
   props: {
     contentsList: {
       type: Array as PropType<ColsType[]>,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 })
 </script>
 
@@ -47,7 +52,7 @@ export default defineComponent({
     max-width: 20rem;
     min-width: 16rem;
     text-align: center;
-    .edit-activator{
+    .edit-activator {
       position: absolute;
       top: 0;
       left: 2rem;

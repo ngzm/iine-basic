@@ -1,7 +1,7 @@
 <template>
   <div
     class="section-content-eyecatcher"
-    :class="{ 'circle': circle, 'round': round }"
+    :class="{ circle: circle, round: round }"
     :style="`background-image: url(${image}); height: ${height}`"
   />
 </template>
@@ -10,25 +10,25 @@
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
-  name: 'ContentsGridTitle',
+  name: 'SectionContentEyecaher',
   props: {
     image: {
       type: String,
-      required: true
+      required: true,
     },
     height: {
       type: String,
-      default: '16rem'
+      default: '16rem',
     },
     circle: {
       type: Boolean,
-      default: false
+      default: false,
     },
     round: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 })
 </script>
 
@@ -42,10 +42,10 @@ export default defineComponent({
 }
 .circle {
   border-radius: 50%;
-  overflow:hidden;
+  overflow: hidden;
 }
 .round {
   border-radius: 12px;
-  overflow:hidden;
+  overflow: hidden;
 }
 </style>

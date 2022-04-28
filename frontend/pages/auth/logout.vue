@@ -9,9 +9,9 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts">
-import { defineComponent, useRouter, } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'AuthLogout',
@@ -22,7 +22,7 @@ export default defineComponent({
       router.push({ name: 'index' })
     }
     return { redirect }
-  }
+  },
 })
 </script>
 

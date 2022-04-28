@@ -13,9 +13,7 @@ import Newses from '@/components/organisms/news/type1-newses.vue'
 
 export default defineComponent({
   name: 'LongLivenetNewsIndex',
-  components: {
-    Newses
-  },
+  components: { Newses },
 })
 </script>
 

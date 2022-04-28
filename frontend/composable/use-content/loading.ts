@@ -12,7 +12,9 @@ export function useContentLoading() {
 
     // TODO: 暫定
     // 無限にloadingしないように
-    setTimeout(() => { endLoading() }, 8000)
+    setTimeout(() => {
+      endLoading()
+    }, 8000)
   }
 
   const endLoading = () => {
@@ -23,6 +25,6 @@ export function useContentLoading() {
   return {
     loading,
     startLoading,
-    endLoading
+    endLoading,
   }
 }

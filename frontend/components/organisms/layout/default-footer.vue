@@ -8,7 +8,7 @@
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
-  name: 'DefautFooter'
+  name: 'DefautFooter',
 })
 </script>
 
@@ -18,7 +18,7 @@ export default defineComponent({
   color: dimgray;
   padding: 1rem;
   &__copyright {
-   text-align: center; 
+    text-align: center;
   }
 }
 </style>

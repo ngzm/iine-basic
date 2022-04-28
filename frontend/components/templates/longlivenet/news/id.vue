@@ -10,7 +10,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, readonly, useRoute } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  readonly,
+  useRoute,
+} from '@nuxtjs/composition-api'
 import NewsDetail from '@/components/organisms/news/type1-news-detail.vue'
 
 export default defineComponent({
@@ -19,7 +24,7 @@ export default defineComponent({
   setup() {
     const newsId = readonly(ref(parseInt(useRoute().value.params.id)))
     return { newsId }
-  }
+  },
 })
 </script>
 

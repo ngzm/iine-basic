@@ -2,39 +2,57 @@
   <nav-bar class="default-header">
     <template #title>
       <h2 class="default-header__title">
-        <nav-link :scroll-to="toTop.scrollTo" :to="toTop.to" class="default-header__title-link" >
+        <nav-link
+          :scroll-to="toTop.scrollTo"
+          :to="toTop.to"
+          class="default-header__title-link"
+        >
           ロングリブネット
         </nav-link>
       </h2>
     </template>
     <template #wide>
       <div>
-        <nav-link :scroll-to="toInformation.scrollTo" :to="toInformation.to" class="default-header__nav-link mr-2">
+        <nav-link
+          :scroll-to="toInformation.scrollTo"
+          :to="toInformation.to"
+          class="default-header__nav-link mr-2"
+        >
           Message
         </nav-link>
-        <nav-link :scroll-to="toNews.scrollTo" :to="toNews.to" class="default-header__nav-link mr-2">
+        <nav-link
+          :scroll-to="toNews.scrollTo"
+          :to="toNews.to"
+          class="default-header__nav-link mr-2"
+        >
           News
         </nav-link>
-        <nav-link :scroll-to="toServices.scrollTo" :to="toServices.to" class="default-header__nav-link mr-2">
+        <nav-link
+          :scroll-to="toServices.scrollTo"
+          :to="toServices.to"
+          class="default-header__nav-link mr-2"
+        >
           Services
         </nav-link>
-        <nav-link :scroll-to="toContact.scrollTo" :to="toContact.to" class="default-header__nav-link mr-2">
+        <nav-link
+          :scroll-to="toContact.scrollTo"
+          :to="toContact.to"
+          class="default-header__nav-link mr-2"
+        >
           Contact
         </nav-link>
-        <customer-user-tools
-          v-show="$auth.loggedIn"
-          class="ml-2"
-        />
+        <customer-user-tools v-show="$auth.loggedIn" class="ml-2" />
       </div>
     </template>
     <template #narrow>
       <div>
-        <customer-user-tools
-          v-show="$auth.loggedIn"
-          :with-name="false"
-        />
+        <customer-user-tools v-show="$auth.loggedIn" :with-name="false" />
         <b-button variant="light" @click="openSidebar">
-          <b-icon icon="list" variant="dark" style="width: 1.5rem; height: 18px;" />
+          <b-icon
+            icon="list"
+            variant="dark"
+            style="width: 1.5rem; height: 18px"
+          />
         </b-button>
       </div>
       <b-sidebar
@@ -102,7 +120,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, useRoute } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  useRoute,
+} from '@nuxtjs/composition-api'
 import NavBar from '@/components/atoms/nav-bar.vue'
 import NavLink from '@/components/atoms/nav-link.vue'
 import CustomerUserTools from '@/components/organisms/layout/customer-user-tools.vue'
@@ -117,22 +140,26 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const isIndex = computed(() => route.value.name === 'index')
-
-    const indexLinkTo = (hash: string) => isIndex.value ? {
-      scrollTo: { el: hash, offset: -180 }, to: { name: 'index' }
-    } : {
-      scrollTo: {}, to: { name: 'index', hash }
-    }
+    const indexLinkTo = (hash: string) =>
+      isIndex.value
+        ? { scrollTo: { el: hash, offset: -180 }, to: { name: 'index' } }
+        : { scrollTo: {}, to: { name: 'index', hash } }
 
     const toTop = computed(() => indexLinkTo('#index-top-position'))
-    const toInformation = computed(() => indexLinkTo('#index-information-article'))
+    const toInformation = computed(() =>
+      indexLinkTo('#index-information-article')
+    )
     const toNews = computed(() => indexLinkTo('#index-news-article'))
     const toServices = computed(() => indexLinkTo('#index-services-article'))
     const toContact = computed(() => indexLinkTo('#index-contact-article'))
 
     const sidebar = ref(false)
-    const openSidebar = () => { sidebar.value = true }
-    const closeSidebar = () => { sidebar.value = false }
+    const openSidebar = () => {
+      sidebar.value = true
+    }
+    const closeSidebar = () => {
+      sidebar.value = false
+    }
 
     return {
       toTop,
@@ -142,9 +169,9 @@ export default defineComponent({
       toContact,
       sidebar,
       openSidebar,
-      closeSidebar
+      closeSidebar,
     }
-  }
+  },
 })
 </script>
 
@@ -152,7 +179,7 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 .default-header {
-  background-color: rgba(64,64,64,0.5);
+  background-color: rgba(64, 64, 64, 0.5);
   padding: 40px 1.5rem;
   &__title {
     margin: 0;

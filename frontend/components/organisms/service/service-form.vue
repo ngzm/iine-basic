@@ -1,6 +1,6 @@
 <template>
   <contentsform-wrap :overlay="loading || confirmDelete">
-    <form class="service-form"> 
+    <form class="service-form">
       <div class="service-form__input">
         <label for="service-form-input-image">タイトル背景画像</label>
         <file-input
@@ -43,31 +43,44 @@
       </div>
       <div class="service-form__action">
         <div class="service-form__action--left">
-          <b-button v-show="action === 'moddel'" variant="outline-danger" @click="confirmDelete = true">
+          <b-button
+            v-show="action === 'moddel'"
+            variant="outline-danger"
+            @click="confirmDelete = true"
+          >
             削除する
           </b-button>
         </div>
         <div class="service-form__action--right">
-          <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+          <b-button
+            v-show="action === 'create'"
+            variant="info"
+            @click="onCreate"
+          >
             作成する
           </b-button>
-          <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
+          <b-button
+            v-show="action === 'update' || action === 'moddel'"
+            variant="success"
+            @click="onUpdate"
+          >
             更新する
           </b-button>
-          <b-button @click="onCancel">
-            キャンセル
-          </b-button>
+          <b-button @click="onCancel">キャンセル</b-button>
         </div>
       </div>
     </form>
 
     <template v-if="confirmDelete" #overlay>
       <div class="text-center">
-        <b-icon icon="exclamation-circle" variant="danger" font-scale="3" animation="cylon" />
+        <b-icon
+          icon="exclamation-circle"
+          variant="danger"
+          font-scale="3"
+          animation="cylon"
+        />
         <p class="my-3">本当に削除しますか？</p>
-        <b-button variant="danger" @click="onDelete">
-          削除する
-        </b-button>
+        <b-button variant="danger" @click="onDelete">削除する</b-button>
         <b-button variant="secondary" @click="confirmDelete = false">
           やめる
         </b-button>
@@ -77,12 +90,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  onMounted,
+} from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useServiceData } from '@/composable/use-service-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
+import {
+  contentActionTypes,
+  ContentActionType,
+} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -93,12 +115,12 @@ export default defineComponent({
   props: {
     action: {
       type: String as PropType<ContentActionType>,
-      required: true
+      required: true,
     },
     dataId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const { action, dataId } = props
@@ -110,7 +132,7 @@ export default defineComponent({
       loadService,
       createService,
       updateService,
-      deleteService
+      deleteService,
     } = useServiceData()
 
     const serviceForm = useValidation({
@@ -133,7 +155,7 @@ export default defineComponent({
         },
       },
       imageFile: {
-        $value: ref<File|null>(null),
+        $value: ref<File | null>(null),
       },
       body: {
         $value: ref(''),
@@ -147,11 +169,17 @@ export default defineComponent({
         },
       },
     })
-    const validStateTitle = computed(() => !serviceForm.title.$dirty ? null : !serviceForm.title.$anyInvalid)
-    const validStateImage = computed(() => !serviceForm.image.$dirty ? null : !serviceForm.image.$anyInvalid)
-    const validStateBody = computed(() => !serviceForm.body.$dirty ? null : !serviceForm.body.$anyInvalid)
+    const validStateTitle = computed(() =>
+      !serviceForm.title.$dirty ? null : !serviceForm.title.$anyInvalid
+    )
+    const validStateImage = computed(() =>
+      !serviceForm.image.$dirty ? null : !serviceForm.image.$anyInvalid
+    )
+    const validStateBody = computed(() =>
+      !serviceForm.body.$dirty ? null : !serviceForm.body.$anyInvalid
+    )
 
-    onMounted(async() => {
+    onMounted(async () => {
       if (action === contentActionTypes.create) {
         endLoading()
         return
@@ -162,7 +190,7 @@ export default defineComponent({
       serviceForm.body.$value = service.body || ''
     })
 
-    const onChangeImageFile =(imageFile: File) => {
+    const onChangeImageFile = (imageFile: File) => {
       serviceForm.imageFile.$value = imageFile
       serviceForm.image.$value = URL.createObjectURL(imageFile)
     }
@@ -178,9 +206,9 @@ export default defineComponent({
         title: formData.title,
         image: formData.image,
         body: formData.body,
-        position: 0
+        position: 0,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await createService(serviceData, imageFile)
       emit('close')
     }
@@ -196,9 +224,9 @@ export default defineComponent({
         title: formData.title,
         image: formData.image,
         body: formData.body,
-        position: service.position
+        position: service.position,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await updateService(dataId, serviceData, imageFile)
       emit('close')
     }
@@ -225,7 +253,7 @@ export default defineComponent({
       onDelete,
       onCancel,
       loading,
-      confirmDelete
+      confirmDelete,
     }
   },
 })

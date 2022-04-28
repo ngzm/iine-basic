@@ -1,6 +1,6 @@
 <template>
   <contentsform-wrap :overlay="loading || confirmDelete">
-    <form class="news-form"> 
+    <form class="news-form">
       <div class="news-form__input">
         <label for="news-form-input-image">タイトル背景画像</label>
         <file-input
@@ -73,31 +73,44 @@
       </div>
       <div class="news-form__action">
         <div class="news-form__action--left">
-          <b-button v-show="action === 'moddel'" variant="outline-danger" @click="confirmDelete = true">
+          <b-button
+            v-show="action === 'moddel'"
+            variant="outline-danger"
+            @click="confirmDelete = true"
+          >
             削除する
           </b-button>
         </div>
         <div class="news-form__action--right">
-          <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+          <b-button
+            v-show="action === 'create'"
+            variant="info"
+            @click="onCreate"
+          >
             作成する
           </b-button>
-          <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
+          <b-button
+            v-show="action === 'update' || action === 'moddel'"
+            variant="success"
+            @click="onUpdate"
+          >
             更新する
           </b-button>
-          <b-button @click="onCancel">
-            キャンセル
-          </b-button>
+          <b-button @click="onCancel">キャンセル</b-button>
         </div>
       </div>
     </form>
 
     <template v-if="confirmDelete" #overlay>
       <div class="text-center">
-        <b-icon icon="exclamation-circle" variant="danger" font-scale="3" animation="cylon" />
+        <b-icon
+          icon="exclamation-circle"
+          variant="danger"
+          font-scale="3"
+          animation="cylon"
+        />
         <p class="my-3">本当に削除しますか？</p>
-        <b-button variant="danger" @click="onDelete">
-          削除する
-        </b-button>
+        <b-button variant="danger" @click="onDelete">削除する</b-button>
         <b-button variant="secondary" @click="confirmDelete = false">
           やめる
         </b-button>
@@ -107,13 +120,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  onMounted,
+} from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { formatLocalDate, localDate } from '@/utils/common-utils'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useNewsData } from '@/composable/use-news-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
+import {
+  contentActionTypes,
+  ContentActionType,
+} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -124,11 +146,11 @@ export default defineComponent({
   props: {
     action: {
       type: String as PropType<ContentActionType>,
-      required: true
+      required: true,
     },
     dataId: {
       type: Number,
-      default: 0
+      default: 0,
     },
   },
   setup(props, { emit }) {
@@ -178,7 +200,7 @@ export default defineComponent({
         },
       },
       imageFile: {
-        $value: ref<File|null>(null),
+        $value: ref<File | null>(null),
       },
       body: {
         $value: ref(''),
@@ -192,11 +214,22 @@ export default defineComponent({
         },
       },
     })
-    const validStateTitle = computed(() => !newsForm.title.$dirty ? null : !newsForm.title.$anyInvalid)
-    const validStateCategory = computed(() => !newsForm.category.$dirty ? null : !newsForm.category.$anyInvalid)
-    const validStatePublishOn = computed(() => !newsForm.publishOn.$dirty ? null : !newsForm.publishOn.$anyInvalid)
-    const validStateImage = computed(() => !newsForm.image.$dirty ? null : !newsForm.image.$anyInvalid)
-    const validStateBody = computed(() => !newsForm.body.$dirty ? null : !newsForm.body.$anyInvalid)
+
+    const validStateTitle = computed(() =>
+      !newsForm.title.$dirty ? null : !newsForm.title.$anyInvalid
+    )
+    const validStateCategory = computed(() =>
+      !newsForm.category.$dirty ? null : !newsForm.category.$anyInvalid
+    )
+    const validStatePublishOn = computed(() =>
+      !newsForm.publishOn.$dirty ? null : !newsForm.publishOn.$anyInvalid
+    )
+    const validStateImage = computed(() =>
+      !newsForm.image.$dirty ? null : !newsForm.image.$anyInvalid
+    )
+    const validStateBody = computed(() =>
+      !newsForm.body.$dirty ? null : !newsForm.body.$anyInvalid
+    )
 
     const categoryOptions = [
       { value: null, text: 'カテゴリを選択', disabled: true },
@@ -206,7 +239,7 @@ export default defineComponent({
       { value: 'T', text: 'TECH' },
     ]
 
-    onMounted(async() => {
+    onMounted(async () => {
       if (action === contentActionTypes.create) {
         endLoading()
         return
@@ -214,12 +247,15 @@ export default defineComponent({
       await loadNews(dataId)
       newsForm.title.$value = news.title
       newsForm.category.$value = news.category
-      newsForm.publishOn.$value = formatLocalDate(news.publishOn as Date, 'YYYY-MM-DD')
+      newsForm.publishOn.$value = formatLocalDate(
+        news.publishOn as Date,
+        'YYYY-MM-DD'
+      )
       newsForm.image.$value = news.image || ''
       newsForm.body.$value = news.body
     })
 
-    const onChangeImageFile =(imageFile: File) => {
+    const onChangeImageFile = (imageFile: File) => {
       newsForm.imageFile.$value = imageFile
       newsForm.image.$value = URL.createObjectURL(imageFile)
     }
@@ -236,9 +272,9 @@ export default defineComponent({
         category: formData.category,
         publishOn: localDate(formData.publishOn),
         image: formData.image,
-        body: formData.body
+        body: formData.body,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await createNews(newsData, imageFile)
       emit('close')
     }
@@ -255,9 +291,9 @@ export default defineComponent({
         category: formData.category,
         publishOn: localDate(formData.publishOn),
         image: formData.image,
-        body: formData.body
+        body: formData.body,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await updateNews(dataId, newsData, imageFile)
       emit('close')
     }
@@ -287,7 +323,7 @@ export default defineComponent({
       onCancel,
       categoryOptions,
       loading,
-      confirmDelete
+      confirmDelete,
     }
   },
 })

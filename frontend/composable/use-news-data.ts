@@ -1,4 +1,4 @@
-import { reactive, watch, useContext } from '@nuxtjs/composition-api'
+import { reactive, watch, useContext, toRefs } from '@nuxtjs/composition-api'
 import { NewsType } from '@/types/content-type'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
@@ -27,7 +27,7 @@ export const useNewsData = () => {
     loadData,
     createData,
     updateData,
-    deleteData
+    deleteData,
   } = useContent<NewsType>(
     apiEndpoint,
     initNews,
@@ -42,7 +42,7 @@ export const useNewsData = () => {
     loadNews: loadData,
     createNews: createData,
     updateNews: updateData,
-    deleteNews: deleteData 
+    deleteNews: deleteData,
   }
 }
 
@@ -66,6 +66,7 @@ export const useNewsList = () => {
     syncronizer as ContentSynchronizer<NewsType>
   )
   const { customerId } = useCurrentCustomer()
+  const { syncCreated, syncUpdated } = toRefs(syncronizer)
 
   const loadNewsList = async () => {
     startLoading()
@@ -74,8 +75,8 @@ export const useNewsList = () => {
     const data = await $axios.$get(`${apiEndpoint}/list`, {
       params: {
         customerId,
-        limit: listLimit.value
-      }
+        limit: listLimit.value,
+      },
     })
     if (!data || data.length < 1) warnNotFound()
 
@@ -83,11 +84,11 @@ export const useNewsList = () => {
     endLoading()
   }
 
-  watch(() => syncronizer.syncCreated, async () => {
+  // data syncronizer watch functions
+  watch(syncCreated, async () => {
     await loadNewsList()
   })
-
-  watch(() => syncronizer.syncUpdated, async () => {
+  watch(syncUpdated, async () => {
     await loadNewsList()
   })
 
@@ -96,6 +97,6 @@ export const useNewsList = () => {
     loading,
     notFound,
     loadNewsList,
-    listLimit
+    listLimit,
   }
 }

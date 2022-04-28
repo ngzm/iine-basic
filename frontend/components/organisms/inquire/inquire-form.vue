@@ -58,9 +58,7 @@
         </b-form-invalid-feedback>
       </div>
       <div class="inquire-form__action">
-        <b-button @click="onReset()">
-          リセット
-        </b-button>
+        <b-button @click="onReset()">リセット</b-button>
         <b-button type="submit" variant="primary">
           問い合せメール送信
         </b-button>
@@ -69,10 +67,14 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent, ref, computed  } from '@nuxtjs/composition-api'
+<script lang="ts">
+import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, emailValidator, phoneValidator } from '@/composable/form-validators'
+import {
+  required,
+  emailValidator,
+  phoneValidator,
+} from '@/composable/form-validators'
 
 export interface InquireFormType {
   name: string
@@ -119,17 +121,25 @@ export default defineComponent({
       },
     })
 
-    const validStateName = computed(() => !inquireForm.name.$dirty ? null : !inquireForm.name.$anyInvalid)
-    const validStateEmail = computed(() => !inquireForm.email.$dirty ? null : !inquireForm.email.$anyInvalid)
-    const validStatePhone = computed(() => !inquireForm.phone.$dirty ? null : !inquireForm.phone.$anyInvalid)
-    const validStateInquiry = computed(() => !inquireForm.inquiry.$dirty ? null : !inquireForm.inquiry.$anyInvalid)
+    const validStateName = computed(() =>
+      !inquireForm.name.$dirty ? null : !inquireForm.name.$anyInvalid
+    )
+    const validStateEmail = computed(() =>
+      !inquireForm.email.$dirty ? null : !inquireForm.email.$anyInvalid
+    )
+    const validStatePhone = computed(() =>
+      !inquireForm.phone.$dirty ? null : !inquireForm.phone.$anyInvalid
+    )
+    const validStateInquiry = computed(() =>
+      !inquireForm.inquiry.$dirty ? null : !inquireForm.inquiry.$anyInvalid
+    )
 
     const onReset = () => {
       // $value は getter - setter らしい
-      inquireForm.name.$value = '';
-      inquireForm.email.$value = '';
-      inquireForm.phone.$value = '';
-      inquireForm.inquiry.$value = '';
+      inquireForm.name.$value = ''
+      inquireForm.email.$value = ''
+      inquireForm.phone.$value = ''
+      inquireForm.inquiry.$value = ''
       inquireForm.$reset()
     }
 
@@ -137,7 +147,7 @@ export default defineComponent({
       inquireForm.$touch()
       if (inquireForm.$anyInvalid) return
 
-      const inquireData: InquireFormType = inquireForm.toObject();
+      const inquireData: InquireFormType = inquireForm.toObject()
       emit('submit', inquireData)
       onReset()
     }
@@ -151,7 +161,7 @@ export default defineComponent({
       onReset,
       onSubmit,
     }
-  }
+  },
 })
 </script>
 

@@ -28,11 +28,11 @@ export default defineComponent({
   props: {
     overlay: {
       type: Boolean,
-      default: false
+      default: false,
     },
     noGap: {
       type: Boolean,
-      default: false
+      default: false,
     },
     activatorPositionTop: {
       type: [Number, String],
@@ -41,8 +41,8 @@ export default defineComponent({
     activatorPositionRight: {
       type: [Number, String],
       default: '2rem',
-    }
-  }
+    },
+  },
 })
 </script>
 

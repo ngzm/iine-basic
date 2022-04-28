@@ -12,7 +12,7 @@ const initInformation = () => ({
   subtitle: '',
   body: '',
   image: '',
-  position: 0
+  position: 0,
 })
 
 /**
@@ -27,12 +27,8 @@ export const useInformationData = () => {
     loadData,
     createData,
     updateData,
-    deleteData
-  } = useContent<InformationType>(
-    apiEndpoint,
-    initInformation,
-    syncronizer
-  )
+    deleteData,
+  } = useContent<InformationType>(apiEndpoint, initInformation, syncronizer)
 
   return {
     information: dataReactive,
@@ -42,6 +38,6 @@ export const useInformationData = () => {
     loadInformation: loadData,
     createInformation: createData,
     updateInformation: updateData,
-    deleteInformation: deleteData 
+    deleteInformation: deleteData,
   }
 }

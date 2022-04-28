@@ -14,6 +14,6 @@ export type SearchConditon = SearchCoditionType[] | null
 
 interface SortCoditionType {
   sortkey: string
-  order: 'asc'|'desc'
+  order: 'asc' | 'desc'
 }
 export type SortCodition = SortCoditionType | null

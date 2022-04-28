@@ -16,8 +16,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, toRefs, useContext } from '@nuxtjs/composition-api'
-import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
+import {
+  defineComponent,
+  computed,
+  toRefs,
+  useContext,
+} from '@nuxtjs/composition-api'
+import {
+  contentDataTypes,
+  contentActionTypes,
+} from '@/composable/content-helper'
 import { getActivator } from '@/components/organisms/layout/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
 import InformationForm from '@/components/organisms/information/information-form.vue'
@@ -48,21 +56,26 @@ export default defineComponent({
   setup() {
     const { $auth } = useContext()
     const { show, type, action, id } = toRefs(getActivator())
-
     const formComponentName = computed(() => editType2Component[type.value])
+
     const showModal = computed({
       get: () => $auth.loggedIn && show.value,
-      set: (value: boolean) => { show.value = value }
+      set: (value: boolean) => {
+        show.value = value
+      },
     })
-    const modalTitle = computed(() => (
+
+    const modalTitle = computed(() =>
       action.value === contentActionTypes.create
         ? 'コンテンツの追加'
         : action.value === contentActionTypes.moddel
-          ? 'コンテンツの編集・削除'
-          : 'コンテンツの編集'
-    ))
+        ? 'コンテンツの編集・削除'
+        : 'コンテンツの編集'
+    )
 
-    const close = () => { show.value = false }
+    const close = () => {
+      show.value = false
+    }
 
     return {
       showModal,
@@ -70,11 +83,8 @@ export default defineComponent({
       dataId: id,
       formComponentName,
       modalTitle,
-      close
+      close,
     }
   },
 })
 </script>
-
-<style lang="scss" scoped>
-</style>

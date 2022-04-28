@@ -16,52 +16,47 @@
         <img :src="displayImage" :alt="displayImage" />
       </div>
       <div class="file-input__drag-drop--nav">
-        <p>
-          ここに画像ファイルを<br/>ドラッグ＆ドロップできます
-        </p>
+        <p>ここに画像ファイルを<br />ドラッグ＆ドロップできます</p>
         <div class="file-input__drag-drop--nav-action">
-          <b-button
-            variant="primary"
-            @click="onClick"
-          >
+          <b-button variant="primary" @click="onClick">
             背景画像ファイルを選択
           </b-button>
         </div>
       </div>
     </div>
-    <input
-      ref="fileInputInput"
-      type="file"
-      hidden
-      @change="onChangeFile"
-    >
+    <input ref="fileInputInput" type="file" hidden @change="onChangeFile" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+} from '@nuxtjs/composition-api'
 import { noImage } from '@/utils/common-utils'
 
 export default defineComponent({
-  name: 'FilrInput',
+  name: 'FileInput',
   props: {
     imageUrl: {
       type: String,
-      default: ''
+      default: '',
     },
     state: {
       type: Boolean,
-      default: null
-    }
+      default: null,
+    },
   },
   setup(props, { emit, refs }) {
     const isDragEnter = ref(false)
     const fileInputInput = ref<HTMLInputElement>()
     const imageFile = ref<File>()
 
-    const displayImage = computed(() => (
+    const displayImage = computed(() =>
       props.imageUrl && props.imageUrl.length > 0 ? props.imageUrl : noImage
-    ))
+    )
 
     onMounted(() => {
       // TODO: refs
@@ -69,14 +64,18 @@ export default defineComponent({
       fileInputInput.value = refs.fileInputInput as HTMLInputElement
     })
 
-    const onDragEnter = () => { isDragEnter.value = true; }
-    const onDragLeave = () => { isDragEnter.value = false; }
-    const onDragOver = () => { isDragEnter.value = true; }
-
+    const onDragEnter = () => {
+      isDragEnter.value = true
+    }
+    const onDragLeave = () => {
+      isDragEnter.value = false
+    }
+    const onDragOver = () => {
+      isDragEnter.value = true
+    }
     const onClick = () => {
       fileInputInput.value && fileInputInput.value.click()
     }
-
     const onDropFile = (e: DragEvent) => {
       isDragEnter.value = false
       if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
@@ -101,7 +100,7 @@ export default defineComponent({
       onDragOver,
       onDropFile,
       onClick,
-      onChangeFile
+      onChangeFile,
     }
   },
 })

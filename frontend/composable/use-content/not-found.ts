@@ -4,7 +4,9 @@ import useMakeToast, { ToastParams } from '@/composable/use-make-toast'
 export function useContentNotFound() {
   const notFound = ref(false)
 
-  const resetNotFound = () => { notFound.value = false }
+  const resetNotFound = () => {
+    notFound.value = false
+  }
 
   const { addToast } = useMakeToast()
   const warnNotFound = () => {
@@ -12,13 +14,13 @@ export function useContentNotFound() {
     addToast({
       title: 'WARNING',
       message: '情報が見つかりませんでした',
-      variant: 'danger'
+      variant: 'danger',
     } as ToastParams)
   }
 
   return {
     notFound,
     resetNotFound,
-    warnNotFound
+    warnNotFound,
   }
 }

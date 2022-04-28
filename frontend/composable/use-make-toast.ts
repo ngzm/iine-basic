@@ -9,7 +9,7 @@ export interface ToastParams {
 const toastParams: ToastParams = reactive({
   title: 'Toast',
   message: 'Completed !',
-  variant: 'default'
+  variant: 'default',
 })
 
 const addTrriger = ref(false)
@@ -20,13 +20,14 @@ export default () => {
     setAddTrriger(true)
   }
 
-  const setAddTrriger = (v: boolean) => { addTrriger.value = v }
+  const setAddTrriger = (v: boolean) => {
+    addTrriger.value = v
+  }
 
   return {
     toastParams,
     addToast,
     addTrriger,
-    setAddTrriger
+    setAddTrriger,
   }
 }
-

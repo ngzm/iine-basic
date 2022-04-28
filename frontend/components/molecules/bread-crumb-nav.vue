@@ -1,17 +1,17 @@
 <template>
-  <div
-    v-if="$route.name !== 'index'"
-    class="bread-crumb-nav"
-  >
-    <b-breadcrumb
-      :items="items"
-      class="bread-crumb-nav__items"
-    />
+  <div v-if="$route.name !== 'index'" class="bread-crumb-nav">
+    <b-breadcrumb :items="items" class="bread-crumb-nav__items" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted, useRoute } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  watch,
+  onMounted,
+  useRoute,
+} from '@nuxtjs/composition-api'
 import { UiComponentOptions } from '@/types/ui-types'
 
 export default defineComponent({
@@ -21,17 +21,21 @@ export default defineComponent({
     const items = ref([] as UiComponentOptions[])
 
     onMounted(() => {
-      const idPath = route.value.params && route.value.params.id ? route.value.params.id : 'ID'
-      items.value = routeItems(route.value.name, idPath )
+      const idPath =
+        route.value.params && route.value.params.id
+          ? route.value.params.id
+          : 'ID'
+      items.value = routeItems(route.value.name, idPath)
     })
 
     watch(route, (newValue) => {
-      const idPath = newValue.params && newValue.params.id ? newValue.params.id : 'ID'
-      items.value = routeItems(newValue.name, idPath )
+      const idPath =
+        newValue.params && newValue.params.id ? newValue.params.id : 'ID'
+      items.value = routeItems(newValue.name, idPath)
     })
 
     const routeItems = (name: string | null | undefined, idPath: string) => {
-      switch(name) {
+      switch (name) {
         case 'index':
           return [{ text: 'HOME', active: true }]
 

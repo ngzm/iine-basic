@@ -11,7 +11,7 @@ const initService = () => ({
   title: '',
   body: '',
   image: '',
-  position: 0
+  position: 0,
 })
 
 /**
@@ -26,12 +26,8 @@ export const useServiceData = () => {
     loadData,
     createData,
     updateData,
-    deleteData
-  } = useContent<ServiceType>(
-    apiEndpoint,
-    initService,
-    syncronizer
-  )
+    deleteData,
+  } = useContent<ServiceType>(apiEndpoint, initService, syncronizer)
 
   return {
     service: dataReactive,
@@ -41,7 +37,7 @@ export const useServiceData = () => {
     loadService: loadData,
     createService: createData,
     updateService: updateData,
-    deleteService: deleteData 
+    deleteService: deleteData,
   }
 }
 
@@ -49,23 +45,14 @@ export const useServiceData = () => {
  * Use Service List Data
  */
 export const useServiceList = () => {
-  const {
-    listRef,
-    loading,
-    notFound,
-    loadList,
-    changePositions
-  } = useContent<ServiceType>(
-    apiEndpoint,
-    initService,
-    syncronizer
-  )
+  const { listRef, loading, notFound, loadList, changePositions } =
+    useContent<ServiceType>(apiEndpoint, initService, syncronizer)
 
   return {
     serviceList: listRef,
     loading,
     notFound,
     loadServiceList: loadList,
-    changeServicesPosition: changePositions
+    changeServicesPosition: changePositions,
   }
 }

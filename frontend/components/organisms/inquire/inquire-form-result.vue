@@ -6,14 +6,12 @@
       追ってメールにてご連絡いたします。
     </p>
     <div class="inquire-form-result__action">
-      <b-button @click="$emit('ok')">
-        入力フォームに戻る
-      </b-button>
+      <b-button @click="$emit('ok')">入力フォームに戻る</b-button>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({

@@ -1,5 +1,8 @@
 <template>
-  <div class="section-eyecatcher" :style="{ 'background-image': `url(${backgroundImage})` }">
+  <div
+    class="section-eyecatcher"
+    :style="{ 'background-image': `url(${backgroundImage})` }"
+  >
     <div v-if="$slots.default" class="section-eyecatcher__titles">
       <slot />
     </div>
@@ -14,7 +17,7 @@ export default defineComponent({
   props: {
     backgroundImage: {
       type: String,
-      required: true
+      required: true,
     },
   },
 })
@@ -30,12 +33,12 @@ $eyecatcher-height-sm: 240px;
   height: $eyecatcher-height;
   display: flex;
   justify-content: center;
-  align-content:center;
-  align-items:center;
+  align-content: center;
+  align-items: center;
   background-position: center;
   background-size: cover;
   &__titles {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 1rem;
   }

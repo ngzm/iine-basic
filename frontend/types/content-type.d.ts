@@ -66,4 +66,4 @@ export interface ContentPosition {
   position: number
 }
 
-export type PositionObj = { [key: number]: number}
+export type PositionObj = { [key: number]: number }

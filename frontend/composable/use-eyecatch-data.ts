@@ -10,7 +10,7 @@ const initEyecatch = (): EyecatchType => ({
   customerId: 0,
   title: '',
   subtitle: '',
-  image: ''
+  image: '',
 })
 
 /**
@@ -24,12 +24,8 @@ export const useEyecatchData = () => {
     loadData,
     createData,
     updateData,
-    endLoading
-  } = useContent<EyecatchType>(
-    apiEndpoint,
-    initEyecatch,
-    syncronizer
-  )
+    endLoading,
+  } = useContent<EyecatchType>(apiEndpoint, initEyecatch, syncronizer)
 
   return {
     eyecatch: dataReactive,
@@ -38,6 +34,6 @@ export const useEyecatchData = () => {
     loadEyecatch: loadData,
     createEyecatch: createData,
     updateEyecatch: updateData,
-    endLoading
+    endLoading,
   }
 }
