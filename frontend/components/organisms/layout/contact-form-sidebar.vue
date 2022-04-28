@@ -1,11 +1,5 @@
 <template>
-  <b-sidebar
-    :id="sidebarIdName"
-    title="お問い合せ"
-    right
-    shadow
-    backdrop
-  >
+  <b-sidebar :id="sidebarIdName" title="お問い合せ" right shadow backdrop>
     <div class="px-3 py-2">
       <div
         :style="{ 'background-image': `url(${contact.image})` }"
@@ -25,9 +19,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
+import { sanitizer } from '@/utils/common-utils'
 import useMakeToast, { ToastParams } from '@/composable/use-make-toast'
 import { useContactData } from '@/composable/use-contact-data'
-import InquireForm, { InquireFormType } from '@/components/organisms/inquire/inquire-form.vue'
+import InquireForm, {
+  InquireFormType,
+} from '@/components/organisms/inquire/inquire-form.vue'
 import InquireFormResult from '@/components/organisms/inquire/inquire-form-result.vue'
 
 export const sidebarIdName = 'inquire-form-sidebar'
@@ -41,18 +38,17 @@ export default defineComponent({
   props: {
     contentId: {
       type: Number,
-      default: 1
+      default: 1,
     },
   },
   setup(props) {
     const { contact, loadContact } = useContactData()
+    const contactBody = computed(() => sanitizer(contact.body))
+    const { isFormMode, setFormMode, setResultMode } = formMode()
 
     onMounted(async () => {
       await loadContact(props.contentId)
     })
-
-    // TODO: need sanitize!
-    const contactBody = computed(() => contact.body || '')
 
     const { addToast } = useMakeToast()
     const sendInquirMail = (data: InquireFormType) => {
@@ -62,11 +58,9 @@ export default defineComponent({
       addToast({
         title: '送信完了',
         message: 'お問合せメールを送信しました',
-        variant: 'success'
+        variant: 'success',
       } as ToastParams)
     }
-
-    const { isFormMode, setFormMode, setResultMode } = formMode()
 
     return {
       sidebarIdName,
@@ -75,18 +69,25 @@ export default defineComponent({
       sendInquirMail,
       isFormMode,
       setFormMode,
-      setResultMode 
+      setResultMode,
     }
   },
 })
 
 const formMode = () => {
-  enum MODE { form, result }
+  enum MODE {
+    form,
+    result,
+  }
   const mode = ref(MODE.form)
   return {
     isFormMode: computed(() => mode.value === MODE.form),
-    setFormMode: () => { mode.value = MODE.form },
-    setResultMode: () => {  mode.value = MODE.result }
+    setFormMode: () => {
+      mode.value = MODE.form
+    },
+    setResultMode: () => {
+      mode.value = MODE.result
+    },
   }
 }
 </script>

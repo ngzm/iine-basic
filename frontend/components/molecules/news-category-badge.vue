@@ -12,12 +12,12 @@ export default defineComponent({
   props: {
     category: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     interface Category2LabelType {
-      [key: string]: { label: string; variant: string; }
+      [key: string]: { label: string; variant: string }
     }
     const category2Label: Category2LabelType = {
       I: { label: 'INFO', variant: 'info' },
@@ -25,8 +25,16 @@ export default defineComponent({
       W: { label: 'WORK', variant: 'warning' },
       T: { label: 'TECH', variant: 'danger' },
     }
-    const categoryLabel = computed(() => category2Label[props.category] ? category2Label[props.category].label : 'OTHER')
-    const categoryVariant = computed(() => category2Label[props.category] ? category2Label[props.category].variant : 'dark')
+    const categoryLabel = computed(() =>
+      category2Label[props.category]
+        ? category2Label[props.category].label
+        : 'OTHER'
+    )
+    const categoryVariant = computed(() =>
+      category2Label[props.category]
+        ? category2Label[props.category].variant
+        : 'dark'
+    )
     return { categoryLabel, categoryVariant }
   },
 })

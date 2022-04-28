@@ -16,10 +16,7 @@
         </h5>
 
         <!-- eslint-disable vue/no-v-html -->
-        <div
-          class="type1-contact__body"
-          v-html="contactHtml"
-        />
+        <div class="type1-contact__body" v-html="contactHtml" />
         <!-- eslint-enable -->
 
         <div class="type1-contact__action">
@@ -33,7 +30,11 @@
     </template>
 
     <template v-if="!notFound" #editActivator>
-      <content-edit-activator :type="types.contact" :action="actions.update" :content-id="1" />
+      <content-edit-activator
+        :type="types.contact"
+        :action="actions.update"
+        :content-id="1"
+      />
     </template>
 
     <template v-if="notFound" #overlay>
@@ -50,11 +51,14 @@
   </contents-card>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sanitizer } from '@/utils/common-utils'
 import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
-import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
+import {
+  contentDataTypes,
+  contentActionTypes,
+} from '@/composable/content-helper'
 import { useContactData } from '@/composable/use-contact-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -67,27 +71,21 @@ export default defineComponent({
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
-    ContentEditActivator
+    ContentEditActivator,
   },
   props: {
     contentId: {
       type: Number,
-      required: true
+      required: true,
     },
   },
   setup(props) {
-    const {
-      contact,
-      loading,
-      notFound,
-      loadContact
-    } = useContactData()
+    const { contact, loading, notFound, loadContact } = useContactData()
+    const contactHtml = computed(() => sanitizer(contact.body))
 
     onMounted(async () => {
       await loadContact(props.contentId)
     })
-
-    const contactHtml = computed(() => sanitizer(contact.body))
 
     return {
       sidebarIdName,
@@ -96,9 +94,9 @@ export default defineComponent({
       loading,
       notFound,
       types: contentDataTypes,
-      actions: contentActionTypes
+      actions: contentActionTypes,
     }
-  }
+  },
 })
 </script>
 
@@ -108,7 +106,7 @@ export default defineComponent({
     &--title {
       font-size: 1.25rem;
       font-weight: bold;
-      text-shadow: 1px 1px 6px black; 
+      text-shadow: 1px 1px 6px black;
       margin: 0;
       padding: 0;
     }

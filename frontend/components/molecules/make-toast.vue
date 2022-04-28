@@ -1,5 +1,5 @@
 <template>
-  <span :style="{ display: 'none'}" />
+  <span :style="{ display: 'none' }" />
 </template>
 
 <script lang="ts">
@@ -14,7 +14,7 @@ const MakeToast = defineComponent({
     return {
       addTrriger,
       toastParams,
-      setAddTrriger
+      setAddTrriger,
     }
   },
   watch: {
@@ -26,12 +26,12 @@ const MakeToast = defineComponent({
         variant: this.toastParams.variant,
         toaster: 'b-toaster-bottom-right',
         solid: true,
-        appendToast: false
+        appendToast: false,
       })
 
       this.setAddTrriger(false)
-    }
-  }
+    },
+  },
 })
 
 export default MakeToast

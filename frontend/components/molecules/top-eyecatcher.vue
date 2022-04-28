@@ -1,5 +1,8 @@
 <template>
-  <div class="top-eye-catcher" :style="{ 'background-image': `url(${backgroundImage})` }">
+  <div
+    class="top-eye-catcher"
+    :style="{ 'background-image': `url(${backgroundImage})` }"
+  >
     <div class="top-eye-catcher__titles">
       <slot />
     </div>
@@ -7,16 +10,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent  } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'TopEyecatcher',
   props: {
     backgroundImage: {
       type: String,
-      required: true
+      required: true,
     },
-  }
+  },
 })
 </script>
 <style lang="scss" scoped>

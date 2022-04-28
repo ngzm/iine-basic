@@ -20,26 +20,33 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
 import draggable from 'vuedraggable'
-import { ContentType, NewsType, ServiceType, WorkType } from '@/types/content-type'
+import {
+  ContentType,
+  NewsType,
+  ServiceType,
+  WorkType,
+} from '@/types/content-type'
 
 type ColsType = ContentType | NewsType | ServiceType | WorkType
 
 export default defineComponent({
-  name: 'ContentsGrid',
+  name: 'ContentsGridDraggable',
   components: { draggable },
   props: {
     contentsList: {
       type: Array as PropType<ColsType[]>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const draggableList = computed({
       get: () => props.contentsList,
-      set: (list) => { emit('change', list)}
+      set: (list) => {
+        emit('change', list)
+      },
     })
     return { draggableList }
-  }
+  },
 })
 </script>
 
@@ -59,15 +66,15 @@ export default defineComponent({
     max-width: 20rem;
     min-width: 16rem;
     text-align: center;
-    cursor:grab;
-    .edit-activator{
+    cursor: grab;
+    .edit-activator {
       position: absolute;
       top: 0;
       left: 2rem;
     }
   }
   &__column:active {
-    cursor:grabbing;
+    cursor: grabbing;
   }
 }
 </style>

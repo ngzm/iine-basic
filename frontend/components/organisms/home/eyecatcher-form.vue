@@ -1,6 +1,6 @@
 <template>
   <contentsform-wrap :overlay="loading">
-    <form class="eyecatcher-form"> 
+    <form class="eyecatcher-form">
       <div class="eyecatcher-form__input">
         <label for="eyecatcher-form-input-image">トップ背景画像</label>
         <file-input
@@ -36,7 +36,10 @@
           :state="validStateSubtitle"
         />
         <b-form-invalid-feedback :state="validStateSubtitle">
-          <span v-for="(err, inx) in eyecatcherForm.subtitle.$errors" :key="inx">
+          <span
+            v-for="(err, inx) in eyecatcherForm.subtitle.$errors"
+            :key="inx"
+          >
             {{ err }}<br />
           </span>
         </b-form-invalid-feedback>
@@ -45,24 +48,35 @@
         <b-button v-show="action === 'create'" variant="info" @click="onCreate">
           作成する
         </b-button>
-        <b-button v-show="action === 'update' || action === 'moddel'" variant="success" @click="onUpdate">
+        <b-button
+          v-show="action === 'update' || action === 'moddel'"
+          variant="success"
+          @click="onUpdate"
+        >
           更新する
         </b-button>
-        <b-button @click="onCancel">
-          キャンセル
-        </b-button>
+        <b-button @click="onCancel">キャンセル</b-button>
       </div>
     </form>
   </contentsform-wrap>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, PropType } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  PropType,
+} from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/composable/form-validators'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import { contentActionTypes, ContentActionType } from '@/composable/content-helper'
+import {
+  contentActionTypes,
+  ContentActionType,
+} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 
@@ -72,12 +86,12 @@ export default defineComponent({
   props: {
     action: {
       type: String as PropType<ContentActionType>,
-      required: true
+      required: true,
     },
     dataId: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   setup(props, { emit }) {
     const { action, dataId } = props
@@ -88,7 +102,7 @@ export default defineComponent({
       createEyecatch,
       updateEyecatch,
       loading,
-      endLoading
+      endLoading,
     } = useEyecatchData()
 
     const eyecatcherForm = useValidation({
@@ -118,8 +132,8 @@ export default defineComponent({
         },
       },
       imageFile: {
-        $value: ref<File|null>(null),
-      }
+        $value: ref<File | null>(null),
+      },
     })
 
     onMounted(async () => {
@@ -133,11 +147,19 @@ export default defineComponent({
       eyecatcherForm.image.$value = eyecatch.image || ''
     })
 
-    const validStateTitle = computed(() => !eyecatcherForm.title.$dirty ? null : !eyecatcherForm.title.$anyInvalid)
-    const validStateSubtitle = computed(() => !eyecatcherForm.subtitle.$dirty ? null : !eyecatcherForm.subtitle.$anyInvalid)
-    const validStateImage = computed(() => !eyecatcherForm.image.$dirty ? null : !eyecatcherForm.image.$anyInvalid)
+    const validStateTitle = computed(() =>
+      !eyecatcherForm.title.$dirty ? null : !eyecatcherForm.title.$anyInvalid
+    )
+    const validStateSubtitle = computed(() =>
+      !eyecatcherForm.subtitle.$dirty
+        ? null
+        : !eyecatcherForm.subtitle.$anyInvalid
+    )
+    const validStateImage = computed(() =>
+      !eyecatcherForm.image.$dirty ? null : !eyecatcherForm.image.$anyInvalid
+    )
 
-    const onChangeImageFile =(imageFile: File) => {
+    const onChangeImageFile = (imageFile: File) => {
       eyecatcherForm.imageFile.$value = imageFile
       eyecatcherForm.image.$value = URL.createObjectURL(imageFile)
     }
@@ -154,7 +176,7 @@ export default defineComponent({
         subtitle: formData.subtitle,
         image: formData.image,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await createEyecatch(ecData, imageFile)
       emit('close')
     }
@@ -171,7 +193,7 @@ export default defineComponent({
         subtitle: formData.subtitle,
         image: formData.image,
       }
-      const imageFile = formData.imageFile as File || null
+      const imageFile = (formData.imageFile as File) || null
       await updateEyecatch(dataId, ecData, imageFile)
       emit('close')
     }
@@ -189,7 +211,7 @@ export default defineComponent({
       onCreate,
       onUpdate,
       onCancel,
-      loading
+      loading,
     }
   },
 })

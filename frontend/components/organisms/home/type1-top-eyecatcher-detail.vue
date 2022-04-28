@@ -5,9 +5,16 @@
     activator-position-top="9rem"
     activator-position-right="2rem"
   >
-    <top-eyecatcher :background-image="eyecatch.image || ''" class="type1-top-eyecatcher">
-      <h2 class="type1-top-eyecatcher__header--title">{{ eyecatch.title || '' }}</h2>
-      <p class="type1-top-eyecatcher__header--subtitle">{{ eyecatch.subtitle || '' }}</p>
+    <top-eyecatcher
+      :background-image="eyecatch.image || ''"
+      class="type1-top-eyecatcher"
+    >
+      <h2 class="type1-top-eyecatcher__header--title">
+        {{ eyecatch.title || '' }}
+      </h2>
+      <p class="type1-top-eyecatcher__header--subtitle">
+        {{ eyecatch.subtitle || '' }}
+      </p>
     </top-eyecatcher>
 
     <template v-if="!notFound" #editActivator>
@@ -34,7 +41,10 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
+import {
+  contentDataTypes,
+  contentActionTypes,
+} from '@/composable/content-helper'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
@@ -45,12 +55,12 @@ export default defineComponent({
   components: {
     ContentsWrap,
     TopEyecatcher,
-    ContentEditActivator
+    ContentEditActivator,
   },
   props: {
     contentId: {
       type: Number,
-      required: true
+      required: true,
     },
   },
   setup(props) {
@@ -65,9 +75,9 @@ export default defineComponent({
       loading,
       notFound,
       types: contentDataTypes,
-      actions: contentActionTypes
+      actions: contentActionTypes,
     }
-  }
+  },
 })
 </script>
 
@@ -76,14 +86,15 @@ export default defineComponent({
 
 .type1-top-eyecatcher {
   &__header {
-    &--title, &--subtitle {
+    &--title,
+    &--subtitle {
       padding: 0;
       margin: 0;
       text-align: center;
       white-space: nowrap;
       font-weight: bold;
       color: white;
-      text-shadow: 1px 1px 6px black; 
+      text-shadow: 1px 1px 6px black;
       font-size: 2rem;
     }
     &--subtitle {

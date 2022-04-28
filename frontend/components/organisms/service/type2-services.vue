@@ -52,7 +52,10 @@
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { sanitizer } from '@/utils/common-utils'
-import { contentDataTypes, contentActionTypes } from '~/composable/content-helper'
+import {
+  contentDataTypes,
+  contentActionTypes,
+} from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import ContentsGridDraggable from '@/components/molecules/contents-grid-draggable.vue'
@@ -65,7 +68,7 @@ export default defineComponent({
     ContentsWrap,
     ContentsGridDraggable,
     SectionContentEyecatcher,
-    ContentEditActivator
+    ContentEditActivator,
   },
   setup() {
     const {
@@ -73,7 +76,7 @@ export default defineComponent({
       loading,
       notFound,
       loadServiceList,
-      changeServicesPosition
+      changeServicesPosition,
     } = useServiceList()
 
     onMounted(async () => {
@@ -91,7 +94,7 @@ export default defineComponent({
       types: contentDataTypes,
       actions: contentActionTypes,
     }
-  }
+  },
 })
 </script>
 

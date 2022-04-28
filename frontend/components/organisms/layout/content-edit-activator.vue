@@ -2,10 +2,7 @@
   <client-only>
     <div v-show="$auth.loggedIn" class="content-edit-activator">
       <template v-if="button">
-        <b-button
-          :variant="activatorVariant"
-          @click="activateToEdit"
-        >
+        <b-button :variant="activatorVariant" @click="activateToEdit">
           作成する
         </b-button>
       </template>
@@ -23,19 +20,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, toRefs, reactive, computed } from '@vue/composition-api'
+import {
+  defineComponent,
+  PropType,
+  toRefs,
+  reactive,
+  computed,
+} from '@vue/composition-api'
 import {
   contentDataTypes,
   contentActionTypes,
   ContentDataType,
-  ContentActionType
+  ContentActionType,
 } from '@/composable/content-helper'
 
 const activator = reactive({
   show: false,
   type: contentDataTypes.none as ContentDataType,
   action: contentActionTypes.none as ContentActionType,
-  id: 0
+  id: 0,
 })
 
 export const getActivator = () => activator
@@ -44,7 +47,7 @@ export const inactivate = () => {
     show: false,
     type: contentDataTypes.none as ContentDataType,
     action: contentActionTypes.none as ContentActionType,
-    id: 0
+    id: 0,
   })
 }
 
@@ -53,28 +56,28 @@ export default defineComponent({
   props: {
     type: {
       type: String as PropType<ContentDataType>,
-      required: true
+      required: true,
     },
     action: {
       type: String as PropType<ContentActionType>,
-      required: true
+      required: true,
     },
     contentId: {
       type: Number,
-      default: 0
+      default: 0,
     },
     size: {
       type: String,
-      default: '2.5em'
+      default: '2.5em',
     },
     variant: {
       type: String,
-      default: ''
+      default: '',
     },
     button: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup(props) {
     const { type, action, contentId, size, variant } = toRefs(props)
@@ -93,7 +96,9 @@ export default defineComponent({
     } as const
 
     const avatorIcon = computed(() => action2icon[action.value])
-    const activatorVariant = computed(() => variant.value || action2variant[action.value])
+    const activatorVariant = computed(
+      () => variant.value || action2variant[action.value]
+    )
     const activatorSize = computed(() => size.value)
 
     const activateToEdit = () => {
@@ -101,7 +106,7 @@ export default defineComponent({
         show: true,
         type: type.value,
         action: action.value,
-        id: contentId.value
+        id: contentId.value,
       })
     }
 

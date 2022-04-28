@@ -37,9 +37,12 @@
   </contents-card>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { contentDataTypes, contentActionTypes } from '@/composable/content-helper'
+import {
+  contentDataTypes,
+  contentActionTypes,
+} from '@/composable/content-helper'
 import { useNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -52,22 +55,17 @@ export default defineComponent({
     ContentsCard,
     ContentsCardBody,
     NewsList,
-    ContentEditActivator
+    ContentEditActivator,
   },
   props: {
     limit: {
       type: Number,
-      default: 10
-    } 
+      default: 10,
+    },
   },
   setup(props) {
-    const {
-      newsList,
-      loading,
-      notFound,
-      loadNewsList,
-      listLimit
-    } = useNewsList()
+    const { newsList, loading, notFound, loadNewsList, listLimit } =
+      useNewsList()
 
     onMounted(async () => {
       listLimit.value = props.limit
@@ -87,7 +85,7 @@ export default defineComponent({
       types: contentDataTypes,
       actions: contentActionTypes,
     }
-  }
+  },
 })
 </script>
 

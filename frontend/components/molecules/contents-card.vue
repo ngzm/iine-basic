@@ -24,9 +24,9 @@ export default defineComponent({
   props: {
     overlay: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 })
 </script>
 
