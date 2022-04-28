@@ -2,6 +2,7 @@
 
 import mongoose from 'mongoose'
 import IdSequence from './model.sequences.mjs'
+import { AccountModel } from './model.account.mjs'
 
 const Schema = mongoose.Schema
 
@@ -27,5 +28,15 @@ customerUserSchema.pre('validate', async function(next) {
   }
   return next()
 })
+
+async function deleteCascade(next) {
+  const doc = await this.model.findOne(this.getFilter());
+  if (doc && doc.email) {
+    await AccountModel.deleteOne({ username: doc.email })
+  }
+  next();
+}
+customerUserSchema.pre('deleteMany', { document: false, query: true }, deleteCascade)
+customerUserSchema.pre('deleteOne', { document: false, query: true }, deleteCascade)
 
 export const CustomerUserModel = mongoose.model('customerUser', customerUserSchema)

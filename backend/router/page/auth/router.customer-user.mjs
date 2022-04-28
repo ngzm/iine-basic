@@ -48,18 +48,16 @@ const router = express.Router();
  router.get('/homepage', checkAuthorized, async (request, response, next) => {
   try {
     const { account, customer } = request.authorizedUserInfo
-    const urls = await customerStore.getCustomerUrls(customer.id)
-    logger.info('Customer page urls:', urls)
-    if (!urls) throw new AppError('該当する顧客ホームページは見つかりませんでした', 404)
+    const customerUrls = await customerStore.getCustomerUrls(customer.id)
+    const primaryUrl = customerUrls.find((u) => u.primary)
+    logger.info('Customer page primaryUrl:', primaryUrl)
+    if (!primaryUrl) throw new AppError('該当する顧客ホームページは見つかりませんでした', 404)
 
     const { exchangeCode } = await accountStore.generateExchangeCode(account.token)
     logger.info('ExchangeCode:', exchangeCode)
 
-    // const hpUrl = `http://${urls[0]}/auth/customer-user?code=${exchangeCode}`
-    // const hpUrl = `http://longlivenet.iine.website:4000/auth/customer-user?code=${exchangeCode}`
-    // const hpUrl = `http://192.168.8.108:4000/auth/customer-user?code=${exchangeCode}`
-    const hpUrl = `http://localhost:4000/auth/customer-user?code=${exchangeCode}`
-    response.redirect(hpUrl)
+    const customerUserPage = `${primaryUrl.url}/auth/customer-user?code=${exchangeCode}`
+    response.redirect(customerUserPage)
   } catch(error) {
     next(error)
   }

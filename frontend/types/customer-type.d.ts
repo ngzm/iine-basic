@@ -5,5 +5,4 @@ export interface CustomerType {
   id: number
   name: string
   note?: string
-  removed?: boolean
 }

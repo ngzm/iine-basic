@@ -5,8 +5,6 @@ import logger from '../../../lib/logger.mjs'
 import AppError from '../../../lib/app-error.mjs'
 import { isPresent, isInt } from '../../../lib/utils.mjs'
 import customerStore from '../../../db/mongo/store.customer.mjs'
-import customerUserStore from '../../../db/mongo/store.customer-user.mjs'
-import accountStore from '../../../db/mongo/store.account.mjs'
 import { validateParamsId } from '../../middleware.validators.mjs'
 
 // ########################
@@ -27,10 +25,13 @@ const checkCustomer = async (request, response, next) => {
 const checkExistUrls = async (request, response, next) => {
   try {
     const customerId = isInt(request.body.id) ? parseInt(request.body.id) : 0
-    const urls = request.body.urls && Array.isArray(request.body.urls) ? request.body.urls.filter((u) => u && u.length > 0) : []
+    const primaryUrl = request.body.primaryUrl
+    const optionUrls = request.body.urls && Array.isArray(request.body.urls) ? request.body.urls.filter((u) => u && u.length > 0) : []
+    const urls = [{ url: primaryUrl, primary: true }].concat(optionUrls.map((u) => ({ url: u })))
     if (await customerStore.isExistsUrls(customerId, urls)) {
       throw new AppError('400 Bad Request. Requested url duplicated', 400)
     }
+    logger.trace('checkExistUrls - urls', urls)
     request.urls = urls
     next()
   } catch(error) {
@@ -49,14 +50,7 @@ const router = express.Router();
  */
 router.get('/delete/:id', validateParamsId, async(request, response, next) => {
   try {
-    const users = await customerUserStore.getCustomerUsers(request.id)
-    for (const user of users) {
-      await accountStore.deleteAccount(user.email)
-      await customerUserStore.deleteCustomerUser(user.id)
-    }
-    await customerStore.deleteCustomerUrl(request.id)
     await customerStore.deleteCustomer(request.id)
-
     response.redirect('/admin/customers')
   } catch (error) {
     next(error)
@@ -84,7 +78,10 @@ router.get('/:id', validateParamsId, async(request, response, next) => {
     if (!customer) throw new AppError('該当する顧客は見つかりませんでした', 404)
 
     const customerUrls = await customerStore.getCustomerUrls(request.id)
-    if (customerUrls) customer.urls = customerUrls
+    if (customerUrls) {
+      customer.primaryUrl = customerUrls.find((u) => u.primary)
+      customer.urls = customerUrls.filter((u) => !u.primary)
+    }
 
     response.render('admin/customer-form', { customer, method: 'put' })
   } catch (error) {

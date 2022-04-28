@@ -12,7 +12,6 @@ const newsSchema = new Schema({
   subtitle: { type: String },
   body: { type: String, required: true },
   image: { type: String },
-  removed: { type: Boolean, default: false },
   category: { type: String, required: true },
   publishOn: { type: Date,  required: true, index: true },
 },{

@@ -180,7 +180,8 @@ export function useContent<T extends ContentType>(
     }
 
     if (syncronizer.isTarget(dataReactive as T)) {
-      Object.assign(dataReactive, { removed: true })
+      const id = dataReactive.id
+      Object.assign(dataReactive, initializer(), { id })
     }
   })
 

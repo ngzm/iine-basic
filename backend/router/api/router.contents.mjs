@@ -81,7 +81,7 @@ export default function(router, store) {
    */
   router.delete('/:id', passport.authenticate('bearer', { session: false }), validateParamsId, async(request, response, next) => {
     try {
-      const ret = await store.logicalDeleteContent(request.id)
+      const ret = await store.deleteContent(request.id)
       if (!ret) throw new AppError('該当する情報は見つかりませんでした', 404)
 
       response.status(204).send();

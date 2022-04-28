@@ -13,7 +13,6 @@ const contactSchema = new Schema({
   body: { type: String, required: true },
   image: { type: String, required: true },
   position: { type: Number },
-  removed: { type: Boolean, default: false },
 },{
   versionKey: false,
   timestamp: true
