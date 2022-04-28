@@ -1,6 +1,6 @@
 import { useStore } from '@nuxtjs/composition-api'
 
-export function useCurrentCustomer() {
+export const useCurrentCustomer = () => {
   const { getters } = useStore()
   const customerId = getters['customer/customerId']
   return { customerId }

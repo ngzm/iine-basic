@@ -48,7 +48,13 @@ const createCustomer = async (customer) => {
  * @param {string[]} customer の URL
  */
 const addCustomerUrl = async (customerId, urls) => {
-  const promisses = urls.map((url) => CustomerUrlModel.create({ customerId, url }))
+  const promisses = urls.map(
+    (u) => CustomerUrlModel.create({
+      customerId,
+      url: u.url,
+      primary: u.primary || null,
+    })
+  )
   return modelToArrayObject(await Promise.all(promisses))
 }
 
@@ -87,7 +93,8 @@ const deleteCustomerUrl = async (customerId) => {
  * @param {object} select 取得フィールド
  */
 const getCustomerByUrl = async (url, select = { _id: 0 }) => {
-  const customerUrl = await CustomerUrlModel.findOne({ url }).exec()
+  const regFilter = new RegExp(`^https?:\/\/${url}\/?$`)
+  const customerUrl = await CustomerUrlModel.findOne({ url: regFilter }).exec()
   if (!(customerUrl && customerUrl.customerId)) return null
 
   return modelToObject(await CustomerModel.findOne({ id: customerUrl.customerId }, select).exec())
@@ -100,10 +107,13 @@ const getCustomerByUrl = async (url, select = { _id: 0 }) => {
  */
 const isExistsUrls = async (id, urls) => {
   const customerId = id || 0
+  const urlArray = urls.map(u => u.url)
+
   const customerUrls = await CustomerUrlModel.find({
     customerId: { $ne: customerId },
-    url: { $in: urls }
+    url: { $in: urlArray }
   }).exec()
+
   return Array.isArray(customerUrls) && customerUrls.length > 0
 }
 

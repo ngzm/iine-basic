@@ -79,7 +79,6 @@ router.get(
       const user = await customerUserStore.getCustomerUser(request.id)
       if (!user) throw new AppError('該当するユーザは見つかりませんでした', 404)
 
-      await accountStore.deleteAccount(user.email)
       await customerUserStore.deleteCustomerUser(user.id)
       response.redirect(`/admin/customers/${customer.id}/users`)
     } catch (error) {

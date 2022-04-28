@@ -3,9 +3,15 @@
 import mongoose from 'mongoose'
 import IdSequence from './model.sequences.mjs'
 
+import { CustomerUserModel } from './model.customer-user.mjs'
+import ContactModel from './model.contact.mjs'
+import EyecatchModel from './model.eyecatch.mjs'
+import InformationModel from './model.information.mjs'
+import NewsModel from './model.news.mjs'
+import ServiceModel from './model.service.mjs'
+
 const Schema = mongoose.Schema
 
-// TODO: Add template
 const customerSchema = new Schema({
   id: { type: Number, required: true, index: true, unique: true },
   name: { type: String, required: true },
@@ -27,9 +33,26 @@ customerSchema.pre('validate', async function(next) {
   return next()
 })
 
+async function deleteCascade(next) {
+  const doc = await this.model.findOne(this.getFilter());
+  if (doc && doc.id) {
+    await ContactModel.deleteMany({ customerId: doc.id })
+    await EyecatchModel.deleteMany({ customerId: doc.id })
+    await InformationModel.deleteMany({ customerId: doc.id })
+    await NewsModel.deleteMany({ customerId: doc.id })
+    await ServiceModel.deleteMany({ customerId: doc.id })
+    await CustomerUserModel.deleteMany({ customerId: doc.id })
+    await CustomerUrlModel.deleteMany({ customerId: doc.id })
+  }
+  next();
+}
+customerSchema.pre('deleteMany', { document: false, query: true }, deleteCascade)
+customerSchema.pre('deleteOne', { document: false, query: true }, deleteCascade)
+
 const customerUrlSchema = new Schema({
   customerId: { type: Number, required: true, index: true },
   url: { type: String, required: true, index: true, unique: true },
+  primary: { type: Boolean },
 }, {
   versionKey: false,
   timestamp: false
