@@ -9,7 +9,6 @@ export interface ContentType {
   body?: string
   image?: string
   position?: number
-  removed?: boolean
 }
 
 /**

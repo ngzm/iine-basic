@@ -12,7 +12,6 @@ const eyecatchSchema = new Schema({
   subtitle: { type: String },
   image: { type: String },
   position: { type: Number },
-  removed: { type: Boolean, default: false },
 },{
   versionKey: false,
   timestamp: true

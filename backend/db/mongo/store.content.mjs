@@ -22,7 +22,7 @@ export default class ContentStore {
    * @param {number} limit limit 0 以下の時は無視される
    */
   async getContents(filter = {}, select = { _id: 0 }, sort = {}, skip = 0, limit = 0) {
-    const sFilter = { ...filter, removed: false }
+    const sFilter = { ...filter }
     const sSort = { ...sort, position: 1, id: 1 }
     let query = this.Model.find(sFilter).select(select).sort(sSort)
     if (skip && skip > 0) query = query.skip(skip)
@@ -37,7 +37,7 @@ export default class ContentStore {
    * @param {object} select 取得フィールド
    */
   async getContent(id, select = { _id: 0 }) {
-    const content = await this.Model.findOne({ id, removed: false }, select).exec()
+    const content = await this.Model.findOne({ id }, select).exec()
     return modelToObject(content)
   }
 
@@ -51,7 +51,6 @@ export default class ContentStore {
     if (isDefined(contentModel.position)) {
       // 既存データの position を 1 つずらす
       await this.Model.updateMany({
-        removed: false,
         customerId: contentModel.customerId,
         id: { $ne: contentModel.id },
         position: { $gte: contentModel.position }
@@ -72,7 +71,7 @@ export default class ContentStore {
     const contentModel = await this.Model.findOne({ id }).exec()
     if (!contentModel) return null
 
-    Object.assign(contentModel, content, { removed: false })
+    Object.assign(contentModel, content)
     return modelToObject(await contentModel.save())
   }
 
@@ -83,18 +82,6 @@ export default class ContentStore {
    async deleteContent(id) {
      return await this.Model.deleteOne({ id }).exec()
    }
-
-  /**
-   * Content 論理削除 削除フラグ設定
-   * @param {number} 論理削除対象 content id
-   */
-   async logicalDeleteContent(id) {
-    const contentModel = await this.Model.findOne({ id }).exec()
-    if (!contentModel) return null
-
-    contentModel.removed = true
-    return modelToObject(await contentModel.save())
-  }
 
   /**
    * Content リスト Position 更新
