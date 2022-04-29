@@ -14,7 +14,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .contents-card-body {
-  max-width: 54rem;
+  max-width: 56rem;
   margin: 0 auto;
   padding: 2.5rem;
 }

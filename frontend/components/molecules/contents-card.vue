@@ -33,6 +33,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
+$contents-card-lg-max-width: 1140px;
+
 .contents-card {
   position: relative;
   width: 100%;
@@ -53,6 +55,7 @@ export default defineComponent({
 @media only screen and (min-width: $grid-breakpoint-md) {
   .contents-card {
     width: 90%;
+    max-width: $contents-card-lg-max-width;
     border-radius: 12px;
     overflow: hidden;
   }

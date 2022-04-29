@@ -3,6 +3,7 @@
 import express from 'express'
 import config from 'config'
 import multer from 'multer'
+import sharp from 'sharp'
 import dayjs from 'dayjs'
 
 import logger from '../../lib/logger.mjs'
@@ -12,19 +13,55 @@ import StrageHandler from '../../strage/aws-s3/strage.s3handler.mjs'
 // ********************************
 // Middlewares 
 // ********************************
+const uploadDir = 'uploads/'
+const lgMax = 300000
+// const smMax = 150000 
 
 /**
  * Uploader based on multer
  */
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, uploadDir);
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
   }
 })
 const upload = multer({ storage })
+
+/**
+ * Image ファイルをリサイズする
+ */
+const resizeImage = async (request, response, next) => {
+  try {
+    const file = request.file
+    logger.trace('size', file.size)
+
+    if (file.size > lgMax) {
+      const lgResizedPath =  `${uploadDir}lg_${file.originalname}`
+      logger.trace('lgResizedPath', lgResizedPath)
+
+      logger.trace('---- resize start----')
+      const result = await sharp(file.path).resize({ width: 1440, height: 1440, fit: 'inside', withoutEnlargement: true }).toFile(lgResizedPath)
+      logger.trace('result', result) 
+      logger.trace('---- resize end ----')
+
+      request.lgResizedPath = lgResizedPath
+    }
+
+    // TODO: スマホなどの画像 optimize については将来検討するが、ヒントとして残しておく
+    // if (file.size > smMax) {
+    //   const smResizedPath =  `${uploadDir}sm_${file.originalname}`
+    //   await sharp(file.path).resize({ width: 800, height: 800, fit: 'outside' })
+    //   request.smResizedPath = smResizedPath
+    // }
+
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
 
 /**
  * Image ファイルを Bucket Strage にアップロードする
@@ -39,10 +76,15 @@ const uploadToBucket = async (request, response, next) => {
     const prefix = zeroPaddingString(request.query.customerId, 6)
     const objectName = getBucketObjectName(prefix, file.originalname)
     const contentType = file.mimetype || 'application/octet-stream'
-    const localFilePath = file.path
+    const localFilePath = request.lgResizedPath || file.path
+    logger.trace('localFilePath: ', localFilePath)
+
+    logger.trace('---- S3 uploadFile start----')
     await strageHandler.uploadFile(objectName, contentType, localFilePath)
-    request.body.imageObjectName = objectName
-    logger.trace('imageObjectName: ', request.body.imageObjectName)
+    logger.trace('---- S3 uploadFile end ----')
+
+    request.imageObjectName = objectName
+    logger.trace('imageObjectName: ', request.imageObjectName)
     next()
   } catch (error) {
     next(error)
@@ -69,9 +111,14 @@ const router = express.Router();
 /**
  * 各 content の image file アップロード
  */
-router.post('/image', upload.single('imagefile'), uploadToBucket, async (request, response, next) => {
+router.post(
+  '/image',
+  upload.single('imagefile'),
+  resizeImage,
+  uploadToBucket,
+  async (request, response, next) => {
     try {
-      const uploadedFileUrl = `${config.bucketConfig.BucketUrl}/${request.body.imageObjectName}`
+      const uploadedFileUrl = `${config.bucketConfig.BucketUrl}/${request.imageObjectName}`
       logger.trace('uploadedFileUrl: ', uploadedFileUrl)
 
       response.json({ fileUrl: uploadedFileUrl})
