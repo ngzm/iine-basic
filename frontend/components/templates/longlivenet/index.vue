@@ -1,21 +1,21 @@
 <template>
   <article>
     <div id="index-top-position">
-      <top-eye-catcher :content-id="1" />
+      <top-eye-catcher />
     </div>
 
     <article id="index-information-article">
       <section class="article-margin">
         <h4 class="section-title"><span>Message</span></h4>
-        <information-detail :content-id="1">
+        <information-detail>
           <template #action>
             <b-button
               v-scroll-to="{ el: '#index-contact-article', offset: -180 }"
               :to="{ name: 'index' }"
               variant="primary"
             >
-              <b-icon icon="hand-index" />
               お問合せ
+              <b-icon icon="info-square" />
             </b-button>
           </template>
         </information-detail>
@@ -43,7 +43,7 @@
     <article id="index-contact-article">
       <section class="article-margin">
         <h4 class="section-title"><span>Contact</span></h4>
-        <contact-detail :content-id="1" />
+        <contact-detail />
       </section>
     </article>
   </article>

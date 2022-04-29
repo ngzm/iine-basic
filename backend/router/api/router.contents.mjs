@@ -11,6 +11,20 @@ import {
 
 export default function(router, store) {
   /**
+   * Content 最新データを一つ返す
+   */
+  router.get('/recent', validateQueryCustomerId, async(request, response, next) => {
+    try {
+      const content = await store.getRecentData({ customerId: request.customerId })
+      if (!content) throw new AppError('該当する情報は見つかりませんでした', 404)
+
+      response.json(content)
+    } catch (error) {
+      next(error)
+    }
+  })
+
+  /**
    * Content 情報取得
    */
   router.get('/:id', validateParamsId, async(request, response, next) => {

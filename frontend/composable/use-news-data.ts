@@ -28,6 +28,7 @@ export const useNewsData = () => {
     createData,
     updateData,
     deleteData,
+    getRecentData,
   } = useContent<NewsType>(
     apiEndpoint,
     initNews,
@@ -43,6 +44,7 @@ export const useNewsData = () => {
     createNews: createData,
     updateNews: updateData,
     deleteNews: deleteData,
+    getRecentData,
   }
 }
 

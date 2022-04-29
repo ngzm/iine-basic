@@ -21,7 +21,7 @@
       <content-edit-activator
         :type="types.eyecatch"
         :action="actions.update"
-        :content-id="contentId"
+        :content-id="eyecatch.id"
       />
     </template>
 
@@ -60,14 +60,18 @@ export default defineComponent({
   props: {
     contentId: {
       type: Number,
-      required: true,
+      default: null,
     },
   },
   setup(props) {
-    const { eyecatch, loading, notFound, loadEyecatch } = useEyecatchData()
+    const { eyecatch, loading, notFound, loadEyecatch, getRecentData } =
+      useEyecatchData()
 
     onMounted(async () => {
-      await loadEyecatch(props.contentId)
+      const currentId = props.contentId ?? (await getRecentData())?.id
+      if (currentId) {
+        await loadEyecatch(currentId)
+      }
     })
 
     return {

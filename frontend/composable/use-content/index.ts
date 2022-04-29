@@ -60,10 +60,23 @@ export function useContent<T extends ContentType>(
     const data = await $axios.$get(`${apiEndpoint}/${dataId}`, {
       params: { customerId },
     })
-    if (!data || !data.id) warnNotFound()
+    if (!data?.id) warnNotFound()
 
     Object.assign(dataReactive, data)
     endLoading()
+  }
+
+  const getRecentData = async () => {
+    startLoading()
+    resetNotFound()
+
+    const data = await $axios.$get(`${apiEndpoint}/recent`, {
+      params: { customerId },
+    })
+    if (!data?.id) warnNotFound()
+
+    endLoading()
+    return data
   }
 
   const createData = async (newData: T, imageFile: File | null) => {
@@ -211,6 +224,7 @@ export function useContent<T extends ContentType>(
     warnNotFound,
     loadList,
     loadData,
+    getRecentData,
     createData,
     updateData,
     deleteData,

@@ -21,7 +21,7 @@
         <div class="type1-information__action">
           <slot name="action">
             <b-button v-b-toggle="sidebarIdName" variant="primary">
-              <b-icon icon="hand-index" />
+              <b-icon icon="envelope" />
               お問合せ
             </b-button>
           </slot>
@@ -33,7 +33,7 @@
       <content-edit-activator
         :type="types.information"
         :action="actions.update"
-        :content-id="1"
+        :content-id="information.id"
       />
     </template>
 
@@ -76,27 +76,30 @@ export default defineComponent({
   props: {
     contentId: {
       type: Number,
-      required: true,
+      default: null,
     },
   },
   setup(props) {
-    const { information, loading, notFound, loadInformation } =
+    const { information, loading, notFound, loadInformation, getRecentData } =
       useInformationData()
 
     onMounted(async () => {
-      await loadInformation(props.contentId)
+      const currentId = props.contentId ?? (await getRecentData())?.id
+      if (currentId) {
+        await loadInformation(currentId)
+      }
     })
 
     const informationHtml = computed(() => sanitizer(information.body))
 
     return {
-      sidebarIdName,
       information,
       informationHtml,
       loading,
       notFound,
       types: contentDataTypes,
       actions: contentActionTypes,
+      sidebarIdName,
     }
   },
 })

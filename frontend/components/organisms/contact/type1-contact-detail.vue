@@ -22,7 +22,8 @@
         <div class="type1-contact__action">
           <slot name="action">
             <b-button v-b-toggle="sidebarIdName" variant="primary">
-              メールで問合せる（お問合せフォーム）
+              <b-icon icon="envelope" />
+              メールでのお問合せ
             </b-button>
           </slot>
         </div>
@@ -33,7 +34,7 @@
       <content-edit-activator
         :type="types.contact"
         :action="actions.update"
-        :content-id="1"
+        :content-id="contact.id"
       />
     </template>
 
@@ -76,16 +77,21 @@ export default defineComponent({
   props: {
     contentId: {
       type: Number,
-      required: true,
+      default: null,
     },
   },
   setup(props) {
-    const { contact, loading, notFound, loadContact } = useContactData()
-    const contactHtml = computed(() => sanitizer(contact.body))
+    const { contact, loading, notFound, loadContact, getRecentData } =
+      useContactData()
 
     onMounted(async () => {
-      await loadContact(props.contentId)
+      const currentId = props.contentId ?? (await getRecentData())?.id
+      if (currentId) {
+        await loadContact(currentId)
+      }
     })
+
+    const contactHtml = computed(() => sanitizer(contact.body))
 
     return {
       sidebarIdName,

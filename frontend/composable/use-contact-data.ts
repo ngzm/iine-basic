@@ -28,6 +28,7 @@ export const useContactData = () => {
     createData,
     updateData,
     deleteData,
+    getRecentData,
   } = useContent<ContactType>(apiEndpoint, initContact, syncronizer)
 
   return {
@@ -39,5 +40,6 @@ export const useContactData = () => {
     createContact: createData,
     updateContact: updateData,
     deleteContact: deleteData,
+    getRecentData,
   }
 }

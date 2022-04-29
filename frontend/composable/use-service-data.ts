@@ -27,6 +27,7 @@ export const useServiceData = () => {
     createData,
     updateData,
     deleteData,
+    getRecentData,
   } = useContent<ServiceType>(apiEndpoint, initService, syncronizer)
 
   return {
@@ -38,6 +39,7 @@ export const useServiceData = () => {
     createService: createData,
     updateService: updateData,
     deleteService: deleteData,
+    getRecentData,
   }
 }
 
