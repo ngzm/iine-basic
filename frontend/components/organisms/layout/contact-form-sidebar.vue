@@ -38,16 +38,19 @@ export default defineComponent({
   props: {
     contentId: {
       type: Number,
-      default: 1,
+      default: null,
     },
   },
   setup(props) {
-    const { contact, loadContact } = useContactData()
+    const { contact, loadContact, getRecentData } = useContactData()
     const contactBody = computed(() => sanitizer(contact.body))
     const { isFormMode, setFormMode, setResultMode } = formMode()
 
     onMounted(async () => {
-      await loadContact(props.contentId)
+      const currentId = props.contentId ?? (await getRecentData())?.id
+      if (currentId) {
+        await loadContact(currentId)
+      }
     })
 
     const { addToast } = useMakeToast()

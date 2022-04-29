@@ -28,6 +28,7 @@ export const useInformationData = () => {
     createData,
     updateData,
     deleteData,
+    getRecentData,
   } = useContent<InformationType>(apiEndpoint, initInformation, syncronizer)
 
   return {
@@ -39,5 +40,6 @@ export const useInformationData = () => {
     createInformation: createData,
     updateInformation: updateData,
     deleteInformation: deleteData,
+    getRecentData,
   }
 }

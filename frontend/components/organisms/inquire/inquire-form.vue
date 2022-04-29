@@ -60,7 +60,8 @@
       <div class="inquire-form__action">
         <b-button @click="onReset()">リセット</b-button>
         <b-button type="submit" variant="primary">
-          問い合せメール送信
+          送信する
+          <b-icon icon="envelope" />
         </b-button>
       </div>
     </b-form>

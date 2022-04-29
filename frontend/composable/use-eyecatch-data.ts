@@ -25,6 +25,7 @@ export const useEyecatchData = () => {
     createData,
     updateData,
     endLoading,
+    getRecentData,
   } = useContent<EyecatchType>(apiEndpoint, initEyecatch, syncronizer)
 
   return {
@@ -35,5 +36,6 @@ export const useEyecatchData = () => {
     createEyecatch: createData,
     updateEyecatch: updateData,
     endLoading,
+    getRecentData,
   }
 }

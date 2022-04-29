@@ -29,7 +29,7 @@
       <content-edit-activator
         :type="types.news"
         :action="actions.moddel"
-        :content-id="contentId"
+        :content-id="news.id"
       />
     </template>
     <template v-if="notFound" #overlay>
@@ -66,18 +66,21 @@ export default defineComponent({
   props: {
     contentId: {
       type: Number,
-      required: true,
+      default: null,
     },
   },
   setup(props) {
-    const { news, loading, notFound, loadNews } = useNewsData()
+    const { news, loading, notFound, loadNews, getRecentData } = useNewsData()
     const jstDateString = computed(() =>
       formatLocalDate(news.publishOn as Date, 'YYYY/MM/DD')
     )
     const newsBodyHtml = computed(() => sanitizer(news.body))
 
     onMounted(async () => {
-      await loadNews(props.contentId)
+      const currentId = props.contentId ?? (await getRecentData())?.id
+      if (currentId) {
+        await loadNews(currentId)
+      }
     })
 
     return {

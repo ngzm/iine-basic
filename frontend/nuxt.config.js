@@ -30,14 +30,10 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '@/assets/scss/style.scss'
-  ],
+  css: ['@/assets/scss/style.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    '@/plugins/axios.js',
-  ],
+  plugins: ['@/plugins/axios.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -55,7 +51,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     ['vue-scrollto/nuxt', { duration: 600 }],
-    "vue2-editor/nuxt",
+    'vue2-editor/nuxt',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -96,7 +92,7 @@ export default {
 
   // BootstrapVUe icons
   bootstrapVue: {
-    icons: true
+    icons: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

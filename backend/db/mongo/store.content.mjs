@@ -93,4 +93,16 @@ export default class ContentStore {
     ))
     return modelToArrayObject(await Promise.all(promises))
   }
+
+  /**
+   * Content 絞り込み条件の合致するデータのうち最新データを取得
+   * @param {object} filter 絞り込み条件
+   */
+   async getRecentData(filter = {}) {
+    const contents = await this.Model.find(filter).sort({ id: -1 }).limit(1).exec()
+    if (!isDefined(contents) || contents.length <= 0) return null
+
+    console.log('contents', contents)
+    return modelToObject(contents[0])
+  }
 }
