@@ -26,11 +26,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-$eyecatcher-height: 380px;
-$eyecatcher-height-sm: 240px;
+$eyecatcher-height: 450px;
+$eyecatcher-height-sm: 680px;
 
 .section-eyecatcher {
-  height: $eyecatcher-height;
+  height: 35vh;
+  max-height: $eyecatcher-height;
+  min-height: calc($eyecatcher-height * 0.5);
   display: flex;
   justify-content: center;
   align-content: center;
@@ -46,7 +48,9 @@ $eyecatcher-height-sm: 240px;
 
 @media only screen and (max-width: $grid-breakpoint-md) {
   .section-eyecatcher {
-    height: $eyecatcher-height-sm;
+    height: 75vh;
+    max-height: $eyecatcher-height-sm;
+    min-height: calc($eyecatcher-height-sm * 0.5);
   }
 }
 </style>

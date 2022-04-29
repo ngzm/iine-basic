@@ -42,7 +42,7 @@ export default defineComponent({
 
 @media only screen and (max-width: $grid-breakpoint-md) {
   .top-eye-catcher {
-    height: 50vh;
+    height: 90vh;
   }
 }
 </style>

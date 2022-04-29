@@ -8,13 +8,6 @@
       </section-eyecatcher>
 
       <contents-card-body>
-        <h5
-          v-if="contact.subtitle && contact.subtitle.length > 0"
-          class="type1-contact__subtitle"
-        >
-          <span>{{ contact.subtitle }}</span>
-        </h5>
-
         <!-- eslint-disable vue/no-v-html -->
         <div class="type1-contact__body" v-html="contactHtml" />
         <!-- eslint-enable -->
@@ -115,18 +108,6 @@ export default defineComponent({
       text-shadow: 1px 1px 6px black;
       margin: 0;
       padding: 0;
-    }
-  }
-  &__subtitle {
-    position: relative;
-    top: -0.5rem;
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    text-align: center;
-    background-color: lightgray;
-    span {
-      font-size: 1.2rem;
-      font-weight: bold;
     }
   }
   &__action {
