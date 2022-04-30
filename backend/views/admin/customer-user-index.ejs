@@ -11,14 +11,14 @@
       [<a href="/admin/customers/<%= customer.id %>/users/new">ユーザ追加</a>]
     </p>
     <% users.forEach(function(user) { %>
-      <li>
+      <p>
         <%= user.id %>,
         <a href="/admin/customers/<%= customer.id %>/users/<%= user.id %>">
           <strong><%= user.name %></strong>
         </a>,
         <%= user.email %>,
         <%= user.note %>,
-      </li>
+      </p>
     <% }); %>
    </body>
 </html>

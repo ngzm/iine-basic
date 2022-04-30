@@ -2,6 +2,9 @@ import { useStore } from '@nuxtjs/composition-api'
 
 export const useCurrentCustomer = () => {
   const { getters } = useStore()
-  const customerId = getters['customer/customerId']
-  return { customerId }
+  const customer = getters['customer/customer']
+  return {
+    customer,
+    customerId: customer.id,
+  }
 }
