@@ -14,9 +14,6 @@ export const getters: GetterTree<CustomerState, RootState> = {
   customer(state) {
     return state.customer
   },
-  customerId(state) {
-    return state.customer.id
-  },
 }
 
 export const mutations: MutationTree<CustomerState> = {

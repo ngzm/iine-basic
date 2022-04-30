@@ -16,6 +16,9 @@ const checkCustomer = async (request, response, next) => {
     if (!isPresent(request.body.name)) {
       throw new AppError('400 Bad Request. customer name is required, 400')
     }
+    if (!isPresent(request.body.template)) {
+      throw new AppError('400 Bad Request. customer template is required, 400')
+    }
     next()
   } catch(error) {
     next(error)
@@ -106,7 +109,11 @@ router.get('/', async(request, response, next) => {
  */
 router.post('/:id', validateParamsId, checkExistUrls, async(request, response, next) => {
   try {
-    const customer = await customerStore.updateCustomer(request.id, { name: request.body.name, note: request.body.note })
+    const customer = await customerStore.updateCustomer(request.id, {
+      name: request.body.name,
+      template: request.body.template,
+      note: request.body.note,
+    })
     if (!customer) throw new AppError('変更する顧客は見つかりませんでした', 404)
 
     await customerStore.deleteCustomerUrl(request.id)
@@ -123,7 +130,11 @@ router.post('/:id', validateParamsId, checkExistUrls, async(request, response, n
  */
 router.post('/', checkCustomer, checkExistUrls, async(request, response, next) => {
   try {
-    const customer = await customerStore.createCustomer({ name: request.body.name, note: request.body.note })
+    const customer = await customerStore.createCustomer({
+      name: request.body.name,
+      template: request.body.template,
+      note: request.body.note,
+    })
     customer.urls = await customerStore.addCustomerUrl(customer.id, request.urls)
 
     response.redirect('/admin/customers')

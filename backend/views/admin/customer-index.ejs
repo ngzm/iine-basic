@@ -9,14 +9,15 @@
       [<a href="/admin/customers/new">顧客追加</a>]
     </p>
     <% customers.forEach(function(customer) { %>
-      <li>
+      <p>
         <%= customer.id %>,
         <a href="/admin/customers/<%= customer.id %>">
           <strong><%= customer.name %></strong>
         </a>,
+        <%= customer.template %>,
         <%= customer.note %>,
         <%= customer.urls && customer.urls.map((u) => u.url).join(' / ') %>
-      </li>
+      </p>
     <% }); %>
    </body>
 </html>
