@@ -83,8 +83,8 @@ import {
   PropType,
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, maximunLength } from '@/composable/form-validators'
-import { InformationType } from '@/types/content-type'
+import { required, maximunLength } from '@/utils/form-validators'
+import { InformationType } from '@/types/content-types'
 import { useInformationData } from '@/composable/use-information-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {

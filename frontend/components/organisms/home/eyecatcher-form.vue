@@ -70,7 +70,7 @@ import {
   PropType,
 } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, maximunLength } from '@/composable/form-validators'
+import { required, maximunLength } from '@/utils/form-validators'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {

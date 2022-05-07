@@ -1,5 +1,5 @@
 import { reactive } from '@nuxtjs/composition-api'
-import { ContactType } from '@/types/content-type'
+import { ContactType } from '@/types/content-types'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 

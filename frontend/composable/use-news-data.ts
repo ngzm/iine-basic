@@ -1,5 +1,5 @@
 import { reactive, watch, useContext, toRefs } from '@nuxtjs/composition-api'
-import { NewsType } from '@/types/content-type'
+import { NewsType } from '@/types/content-types'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 import { useCurrentCustomer } from '@/composable/use-current-customer'

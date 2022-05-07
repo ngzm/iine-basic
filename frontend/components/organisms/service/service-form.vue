@@ -98,7 +98,7 @@ import {
   onMounted,
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, maximunLength } from '@/composable/form-validators'
+import { required, maximunLength } from '@/utils/form-validators'
 import { useServiceData } from '@/composable/use-service-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {

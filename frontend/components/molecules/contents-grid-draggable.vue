@@ -25,7 +25,7 @@ import {
   NewsType,
   ServiceType,
   WorkType,
-} from '@/types/content-type'
+} from '@/types/content-types'
 
 type ColsType = ContentType | NewsType | ServiceType | WorkType
 

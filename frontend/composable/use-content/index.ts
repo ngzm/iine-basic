@@ -9,7 +9,7 @@ import {
 import { ContentSynchronizer } from './syncronizer'
 import { useContentLoading } from './loading'
 import { useContentNotFound } from './not-found'
-import { ContentType, ContentPosition } from '@/types/content-type'
+import { ContentType, ContentPosition } from '@/types/content-types'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 
 type IntilizerFunc<T> = () => T

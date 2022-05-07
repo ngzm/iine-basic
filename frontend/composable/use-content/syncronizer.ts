@@ -1,4 +1,8 @@
-import { ContentType, ContentPosition, PositionObj } from '@/types/content-type'
+import {
+  ContentType,
+  ContentPosition,
+  PositionObj,
+} from '@/types/content-types'
 export class ContentSynchronizer<T extends ContentType> {
   syncCreated: boolean
   syncUpdated: boolean

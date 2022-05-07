@@ -129,7 +129,7 @@ import {
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { formatLocalDate, localDate } from '@/utils/common-utils'
-import { required, maximunLength } from '@/composable/form-validators'
+import { required, maximunLength } from '@/utils/form-validators'
 import { useNewsData } from '@/composable/use-news-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {

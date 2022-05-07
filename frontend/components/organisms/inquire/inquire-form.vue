@@ -75,7 +75,7 @@ import {
   required,
   emailValidator,
   phoneValidator,
-} from '@/composable/form-validators'
+} from '@/utils/form-validators'
 
 export interface InquireFormType {
   name: string

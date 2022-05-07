@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { NewsType } from '@/types/content-type'
+import { NewsType } from '@/types/content-types'
 import { formatLocalDate } from '@/utils/common-utils'
 import NewsCategoryBadge from '@/components/molecules/news-category-badge.vue'
 
