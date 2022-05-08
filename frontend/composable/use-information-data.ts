@@ -27,6 +27,7 @@ const initInformation = () => ({
 export const useInformationData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     endLoading,
@@ -35,10 +36,12 @@ export const useInformationData = () => {
     updateData,
     deleteData,
     getRecentData,
+    changeImageSetting,
   } = useContent<InformationType>(apiEndpoint, initInformation, syncronizer)
 
   return {
     information: dataReactive,
+    informationImage: imageReactive,
     loading,
     notFound,
     endLoading,
@@ -47,5 +50,6 @@ export const useInformationData = () => {
     updateInformation: updateData,
     deleteInformation: deleteData,
     getRecentData,
+    changeImageSetting,
   }
 }

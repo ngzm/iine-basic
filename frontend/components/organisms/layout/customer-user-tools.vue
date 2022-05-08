@@ -4,7 +4,7 @@
       <b-icon icon="person-fill" />
       <span v-if="withName" class="mr-2">{{ loginUser }}</span>
     </template>
-    <b-dropdown-text>{{ loginUser }} さん</b-dropdown-text>
+    <b-dropdown-text>{{ loginUser }}さん</b-dropdown-text>
     <b-dropdown-divider />
     <b-dropdown-item-button>アカウント</b-dropdown-item-button>
     <b-dropdown-item-button @click="$auth.logout()">

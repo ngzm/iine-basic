@@ -76,6 +76,19 @@ export default function(router, store) {
   })
 
   /**
+   * Content Image setting 変更
+   */
+  router.put('/:id/image-setting', passport.authenticate('bearer', { session: false }), validateParamsId, validateBodyRequired, async(request, response, next) => {
+    try {
+      const content = await store.updateContentImageSetting(request.id, request.body)
+      console.log('content', content)
+      response.json(content)
+    } catch (error) {
+      next(error)
+    }
+  })
+
+  /**
    * Content変更
    */
   router.put('/:id', passport.authenticate('bearer', { session: false }), validateParamsId, validateBodyRequired, async(request, response, next) => {

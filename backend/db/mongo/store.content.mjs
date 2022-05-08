@@ -95,6 +95,19 @@ export default class ContentStore {
   }
 
   /**
+   * Content Image setting 更新
+   * @param {Array} content Image setting 情報
+   */
+  async updateContentImageSetting(id, imageSetting) {
+    const contentModel = await this.Model.findOne({ id }).exec()
+    if (!contentModel) return null
+
+    console.log('imageSetting', imageSetting)
+    Object.assign(contentModel, { image: imageSetting })
+    return modelToObject(await contentModel.save())
+  }
+
+  /**
    * Content 絞り込み条件の合致するデータのうち最新データを取得
    * @param {object} filter 絞り込み条件
    */

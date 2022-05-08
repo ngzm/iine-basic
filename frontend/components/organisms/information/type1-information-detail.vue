@@ -1,10 +1,18 @@
 <template>
   <contents-card :overlay="loading || notFound">
     <template #default>
-      <section-eyecatcher :image="information.image">
-        <h4 class="type1-information__header--title">
-          {{ information.title }}
-        </h4>
+      <section-eyecatcher :image="informationImage">
+        <template #default>
+          <h4 class="type1-information__header--title">
+            {{ information.title }}
+          </h4>
+        </template>
+        <template #actions>
+          <image-setter
+            :image-setting="informationImage"
+            @change="onChangeImageSetting"
+          />
+        </template>
       </section-eyecatcher>
 
       <contents-card-body>
@@ -56,6 +64,7 @@ import { useInformationData } from '@/composable/use-information-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
+import ImageSetter from '@/components/molecules/image-setter.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
@@ -64,6 +73,7 @@ export default defineComponent({
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
+    ImageSetter,
     ContentEditActivator,
   },
   props: {
@@ -73,8 +83,15 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { information, loading, notFound, loadInformation, getRecentData } =
-      useInformationData()
+    const {
+      information,
+      informationImage,
+      loading,
+      notFound,
+      loadInformation,
+      getRecentData,
+      changeImageSetting,
+    } = useInformationData()
 
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
@@ -83,11 +100,18 @@ export default defineComponent({
       }
     })
 
+    const onChangeImageSetting = (value: { [key: string]: string }) => {
+      Object.assign(informationImage, value)
+      changeImageSetting(information.id, informationImage)
+    }
+
     const informationHtml = computed(() => sanitizer(information.body))
 
     return {
       information,
+      informationImage,
       informationHtml,
+      onChangeImageSetting,
       loading,
       notFound,
       types: contentDataTypes,

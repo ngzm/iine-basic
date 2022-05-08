@@ -6,6 +6,7 @@ import {
   useContext,
   Ref,
 } from '@nuxtjs/composition-api'
+import debounce from 'lodash/debounce'
 import { ContentSynchronizer } from './syncronizer'
 import { useContentLoading } from './loading'
 import { useContentNotFound } from './not-found'
@@ -27,6 +28,13 @@ export function useContent<T extends ContentType>(
   const dataReactive = reactive<T>(initializer())
   const listRef = ref<T[]>([]) as Ref<T[]>
   const listLimit = ref(10)
+  const imageReactive = reactive<ImageSetting>({
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  })
 
   // current customer
   const { customerId } = useCurrentCustomer()
@@ -64,6 +72,7 @@ export function useContent<T extends ContentType>(
     if (!data?.id) warnNotFound()
 
     Object.assign(dataReactive, data)
+    Object.assign(imageReactive, dataReactive.image ?? {})
     endLoading()
   }
 
@@ -81,32 +90,33 @@ export function useContent<T extends ContentType>(
   }
 
   const createData = async (newData: T, imageFile: File | null) => {
-    startLoading()
-    let sendData = { ...newData }
+    if (!$auth.loggedIn) return
 
-    if ($auth.loggedIn) {
-      // 最初に画像ファイルアップロード
-      const formData = new FormData()
-      if (imageFile) {
-        formData.append('imagefile', imageFile)
-        const imageUrl = await $axios.$post('/uploads/image', formData, {
-          params: { customerId },
-        })
-        sendData.image = {
-          url: imageUrl.fileUrl,
-          lgSize: 'cover',
-          smSize: 'cover',
-          lgPosition: 'center',
-          smPosition: 'center',
-        } as ImageSetting
-      }
-      // コンテンツデータ登録
-      sendData = await $axios.$post(apiEndpoint, sendData, {
+    startLoading()
+    const sendData = { ...newData }
+
+    // 最初に画像ファイルアップロード
+    const formData = new FormData()
+    if (imageFile) {
+      formData.append('imagefile', imageFile)
+      const imageUrl = await $axios.$post('/uploads/image', formData, {
         params: { customerId },
       })
+      sendData.image = {
+        url: imageUrl.fileUrl,
+        lgSize: 'cover',
+        smSize: 'cover',
+        lgPosition: 'center',
+        smPosition: 'center',
+      } as ImageSetting
     }
 
-    syncronizer.onCreated(sendData)
+    // コンテンツデータ登録
+    const response = await $axios.$post(apiEndpoint, sendData, {
+      params: { customerId },
+    })
+
+    syncronizer.onCreated(response)
     endLoading()
   }
 
@@ -115,46 +125,45 @@ export function useContent<T extends ContentType>(
     modData: T,
     imageFile: File | null
   ) => {
+    if (!$auth.loggedIn) return
+
     startLoading()
     resetNotFound()
-    let sendData = { ...modData }
+    const sendData = { ...modData }
 
-    if ($auth.loggedIn) {
-      // 最初に画像ファイルアップロード
-      const formData = new FormData()
-      if (imageFile) {
-        formData.append('imagefile', imageFile)
-        const imageUrl = await $axios.$post('/uploads/image', formData, {
-          params: { customerId },
-        })
-        sendData.image = {
-          url: imageUrl.fileUrl,
-          lgSize: 'cover',
-          smSize: 'cover',
-          lgPosition: 'center',
-          smPosition: 'center',
-        } as ImageSetting
-      }
-      // コンテンツデータ更新
-      const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, {
+    // 最初に画像ファイルアップロード
+    const formData = new FormData()
+    if (imageFile) {
+      formData.append('imagefile', imageFile)
+      const imageUrl = await $axios.$post('/uploads/image', formData, {
         params: { customerId },
       })
-      if (!data || !data.id) warnNotFound()
-
-      sendData = data
+      sendData.image = {
+        url: imageUrl.fileUrl,
+        lgSize: 'cover',
+        smSize: 'cover',
+        lgPosition: 'center',
+        smPosition: 'center',
+      } as ImageSetting
     }
 
-    syncronizer.onUpdated(sendData)
+    // コンテンツデータ更新
+    const response = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, {
+      params: { customerId },
+    })
+    if (!response || !response.id) warnNotFound()
+
+    syncronizer.onUpdated(response)
     endLoading()
   }
 
   const deleteData = async (dataId: number) => {
+    if (!$auth.loggedIn) return
+
     startLoading()
-    if ($auth.loggedIn) {
-      await $axios.delete(`${apiEndpoint}/${dataId}`, {
-        params: { customerId },
-      })
-    }
+    await $axios.delete(`${apiEndpoint}/${dataId}`, {
+      params: { customerId },
+    })
     syncronizer.onDeleted(dataReactive as T)
     endLoading()
   }
@@ -173,6 +182,23 @@ export function useContent<T extends ContentType>(
     }
     syncronizer.onPotisonChanged(positions)
   }
+
+  const changeImageSetting = debounce(
+    async (dataId: number, imageSetting: ImageSetting) => {
+      if (!$auth.loggedIn) return
+
+      resetNotFound()
+      const response = await $axios.$put(
+        `${apiEndpoint}/${dataId}/image-setting`,
+        imageSetting,
+        { params: { customerId } }
+      )
+      if (!response || !response.id) warnNotFound()
+
+      syncronizer.onUpdated(response as T)
+    },
+    600
+  )
 
   watch(syncCreated, async () => {
     if (process.client) {
@@ -196,6 +222,7 @@ export function useContent<T extends ContentType>(
 
     if (syncronizer.isTarget(dataReactive as T)) {
       Object.assign(dataReactive, syncronizer.syncData)
+      Object.assign(imageReactive, dataReactive?.image ?? {})
     }
   })
 
@@ -208,6 +235,7 @@ export function useContent<T extends ContentType>(
     if (syncronizer.isTarget(dataReactive as T)) {
       const id = dataReactive.id
       Object.assign(dataReactive, initializer(), { id })
+      Object.assign(imageReactive, dataReactive?.image ?? {})
     }
   })
 
@@ -227,6 +255,7 @@ export function useContent<T extends ContentType>(
 
   return {
     dataReactive,
+    imageReactive,
     listRef,
     listLimit,
     loading,
@@ -242,5 +271,6 @@ export function useContent<T extends ContentType>(
     updateData,
     deleteData,
     changePositions,
+    changeImageSetting,
   }
 }

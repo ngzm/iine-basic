@@ -1,32 +1,33 @@
 <template>
-  <client-only>
-    <div v-show="$auth.loggedIn" class="content-edit-activator">
-      <template v-if="button">
-        <b-button :variant="activatorVariant" @click="activateToEdit">
-          作成する
-        </b-button>
-      </template>
-      <template v-else>
-        <b-avatar
-          button
-          :icon="avatorIcon"
-          :size="activatorSize"
-          :variant="activatorVariant"
-          @click="activateToEdit"
-        />
-      </template>
-    </div>
-  </client-only>
+  <div v-if="isAuthed" class="content-edit-activator">
+    <template v-if="button">
+      <b-button :variant="activatorVariant" @click="activateToEdit">
+        作成する
+      </b-button>
+    </template>
+    <template v-else>
+      <b-avatar
+        button
+        :icon="avatorIcon"
+        :size="activatorSize"
+        :variant="activatorVariant"
+        @click="activateToEdit"
+      />
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
 import {
   defineComponent,
   PropType,
+  ref,
   toRefs,
   reactive,
   computed,
-} from '@vue/composition-api'
+  onMounted,
+  useContext,
+} from '@nuxtjs/composition-api'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -80,6 +81,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { $auth } = useContext()
     const { type, action, contentId, size, variant } = toRefs(props)
 
     const action2icon = {
@@ -110,11 +112,17 @@ export default defineComponent({
       })
     }
 
+    const isAuthed = ref(false)
+    onMounted(() => {
+      isAuthed.value = $auth.loggedIn
+    })
+
     return {
       avatorIcon,
       activatorVariant,
       activatorSize,
       activateToEdit,
+      isAuthed,
     }
   },
 })

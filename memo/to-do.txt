@@ -20,6 +20,7 @@
 
 ** メールとアイキャッチと別のコンテンツとの切り離し
 ** TAG と Reccomend 機能追加
+** SNS 部品埋め込み
 ** front draggable と draggable しないモードを整備
 ** nuxt auth expire 時間が短い問題
 ** HOME画面スクロール時に UP ボタン表示
