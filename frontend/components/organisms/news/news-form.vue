@@ -251,7 +251,7 @@ export default defineComponent({
         news.publishOn as Date,
         'YYYY-MM-DD'
       )
-      newsForm.image.$value = news.image || ''
+      newsForm.image.$value = news.image?.url || ''
       newsForm.body.$value = news.body
     })
 
@@ -271,7 +271,6 @@ export default defineComponent({
         title: formData.title,
         category: formData.category,
         publishOn: localDate(formData.publishOn),
-        image: formData.image,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null
@@ -290,7 +289,6 @@ export default defineComponent({
         title: formData.title,
         category: formData.category,
         publishOn: localDate(formData.publishOn),
-        image: formData.image,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null

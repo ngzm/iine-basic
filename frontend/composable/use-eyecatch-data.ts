@@ -10,7 +10,13 @@ const initEyecatch = (): EyecatchType => ({
   customerId: 0,
   title: '',
   subtitle: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
 })
 
 /**

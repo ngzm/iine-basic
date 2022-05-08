@@ -10,7 +10,13 @@ const initService = () => ({
   customerId: 0,
   title: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   position: 0,
 })
 

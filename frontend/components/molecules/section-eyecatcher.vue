@@ -1,9 +1,12 @@
 <template>
   <div
-    class="section-eyecatcher background-image-props"
+    class="section-eyecatcher"
     :style="{
-      '--background-image': `url(${backgroundImage})`,
-      '--background-size': `${size}%`,
+      '--background-image': `url(${image.url || ''})`,
+      '--background-size-lg': `${size}%`,
+      '--background-size-sm': image.smSize || 'cover',
+      '--background-position-lg': image.lgPosition || 'center',
+      '--background-position-sm': image.smPosition || 'center',
     }"
   >
     <div v-if="$slots.default" class="section-eyecatcher__titles">
@@ -13,22 +16,21 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+<script lang="ts">
+import { defineComponent, ref, PropType } from '@nuxtjs/composition-api'
+import { ImageSetting } from '@/types/content-types'
 
 export default defineComponent({
   name: 'SectionEyecatcher',
   props: {
-    backgroundImage: {
-      type: String,
-      required: true,
+    image: {
+      type: Object as PropType<ImageSetting>,
+      default: {} as ImageSetting,
     },
   },
   setup() {
     const size = ref(100)
-    return {
-      size,
-    }
+    return { size }
   },
 })
 </script>
@@ -39,11 +41,6 @@ export default defineComponent({
 $eyecatcher-height: 450px;
 $eyecatcher-height-sm: 680px;
 
-.background-image-props {
-  --background-position: 10% 60%;
-  // --background-size: 250%;
-}
-
 .section-eyecatcher {
   height: 35vh;
   max-height: $eyecatcher-height;
@@ -53,10 +50,9 @@ $eyecatcher-height-sm: 680px;
   align-content: center;
   align-items: center;
   background-image: var(--background-image);
+  background-size: var(--background-size-lg);
+  background-position: var(--background-position-lg);
   background-repeat: no-repeat;
-  background-position: var(--background-position);
-  background-size: var(--background-size);
-  // background-size: cover;
   &__titles {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
@@ -69,8 +65,8 @@ $eyecatcher-height-sm: 680px;
     height: 75vh;
     max-height: $eyecatcher-height-sm;
     min-height: calc($eyecatcher-height-sm * 0.5);
-    background-position: 10% center;
-    background-size: cover;
+    background-size: var(--background-size-sm);
+    background-position: var(--background-position-sm);
   }
 }
 </style>

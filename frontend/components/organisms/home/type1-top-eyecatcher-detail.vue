@@ -5,10 +5,7 @@
     activator-position-top="9rem"
     activator-position-right="2rem"
   >
-    <top-eyecatcher
-      :background-image="eyecatch.image || ''"
-      class="type1-top-eyecatcher"
-    >
+    <top-eyecatcher :image="eyecatch.image" class="type1-top-eyecatcher">
       <h2 class="type1-top-eyecatcher__header--title">
         {{ eyecatch.title || '' }}
       </h2>

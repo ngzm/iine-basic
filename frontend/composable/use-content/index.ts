@@ -11,6 +11,7 @@ import { useContentLoading } from './loading'
 import { useContentNotFound } from './not-found'
 import { ContentType, ContentPosition } from '@/types/content-types'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { ImageSetting } from '~/types/content-types'
 
 type IntilizerFunc<T> = () => T
 
@@ -91,7 +92,13 @@ export function useContent<T extends ContentType>(
         const imageUrl = await $axios.$post('/uploads/image', formData, {
           params: { customerId },
         })
-        sendData.image = imageUrl.fileUrl
+        sendData.image = {
+          url: imageUrl.fileUrl,
+          lgSize: 'cover',
+          smSize: 'cover',
+          lgPosition: 'center',
+          smPosition: 'center',
+        } as ImageSetting
       }
       // コンテンツデータ登録
       sendData = await $axios.$post(apiEndpoint, sendData, {
@@ -120,7 +127,13 @@ export function useContent<T extends ContentType>(
         const imageUrl = await $axios.$post('/uploads/image', formData, {
           params: { customerId },
         })
-        sendData.image = imageUrl.fileUrl
+        sendData.image = {
+          url: imageUrl.fileUrl,
+          lgSize: 'cover',
+          smSize: 'cover',
+          lgPosition: 'center',
+          smPosition: 'center',
+        } as ImageSetting
       }
       // コンテンツデータ更新
       const data = await $axios.$put(`${apiEndpoint}/${dataId}`, sendData, {

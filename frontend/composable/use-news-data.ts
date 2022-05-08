@@ -10,7 +10,13 @@ const initNews = (): NewsType => ({
   id: 0,
   title: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   category: '',
   publishOn: new Date(),
 })

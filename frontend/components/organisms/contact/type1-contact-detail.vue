@@ -1,7 +1,7 @@
 <template>
   <contents-card :overlay="loading || notFound">
     <template #default>
-      <section-eyecatcher :background-image="contact.image">
+      <section-eyecatcher :image="contact.image">
         <h4 class="type1-contact__header--title">
           {{ contact.title }}
         </h4>

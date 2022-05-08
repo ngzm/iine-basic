@@ -1,3 +1,11 @@
+export interface ImageSetting {
+  url: string
+  lgSize: string | 'cover'
+  smSize: string | 'cover'
+  lgPosition: string | 'center'
+  smPosition: string | 'center'
+}
+
 /**
  * Content Data Types
  */
@@ -7,7 +15,7 @@ export interface ContentType {
   title: string
   subtitle?: string
   body?: string
-  image?: string
+  image?: ImageSetting
   position?: number
 }
 
@@ -30,7 +38,7 @@ export interface NewsType extends ContentType {
  */
 export interface ServiceType extends ContentType {
   body: string
-  image: string
+  image: ImageSetting
   position: number
 }
 
@@ -54,7 +62,7 @@ export interface ContactType extends ContentType {}
  * Eyecatcher
  */
 export interface EyecatchType extends ContentType {
-  image: string
+  image: ImageSetting
 }
 
 /**

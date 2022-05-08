@@ -1,7 +1,7 @@
 <template>
   <contents-card :overlay="loading || notFound">
     <template #default>
-      <section-eyecatcher :background-image="news.image || ''" />
+      <section-eyecatcher :image="news.image || ''" />
 
       <contents-card-body>
         <p class="type1-news-detail__publish">
@@ -34,8 +34,7 @@
     </template>
     <template v-if="notFound" #overlay>
       <div class="text-center">
-        <p class="my-3">大変申し訳ございません</p>
-        <p class="my-3">情報が見つかりませんでした</p>
+        <p class="my-3">情報が登録されていません</p>
       </div>
     </template>
   </contents-card>

@@ -170,7 +170,7 @@ export default defineComponent({
       await loadInformation(dataId)
       informationForm.title.$value = information.title || ''
       informationForm.subtitle.$value = information.subtitle || ''
-      informationForm.image.$value = information.image || ''
+      informationForm.image.$value = information.image?.url || ''
       informationForm.body.$value = information.body || ''
     })
 
@@ -204,7 +204,6 @@ export default defineComponent({
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
-        image: formData.image,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null
@@ -222,7 +221,6 @@ export default defineComponent({
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
-        image: formData.image,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null

@@ -11,7 +11,13 @@ const initContact = () => ({
   title: '',
   subtitle: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   position: 0,
 })
 

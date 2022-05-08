@@ -1,7 +1,13 @@
 <template>
   <div
     class="top-eye-catcher"
-    :style="{ 'background-image': `url(${backgroundImage})` }"
+    :style="{
+      '--background-image': `url(${image.url || ''})`,
+      '--background-size-lg': image.lgSize || 'cover',
+      '--background-size-sm': image.smSize || 'cover',
+      '--background-position-lg': image.lgPosition || 'center',
+      '--background-position-sm': image.smPosition || 'center',
+    }"
   >
     <div class="top-eye-catcher__titles">
       <slot />
@@ -10,14 +16,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { ImageSetting } from '@/types/content-types'
 
 export default defineComponent({
   name: 'TopEyecatcher',
   props: {
-    backgroundImage: {
-      type: String,
-      required: true,
+    image: {
+      type: Object as PropType<ImageSetting>,
+      default: {} as ImageSetting,
     },
   },
 })
@@ -29,8 +36,10 @@ export default defineComponent({
   height: 100vh;
   min-height: 400px;
   position: relative;
-  background-position: center center;
-  background-size: cover;
+  background-image: var(--background-image);
+  background-size: var(--background-size-lg);
+  background-position: var(--background-position-lg);
+  background-repeat: no-repeat;
   &__titles {
     position: absolute;
     display: inline-block;
@@ -43,6 +52,8 @@ export default defineComponent({
 @media only screen and (max-width: $grid-breakpoint-md) {
   .top-eye-catcher {
     height: 90vh;
+    background-size: var(--background-size-sm);
+    background-position: var(--background-position-sm);
   }
 }
 </style>
