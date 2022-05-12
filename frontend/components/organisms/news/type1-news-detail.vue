@@ -53,7 +53,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { formatLocalDate, sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,

@@ -11,7 +11,7 @@
       <bread-crumb-nav />
       <default-footer />
     </footer>
-    <contact-form-sidebar />
+    <inquire-form-sidebar />
     <make-toast />
     <content-edit-modal />
   </div>
@@ -24,7 +24,7 @@ import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import ContentEditModal from '@/components/molecules/edit/content-edit-modal.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
-import ContactFormSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
+import InquireFormSidebar from '@/components/organisms/layout/inquire-form-sidebar.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
@@ -32,7 +32,7 @@ export default defineComponent({
     DefaultHeader,
     DefaultFooter,
     BreadCrumbNav,
-    ContactFormSidebar,
+    InquireFormSidebar,
     MakeToast,
     ContentEditModal,
   },
