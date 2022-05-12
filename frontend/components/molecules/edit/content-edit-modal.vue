@@ -26,7 +26,7 @@ import {
   contentDataTypes,
   contentActionTypes,
 } from '@/composable/content-helper'
-import { getActivator } from '@/components/organisms/edit/content-edit-activator.vue'
+import { getActivator } from '@/components/molecules/edit/content-edit-activator.vue'
 import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
 import InformationForm from '@/components/organisms/information/information-form.vue'
 import NewsForm from '@/components/organisms/news/news-form.vue'

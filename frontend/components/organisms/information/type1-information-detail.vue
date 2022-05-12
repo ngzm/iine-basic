@@ -64,8 +64,8 @@ import { useInformationData } from '@/composable/use-information-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
-import ImageSetter from '@/components/organisms/edit/image-setter.vue'
-import ContentEditActivator from '@/components/organisms/edit/content-edit-activator.vue'
+import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ImageSetter from '@/components/molecules/edit/image-setter.vue'
 
 export default defineComponent({
   name: 'Type1IformationDetail',
