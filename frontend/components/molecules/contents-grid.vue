@@ -1,21 +1,41 @@
 <template>
-  <div class="contents-grid">
-    <section
-      v-for="content in contentsList"
-      :key="content.id"
-      class="contents-grid__column"
-    >
-      <slot :content="content" />
+  <div>
+    <div v-if="isAuthenticated">
+      <p class="text-center">
+        <small>ドラッグドロップで位置を変更できます</small>
+      </p>
+      <draggable v-model="draggableList" tag="div" class="contents-grid">
+        <section
+          v-for="content in draggableList"
+          :key="content.id"
+          class="contents-grid__column column-draggable"
+        >
+          <slot :content="content" />
 
-      <div class="edit-activator">
-        <slot name="editActivator" :content="content" />
+          <div class="edit-activator">
+            <slot name="editActivator" :content="content" />
+          </div>
+        </section>
+      </draggable>
+    </div>
+
+    <div v-else>
+      <div class="contents-grid">
+        <section
+          v-for="content in contentsList"
+          :key="content.id"
+          class="contents-grid__column"
+        >
+          <slot :content="content" />
+        </section>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
+import draggable from 'vuedraggable'
 import {
   ContentType,
   NewsType,
@@ -26,12 +46,26 @@ import {
 type ColsType = ContentType | NewsType | ServiceType | WorkType
 
 export default defineComponent({
-  name: 'ContentsGrid',
+  name: 'ContentsGridDraggable',
+  components: { draggable },
   props: {
     contentsList: {
       type: Array as PropType<ColsType[]>,
       required: true,
     },
+    isAuthenticated: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props, { emit }) {
+    const draggableList = computed({
+      get: () => props.contentsList,
+      set: (list) => {
+        emit('change', list)
+      },
+    })
+    return { draggableList }
   },
 })
 </script>
@@ -57,6 +91,12 @@ export default defineComponent({
       top: 0;
       left: 2rem;
     }
+  }
+  .column-draggable {
+    cursor: grab;
+  }
+  .column-draggable:active {
+    cursor: grabbing;
   }
 }
 </style>
