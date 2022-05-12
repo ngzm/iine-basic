@@ -18,6 +18,7 @@
 [済][5/12] 画像の拡大移動をサポートする、データ構造も拡張する
 
 ** メールとアイキャッチと別のコンテンツとの切り離し
+** テーマ対応 まずは default (longlivenet)と dark (states向け) を分離
 ** TAG と Reccomend 機能追加
 ** SNS 部品埋め込み
 ** front draggable と draggable しないモードを整備

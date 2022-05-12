@@ -24,7 +24,7 @@ import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import ContactFormSidebar from '@/components/organisms/layout/contact-form-sidebar.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
-import ContentEditModal from '@/components/organisms/layout/content-edit-modal.vue'
+import ContentEditModal from '@/components/organisms/edit/content-edit-modal.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',

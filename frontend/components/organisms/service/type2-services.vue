@@ -60,7 +60,7 @@ import { useServiceList } from '@/composable/use-service-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import ContentsGridDraggable from '@/components/molecules/contents-grid-draggable.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentEditActivator from '@/components/organisms/edit/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Services',

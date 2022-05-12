@@ -47,7 +47,7 @@ import { useNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import NewsList from '@/components/molecules/news-list.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentEditActivator from '@/components/organisms/edit/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Newses',

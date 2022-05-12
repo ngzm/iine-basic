@@ -53,8 +53,8 @@ import {
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
-import ImageSetter from '@/components/molecules/image-setter.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ImageSetter from '@/components/organisms/edit/image-setter.vue'
+import ContentEditActivator from '@/components/organisms/edit/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1TopEyecatcherDetail',
