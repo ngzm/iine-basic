@@ -98,7 +98,7 @@ import {
   onMounted,
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, maximunLength } from '@/composable/form-validators'
+import { required, maximunLength } from '@/utils/form-validators'
 import { useServiceData } from '@/composable/use-service-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {
@@ -186,7 +186,7 @@ export default defineComponent({
       }
       await loadService(dataId)
       serviceForm.title.$value = service.title || ''
-      serviceForm.image.$value = service.image || ''
+      serviceForm.image.$value = service.image.url
       serviceForm.body.$value = service.body || ''
     })
 
@@ -204,9 +204,9 @@ export default defineComponent({
         id: 0,
         customerId,
         title: formData.title,
-        image: formData.image,
         body: formData.body,
-        position: 0,
+        image: service.image,
+        position: service.position,
       }
       const imageFile = (formData.imageFile as File) || null
       await createService(serviceData, imageFile)
@@ -222,8 +222,8 @@ export default defineComponent({
         id: dataId,
         customerId,
         title: formData.title,
-        image: formData.image,
         body: formData.body,
+        image: service.image,
         position: service.position,
       }
       const imageFile = (formData.imageFile as File) || null

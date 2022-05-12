@@ -25,8 +25,8 @@
 
     <template v-if="notFound" #overlay>
       <div class="text-center">
-        <h4 class="my-3">Newsが登録されていません</h4>
-        <p class="my-3">以下のボタンより作成してください</p>
+        <h4 class="my-3">情報が登録されていません</h4>
+        <p class="my-3">情報を登録してください</p>
         <content-edit-activator
           :type="types.news"
           :action="actions.create"

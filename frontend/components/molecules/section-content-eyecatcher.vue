@@ -2,19 +2,24 @@
   <div
     class="section-content-eyecatcher"
     :class="{ circle: circle, round: round }"
-    :style="`background-image: url(${image}); height: ${height}`"
+    :style="{
+      '--background-image': `url(${image.url || ''})`,
+      '--background-size': 'cover',
+      '--background-position': 'center',
+    }"
   />
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { ImageSetting } from '@/types/content-types'
 
 export default defineComponent({
   name: 'SectionContentEyecaher',
   props: {
     image: {
-      type: String,
-      required: true,
+      type: Object as PropType<ImageSetting>,
+      default: {} as ImageSetting,
     },
     height: {
       type: String,
@@ -35,8 +40,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .section-content-eyecatcher {
   height: 16rem;
-  background-position: center center;
-  background-size: cover;
+  background-image: var(--background-image);
+  background-size: var(--background-size);
+  background-position: var(--background-position);
+  background-repeat: no-repeat;
   margin: 0;
   padding: 0;
 }

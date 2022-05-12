@@ -70,7 +70,7 @@ import {
   PropType,
 } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, maximunLength } from '@/composable/form-validators'
+import { required, maximunLength } from '@/utils/form-validators'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {
@@ -144,7 +144,7 @@ export default defineComponent({
       await loadEyecatch(dataId)
       eyecatcherForm.title.$value = eyecatch.title || ''
       eyecatcherForm.subtitle.$value = eyecatch.subtitle || ''
-      eyecatcherForm.image.$value = eyecatch.image || ''
+      eyecatcherForm.image.$value = eyecatch.image.url || ''
     })
 
     const validStateTitle = computed(() =>
@@ -174,7 +174,7 @@ export default defineComponent({
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
-        image: formData.image,
+        image: eyecatch.image,
       }
       const imageFile = (formData.imageFile as File) || null
       await createEyecatch(ecData, imageFile)
@@ -191,7 +191,7 @@ export default defineComponent({
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
-        image: formData.image,
+        image: eyecatch.image,
       }
       const imageFile = (formData.imageFile as File) || null
       await updateEyecatch(dataId, ecData, imageFile)

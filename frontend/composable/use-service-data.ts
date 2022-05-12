@@ -1,5 +1,5 @@
 import { reactive } from '@nuxtjs/composition-api'
-import { ServiceType } from '@/types/content-type'
+import { ServiceType } from '@/types/content-types'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 
@@ -10,7 +10,13 @@ const initService = () => ({
   customerId: 0,
   title: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   position: 0,
 })
 

@@ -1,10 +1,18 @@
 <template>
   <contents-card :overlay="loading || notFound">
     <template #default>
-      <section-eyecatcher :background-image="contact.image">
-        <h4 class="type1-contact__header--title">
-          {{ contact.title }}
-        </h4>
+      <section-eyecatcher :image="contactImage">
+        <template #default>
+          <h4 class="type1-contact__header--title">
+            {{ contact.title }}
+          </h4>
+        </template>
+        <template #actions>
+          <image-setter
+            :image-setting="contactImage"
+            @change="onChangeImageSetting"
+          />
+        </template>
       </section-eyecatcher>
 
       <contents-card-body>
@@ -57,6 +65,7 @@ import { useContactData } from '@/composable/use-contact-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
+import ImageSetter from '@/components/molecules/image-setter.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
@@ -65,6 +74,7 @@ export default defineComponent({
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
+    ImageSetter,
     ContentEditActivator,
   },
   props: {
@@ -74,8 +84,15 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { contact, loading, notFound, loadContact, getRecentData } =
-      useContactData()
+    const {
+      contact,
+      contactImage,
+      loading,
+      notFound,
+      loadContact,
+      getRecentData,
+      changeImageSetting,
+    } = useContactData()
 
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
@@ -84,12 +101,19 @@ export default defineComponent({
       }
     })
 
+    const onChangeImageSetting = (value: { [key: string]: string }) => {
+      Object.assign(contactImage, value)
+      changeImageSetting(contact.id, contactImage)
+    }
+
     const contactHtml = computed(() => sanitizer(contact.body))
 
     return {
       sidebarIdName,
       contact,
+      contactImage,
       contactHtml,
+      onChangeImageSetting,
       loading,
       notFound,
       types: contentDataTypes,

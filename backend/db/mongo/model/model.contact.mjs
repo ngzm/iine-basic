@@ -11,9 +11,9 @@ const contactSchema = new Schema({
   title: { type: String, required: true },
   subtitle: { type: String },
   body: { type: String, required: true },
-  image: { type: String, required: true },
+  image:  { type: Schema.Types.Mixed },
   position: { type: Number },
-},{
+}, {
   versionKey: false,
   timestamp: true
 })

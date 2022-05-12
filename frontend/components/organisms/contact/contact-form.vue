@@ -80,8 +80,8 @@ import {
   PropType,
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
-import { required, maximunLength } from '@/composable/form-validators'
-import { useContactData } from '~/composable/use-contact-data'
+import { required, maximunLength } from '@/utils/form-validators'
+import { useContactData } from '@/composable/use-contact-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {
   contentActionTypes,
@@ -183,7 +183,7 @@ export default defineComponent({
       await loadContact(dataId)
       contactForm.title.$value = contact.title || ''
       contactForm.subtitle.$value = contact.subtitle || ''
-      contactForm.image.$value = contact.image || ''
+      contactForm.image.$value = contact.image?.url || ''
       contactForm.body.$value = contact.body || ''
     })
 
@@ -202,7 +202,6 @@ export default defineComponent({
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
-        image: formData.image,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null
@@ -220,7 +219,6 @@ export default defineComponent({
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
-        image: formData.image,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null

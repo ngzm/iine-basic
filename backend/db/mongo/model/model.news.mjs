@@ -11,7 +11,7 @@ const newsSchema = new Schema({
   title: { type: String, required: true },
   subtitle: { type: String },
   body: { type: String, required: true },
-  image: { type: String },
+  image: { type: Schema.Types.Mixed },
   category: { type: String, required: true },
   publishOn: { type: Date,  required: true, index: true },
 },{

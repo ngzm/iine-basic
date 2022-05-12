@@ -1,5 +1,5 @@
 import { reactive } from '@nuxtjs/composition-api'
-import { ContactType } from '@/types/content-type'
+import { ContactType } from '@/types/content-types'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 
@@ -11,7 +11,13 @@ const initContact = () => ({
   title: '',
   subtitle: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   position: 0,
 })
 
@@ -21,6 +27,7 @@ const initContact = () => ({
 export const useContactData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     endLoading,
@@ -29,10 +36,12 @@ export const useContactData = () => {
     updateData,
     deleteData,
     getRecentData,
+    changeImageSetting,
   } = useContent<ContactType>(apiEndpoint, initContact, syncronizer)
 
   return {
     contact: dataReactive,
+    contactImage: imageReactive,
     loading,
     notFound,
     endLoading,
@@ -41,5 +50,6 @@ export const useContactData = () => {
     updateContact: updateData,
     deleteContact: deleteData,
     getRecentData,
+    changeImageSetting,
   }
 }

@@ -1,5 +1,5 @@
 import { reactive, watch, useContext, toRefs } from '@nuxtjs/composition-api'
-import { NewsType } from '@/types/content-type'
+import { NewsType } from '@/types/content-types'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
@@ -10,7 +10,13 @@ const initNews = (): NewsType => ({
   id: 0,
   title: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   category: '',
   publishOn: new Date(),
 })
@@ -21,6 +27,7 @@ const initNews = (): NewsType => ({
 export const useNewsData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     endLoading,
@@ -29,6 +36,7 @@ export const useNewsData = () => {
     updateData,
     deleteData,
     getRecentData,
+    changeImageSetting,
   } = useContent<NewsType>(
     apiEndpoint,
     initNews,
@@ -37,6 +45,7 @@ export const useNewsData = () => {
 
   return {
     news: dataReactive,
+    newsImage: imageReactive,
     loading,
     notFound,
     endLoading,
@@ -45,6 +54,7 @@ export const useNewsData = () => {
     updateNews: updateData,
     deleteNews: deleteData,
     getRecentData,
+    changeImageSetting,
   }
 }
 

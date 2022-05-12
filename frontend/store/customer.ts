@@ -1,6 +1,6 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
 import { RootState } from '@/types/store-types'
-import { CustomerType } from '@/types/customer-type'
+import { CustomerType } from '@/types/customer-types'
 
 interface CustomerState {
   customer: CustomerType

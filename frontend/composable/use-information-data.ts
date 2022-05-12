@@ -1,5 +1,5 @@
 import { reactive } from '@nuxtjs/composition-api'
-import { InformationType } from '@/types/content-type'
+import { InformationType } from '@/types/content-types'
 import { useContent } from '@/composable/use-content'
 import { ContentSynchronizer } from '@/composable/use-content/syncronizer'
 
@@ -11,7 +11,13 @@ const initInformation = () => ({
   title: '',
   subtitle: '',
   body: '',
-  image: '',
+  image: {
+    url: '',
+    lgSize: 'cover',
+    smSize: 'cover',
+    lgPosition: 'center',
+    smPosition: 'center',
+  },
   position: 0,
 })
 
@@ -21,6 +27,7 @@ const initInformation = () => ({
 export const useInformationData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     endLoading,
@@ -29,10 +36,12 @@ export const useInformationData = () => {
     updateData,
     deleteData,
     getRecentData,
+    changeImageSetting,
   } = useContent<InformationType>(apiEndpoint, initInformation, syncronizer)
 
   return {
     information: dataReactive,
+    informationImage: imageReactive,
     loading,
     notFound,
     endLoading,
@@ -41,5 +50,6 @@ export const useInformationData = () => {
     updateInformation: updateData,
     deleteInformation: deleteData,
     getRecentData,
+    changeImageSetting,
   }
 }
