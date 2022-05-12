@@ -72,19 +72,19 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .contents-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 22rem));
+  justify-items: center;
   justify-content: space-around;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  row-gap: 2rem;
+  margin: 2rem auto 0 auto;
+  padding: 0 2rem;
   max-width: 90rem;
   min-height: 18rem;
   &__column {
     position: relative;
-    margin: 1.8rem 1.5rem 0 1.5rem;
-    padding: 0;
-    max-width: 20rem;
-    min-width: 16rem;
+    padding: 1rem;
+    width: 100%;
     text-align: center;
     .edit-activator {
       position: absolute;
