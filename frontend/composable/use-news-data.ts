@@ -27,6 +27,7 @@ const initNews = (): NewsType => ({
 export const useNewsData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     endLoading,
@@ -35,6 +36,7 @@ export const useNewsData = () => {
     updateData,
     deleteData,
     getRecentData,
+    changeImageSetting,
   } = useContent<NewsType>(
     apiEndpoint,
     initNews,
@@ -43,6 +45,7 @@ export const useNewsData = () => {
 
   return {
     news: dataReactive,
+    newsImage: imageReactive,
     loading,
     notFound,
     endLoading,
@@ -51,6 +54,7 @@ export const useNewsData = () => {
     updateNews: updateData,
     deleteNews: deleteData,
     getRecentData,
+    changeImageSetting,
   }
 }
 

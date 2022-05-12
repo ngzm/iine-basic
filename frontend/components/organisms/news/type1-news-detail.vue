@@ -1,7 +1,17 @@
 <template>
   <contents-card :overlay="loading || notFound">
     <template #default>
-      <section-eyecatcher :image="news.image || ''" />
+      <section-eyecatcher
+        v-if="newsImage.url && newsImage.url.length"
+        :image="newsImage"
+      >
+        <template #actions>
+          <image-setter
+            :image-setting="newsImage"
+            @change="onChangeImageSetting"
+          />
+        </template>
+      </section-eyecatcher>
 
       <contents-card-body>
         <p class="type1-news-detail__publish">
@@ -52,6 +62,7 @@ import { useNewsData } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
+import ImageSetter from '@/components/molecules/image-setter.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
@@ -60,6 +71,7 @@ export default defineComponent({
     ContentsCard,
     ContentsCardBody,
     SectionEyecatcher,
+    ImageSetter,
     ContentEditActivator,
   },
   props: {
@@ -69,11 +81,15 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { news, loading, notFound, loadNews, getRecentData } = useNewsData()
-    const jstDateString = computed(() =>
-      formatLocalDate(news.publishOn as Date, 'YYYY/MM/DD')
-    )
-    const newsBodyHtml = computed(() => sanitizer(news.body))
+    const {
+      news,
+      newsImage,
+      loading,
+      notFound,
+      loadNews,
+      getRecentData,
+      changeImageSetting,
+    } = useNewsData()
 
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
@@ -82,10 +98,22 @@ export default defineComponent({
       }
     })
 
+    const jstDateString = computed(() =>
+      formatLocalDate(news.publishOn as Date, 'YYYY/MM/DD')
+    )
+    const newsBodyHtml = computed(() => sanitizer(news.body))
+
+    const onChangeImageSetting = (value: { [key: string]: string }) => {
+      Object.assign(newsImage, value)
+      changeImageSetting(news.id, newsImage)
+    }
+
     return {
       sidebarIdName,
       news,
+      newsImage,
       newsBodyHtml,
+      onChangeImageSetting,
       jstDateString,
       loading,
       notFound,

@@ -12,6 +12,9 @@
     <div class="top-eye-catcher__titles">
       <slot />
     </div>
+    <div v-if="$slots.actions" class="top-eye-catcher__actions">
+      <slot name="actions" />
+    </div>
   </div>
 </template>
 
@@ -46,6 +49,12 @@ export default defineComponent({
     bottom: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+  &__actions {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: rgba(255, 255, 255, 0.5);
   }
 }
 

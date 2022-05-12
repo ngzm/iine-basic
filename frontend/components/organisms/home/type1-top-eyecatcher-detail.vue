@@ -5,13 +5,21 @@
     activator-position-top="9rem"
     activator-position-right="2rem"
   >
-    <top-eyecatcher :image="eyecatch.image" class="type1-top-eyecatcher">
-      <h2 class="type1-top-eyecatcher__header--title">
-        {{ eyecatch.title || '' }}
-      </h2>
-      <p class="type1-top-eyecatcher__header--subtitle">
-        {{ eyecatch.subtitle || '' }}
-      </p>
+    <top-eyecatcher :image="eyecatchImage" class="type1-top-eyecatcher">
+      <template #default>
+        <h2 class="type1-top-eyecatcher__header--title">
+          {{ eyecatch.title || '' }}
+        </h2>
+        <p class="type1-top-eyecatcher__header--subtitle">
+          {{ eyecatch.subtitle || '' }}
+        </p>
+      </template>
+      <template #actions>
+        <image-setter
+          :image-setting="eyecatchImage"
+          @change="onChangeImageSetting"
+        />
+      </template>
     </top-eyecatcher>
 
     <template v-if="!notFound" #editActivator>
@@ -45,6 +53,7 @@ import {
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
+import ImageSetter from '@/components/molecules/image-setter.vue'
 import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
 
 export default defineComponent({
@@ -52,6 +61,7 @@ export default defineComponent({
   components: {
     ContentsWrap,
     TopEyecatcher,
+    ImageSetter,
     ContentEditActivator,
   },
   props: {
@@ -61,8 +71,15 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { eyecatch, loading, notFound, loadEyecatch, getRecentData } =
-      useEyecatchData()
+    const {
+      eyecatch,
+      eyecatchImage,
+      loading,
+      notFound,
+      loadEyecatch,
+      getRecentData,
+      changeImageSetting,
+    } = useEyecatchData()
 
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
@@ -71,8 +88,15 @@ export default defineComponent({
       }
     })
 
+    const onChangeImageSetting = (value: { [key: string]: string }) => {
+      Object.assign(eyecatchImage, value)
+      changeImageSetting(eyecatch.id, eyecatchImage)
+    }
+
     return {
       eyecatch,
+      eyecatchImage,
+      onChangeImageSetting,
       loading,
       notFound,
       types: contentDataTypes,

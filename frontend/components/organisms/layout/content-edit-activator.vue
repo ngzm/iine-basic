@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isAuthed" class="content-edit-activator">
+  <div v-if="isAuthenticated" class="content-edit-activator">
     <template v-if="button">
       <b-button :variant="activatorVariant" @click="activateToEdit">
         作成する
@@ -21,12 +21,9 @@
 import {
   defineComponent,
   PropType,
-  ref,
   toRefs,
   reactive,
   computed,
-  onMounted,
-  useContext,
 } from '@nuxtjs/composition-api'
 import {
   contentDataTypes,
@@ -34,6 +31,7 @@ import {
   ContentDataType,
   ContentActionType,
 } from '@/composable/content-helper'
+import { useAuthenticated } from '@/composable/use-authenticated'
 
 const activator = reactive({
   show: false,
@@ -81,7 +79,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { $auth } = useContext()
+    const { isAuthenticated } = useAuthenticated()
     const { type, action, contentId, size, variant } = toRefs(props)
 
     const action2icon = {
@@ -112,17 +110,12 @@ export default defineComponent({
       })
     }
 
-    const isAuthed = ref(false)
-    onMounted(() => {
-      isAuthed.value = $auth.loggedIn
-    })
-
     return {
       avatorIcon,
       activatorVariant,
       activatorSize,
       activateToEdit,
-      isAuthed,
+      isAuthenticated,
     }
   },
 })

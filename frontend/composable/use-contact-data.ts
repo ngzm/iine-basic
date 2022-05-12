@@ -27,6 +27,7 @@ const initContact = () => ({
 export const useContactData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     endLoading,
@@ -35,10 +36,12 @@ export const useContactData = () => {
     updateData,
     deleteData,
     getRecentData,
+    changeImageSetting,
   } = useContent<ContactType>(apiEndpoint, initContact, syncronizer)
 
   return {
     contact: dataReactive,
+    contactImage: imageReactive,
     loading,
     notFound,
     endLoading,
@@ -47,5 +50,6 @@ export const useContactData = () => {
     updateContact: updateData,
     deleteContact: deleteData,
     getRecentData,
+    changeImageSetting,
   }
 }

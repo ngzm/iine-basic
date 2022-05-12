@@ -43,7 +43,7 @@ $eyecatcher-height-sm: 680px;
 .section-eyecatcher {
   height: 35vh;
   max-height: $eyecatcher-height;
-  min-height: calc($eyecatcher-height * 0.5);
+  min-height: calc($eyecatcher-height * 0.75);
   position: relative;
   display: flex;
   justify-content: center;
@@ -70,7 +70,7 @@ $eyecatcher-height-sm: 680px;
   .section-eyecatcher {
     height: 75vh;
     max-height: $eyecatcher-height-sm;
-    min-height: calc($eyecatcher-height-sm * 0.5);
+    min-height: calc($eyecatcher-height-sm * 0.75);
     background-size: var(--background-size-sm);
     background-position: var(--background-position-sm);
   }

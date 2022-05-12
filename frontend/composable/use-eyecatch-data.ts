@@ -25,6 +25,7 @@ const initEyecatch = (): EyecatchType => ({
 export const useEyecatchData = () => {
   const {
     dataReactive,
+    imageReactive,
     loading,
     notFound,
     loadData,
@@ -32,10 +33,12 @@ export const useEyecatchData = () => {
     updateData,
     endLoading,
     getRecentData,
+    changeImageSetting,
   } = useContent<EyecatchType>(apiEndpoint, initEyecatch, syncronizer)
 
   return {
     eyecatch: dataReactive,
+    eyecatchImage: imageReactive,
     loading,
     notFound,
     loadEyecatch: loadData,
@@ -43,5 +46,6 @@ export const useEyecatchData = () => {
     updateEyecatch: updateData,
     endLoading,
     getRecentData,
+    changeImageSetting,
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="image-settings">
+  <div v-if="isAuthenticated" class="image-settings">
     <!-- Large画面 -->
     <div class="image-settings__lg">
       <div class="image-settings__lg--row">
@@ -16,7 +16,7 @@
             v-model="sizeLg"
             type="range"
             min="100"
-            max="250"
+            max="300"
             :disabled="autoLg"
           />
         </div>
@@ -62,7 +62,7 @@
             v-model="sizeSm"
             type="range"
             min="100"
-            max="300"
+            max="400"
             :disabled="autoSm"
           />
         </div>
@@ -101,8 +101,9 @@ import {
   toRefs,
   computed,
   PropType,
-} from '@vue/composition-api'
-import { ImageSetting } from '~/types/content-types'
+} from '@nuxtjs/composition-api'
+import { ImageSetting } from '@/types/content-types'
+import { useAuthenticated } from '@/composable/use-authenticated'
 
 export default defineComponent({
   props: {
@@ -112,6 +113,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { isAuthenticated } = useAuthenticated()
+
     const { lgSize, smSize, lgPosition, smPosition } = toRefs(
       props.imageSetting
     )
@@ -246,63 +249,8 @@ export default defineComponent({
       },
     })
 
-    /*
-    onMounted(() => {
-      if (lgSize.value === 'cover') {
-        auto.value = true
-        sizeLg.value = 100
-        pxLg.value = 50
-        pyLg.value = 50
-      } else {
-        auto.value = false
-        const matched = lgSize.value?.match(/^(?<size>\d+)%$/)
-        sizeLg.value = parseInt(matched?.groups?.size ?? '100')
-      }
-
-      if (lgPosition.value === 'center') {
-        pxLg.value = 50
-        pyLg.value = 50
-      } else {
-        const matched = lgPosition.value?.match(
-          /^(?<posx>\d+)%\s+(?<posy>\d+)%$/
-        )
-        pxLg.value = parseInt(matched?.groups?.posx ?? '50')
-        pyLg.value = parseInt(matched?.groups?.posy ?? '50')
-      }
-    })
-
-    watch(auto, () => {
-      if (auto.value) {
-        sizeLg.value = 100
-        pxLg.value = 50
-        pyLg.value = 50
-        emit('change', { lgSize: 'cover', lgPosition: 'center' })
-      } else {
-        sizeLg.value = 100
-        pxLg.value = 50
-        pyLg.value = 50
-        emit('change', {
-          lgSize: `${sizeLg.value.toString()}%`,
-          lgPosition: `${pxLg.value.toString()}% ${pyLg.value.toString()}%`,
-        })
-      }
-    })
-
-    watch(sizeLg, () => {
-      if (auto.value) return
-
-      emit('change', { lgSize: `${sizeLg.value.toString()}%` })
-    })
-
-    watch([pxLg, pyLg], () => {
-      if (auto.value) return
-
-      const positionLg = `${pxLg.value.toString()}% ${pyLg.value.toString()}%`
-      emit('change', { lgPosition: positionLg })
-    })
-    */
-
     return {
+      isAuthenticated,
       autoLg,
       sizeLg,
       pxLg,
