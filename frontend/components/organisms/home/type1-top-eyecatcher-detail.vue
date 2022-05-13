@@ -123,6 +123,7 @@ export default defineComponent({
       font-size: 2rem;
     }
     &--subtitle {
+      margin-top: 0.5rem;
       font-size: 1.4rem;
     }
   }

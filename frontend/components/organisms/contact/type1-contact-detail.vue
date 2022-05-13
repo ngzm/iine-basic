@@ -6,6 +6,12 @@
           <h4 class="type1-contact__header--title">
             {{ contact.title }}
           </h4>
+          <p
+            v-if="contact.subtitle && contact.subtitle.length > 0"
+            class="type1-contact__header--subtitle"
+          >
+            {{ contact.subtitle }}
+          </p>
         </template>
         <template #actions>
           <image-setter
@@ -126,12 +132,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .type1-contact {
   &__header {
-    &--title {
+    &--title,
+    &--subtitle {
+      text-align: center;
       font-size: 1.25rem;
       font-weight: bold;
       text-shadow: 1px 1px 6px black;
       margin: 0;
       padding: 0;
+    }
+    &--subtitle {
+      font-size: 1rem;
+      margin-top: 0.5rem;
     }
   }
   &__action {

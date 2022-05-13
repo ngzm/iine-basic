@@ -17,6 +17,7 @@ export interface ContentType {
   body?: string
   image?: ImageSetting
   position?: number
+  tags?: string[]
 }
 
 /**

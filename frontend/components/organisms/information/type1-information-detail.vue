@@ -6,6 +6,12 @@
           <h4 class="type1-information__header--title">
             {{ information.title }}
           </h4>
+          <p
+            v-if="information.subtitle && information.subtitle.length > 0"
+            class="type1-information__header--subtitle"
+          >
+            {{ information.subtitle }}
+          </p>
         </template>
         <template #actions>
           <image-setter
@@ -125,12 +131,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .type1-information {
   &__header {
-    &--title {
+    &--title,
+    &--subtitle {
+      text-align: center;
       font-size: 1.25rem;
       font-weight: bold;
       text-shadow: 1px 1px 6px black;
       margin: 0;
       padding: 0;
+    }
+    &--subtitle {
+      font-size: 1rem;
+      margin-top: 0.5rem;
     }
   }
   &__action {

@@ -10,8 +10,15 @@ const eyecatchSchema = new Schema({
   customerId: { type: Number, required: true, index: true },
   title: { type: String, required: true },
   subtitle: { type: String },
-  image: { type: Schema.Types.Mixed, required: true },
+  image: {
+    url: { type: String, required: true },
+    lgSize: { type: String },
+    smSize: { type: String },
+    lgPosition: { type: String },
+    smPosition: { type: String },
+  },
   position: { type: Number },
+  tags: [{ type: String }],
 },{
   versionKey: false,
   timestamp: true
