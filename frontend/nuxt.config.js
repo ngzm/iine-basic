@@ -71,6 +71,9 @@ export default {
     },
     strategies: {
       local: {
+        token: {
+          maxAge: 60 * 60 * 12,
+        },
         endpoints: {
           login: {
             url: '/auth/customer-user',

@@ -1,21 +1,34 @@
 <template>
-  <component :is="templateName" />
+  <div>
+    <component :is="templateName" />
+
+    <TopToButton :src="topButtonImage" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import longlivenetIndex from '~/components/templates/longlivenet/index.vue'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
+import TopToButton from '@/components/molecules/top-to-button.vue'
+
+import longlivenetIndex from '@/components/templates/longlivenet/index.vue'
 
 export default defineComponent({
   name: 'HomeIndex',
   components: {
+    TopToButton,
     longlivenetIndex,
   },
   setup() {
     const { customer } = useCurrentCustomer()
     const templateName = `${customer?.template}Index`
-    return { templateName }
+
+    const topButtonImage = require('@/assets/image/arrow-up4.png')
+
+    return {
+      templateName,
+      topButtonImage,
+    }
   },
 })
 </script>

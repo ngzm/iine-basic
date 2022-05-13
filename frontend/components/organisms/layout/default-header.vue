@@ -14,6 +14,13 @@
     <template #wide>
       <div>
         <nav-link
+          :scroll-to="toTop.scrollTo"
+          :to="toTop.to"
+          class="default-header__nav-link mr-2"
+        >
+          <b-icon icon="house-fill" font-scale="1.5" />
+        </nav-link>
+        <nav-link
           :scroll-to="toInformation.scrollTo"
           :to="toInformation.to"
           class="default-header__nav-link mr-2"
@@ -73,6 +80,17 @@
               ロングリブネット
             </nav-link>
           </h4>
+          <div class="default-header__sidebar--item">
+            <nav-link
+              :scroll-to="toTop.scrollTo"
+              :to="toTop.to"
+              class="default-header__nav-link mr-2"
+              @click.native="closeSidebar"
+            >
+              <b-icon icon="house-fill" font-scale="1.5" />
+              Home
+            </nav-link>
+          </div>
           <div class="default-header__sidebar--item">
             <nav-link
               :scroll-to="toInformation.scrollTo"
