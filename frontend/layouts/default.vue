@@ -2,7 +2,6 @@
   <div id="application-base-body">
     <header>
       <default-header />
-      <bread-crumb-nav />
     </header>
     <main>
       <nuxt />
@@ -24,7 +23,7 @@ import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import ContentEditModal from '@/components/molecules/edit/content-edit-modal.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
-import InquireFormSidebar from '@/components/organisms/layout/inquire-form-sidebar.vue'
+import InquireFormSidebar from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',

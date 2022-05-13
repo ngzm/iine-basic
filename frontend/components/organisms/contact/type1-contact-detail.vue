@@ -3,12 +3,12 @@
     <template #default>
       <section-eyecatcher :image="contactImage">
         <template #default>
-          <h4 class="type1-contact__header--title">
+          <h4 class="g-text-cl type1-contact__header--title">
             {{ contact.title }}
           </h4>
           <p
             v-if="contact.subtitle && contact.subtitle.length > 0"
-            class="type1-contact__header--subtitle"
+            class="g-text-cl type1-contact__header--subtitle"
           >
             {{ contact.subtitle }}
           </p>
@@ -62,7 +62,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -134,7 +134,6 @@ export default defineComponent({
   &__header {
     &--title,
     &--subtitle {
-      text-align: center;
       font-size: 1.25rem;
       font-weight: bold;
       text-shadow: 1px 1px 6px black;

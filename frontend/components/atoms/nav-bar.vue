@@ -3,10 +3,10 @@
     <div class="nav-bar__title">
       <slot name="title" />
     </div>
-    <div class="nav-bar__wide">
+    <div class="g-block-lg">
       <slot name="wide" />
     </div>
-    <div class="nav-bar__narrow">
+    <div class="g-block-sm">
       <slot name="narrow" />
     </div>
   </nav>
@@ -21,26 +21,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/style.scss';
-
 .nav-bar {
   display: flex;
   justify-content: space-between;
   align-content: center;
   align-items: center;
-  &__narrow {
-    display: none;
-  }
-}
-
-@media only screen and (max-width: $grid-breakpoint-md) {
-  .nav-bar {
-    &__wide {
-      display: none;
-    }
-    &__narrow {
-      display: inline;
-    }
-  }
 }
 </style>

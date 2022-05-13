@@ -68,7 +68,7 @@ $eyecatcher-height-sm: 680px;
 
 @media only screen and (max-width: $grid-breakpoint-md) {
   .section-eyecatcher {
-    height: 75vh;
+    height: 50vh;
     max-height: $eyecatcher-height-sm;
     min-height: calc($eyecatcher-height-sm * 0.75);
     background-size: var(--background-size-sm);

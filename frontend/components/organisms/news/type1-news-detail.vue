@@ -17,7 +17,7 @@
         <p class="type1-news-detail__publish">
           <small>{{ jstDateString }}</small>
         </p>
-        <h5 class="type1-news-detail__title">
+        <h5 class="g-text-cl type1-news-detail__title">
           <span>{{ news.title }}</span>
         </h5>
 
@@ -53,7 +53,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { formatLocalDate, sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -133,7 +133,6 @@ export default defineComponent({
   }
   &__title {
     margin-bottom: 1.5rem;
-    text-align: center;
     span {
       font-weight: bold;
     }
