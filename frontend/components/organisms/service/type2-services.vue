@@ -1,7 +1,8 @@
 <template>
   <contents-wrap :overlay="loading || notFound">
-    <contents-grid-draggable
+    <contents-grid
       :contents-list="serviceList"
+      :is-authenticated="isAuthenticated"
       @change="(list) => changeServicesPosition(list)"
     >
       <template #default="{ content }">
@@ -29,7 +30,7 @@
           size="1.6rem"
         />
       </template>
-    </contents-grid-draggable>
+    </contents-grid>
 
     <template v-if="!notFound" #editActivator>
       <content-edit-activator :type="types.service" :action="actions.create" />
@@ -57,16 +58,17 @@ import {
   contentActionTypes,
 } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
+import { useAuthenticated } from '@/composable/use-authenticated'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
-import ContentsGridDraggable from '@/components/molecules/contents-grid-draggable.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ContentsGrid from '@/components/molecules/contents-grid.vue'
+import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1Services',
   components: {
     ContentsWrap,
-    ContentsGridDraggable,
+    ContentsGrid,
     SectionContentEyecatcher,
     ContentEditActivator,
   },
@@ -85,6 +87,8 @@ export default defineComponent({
 
     const serviceBodyHtml = (body: string) => sanitizer(body)
 
+    const { isAuthenticated } = useAuthenticated()
+
     return {
       serviceList,
       serviceBodyHtml,
@@ -93,6 +97,7 @@ export default defineComponent({
       changeServicesPosition,
       types: contentDataTypes,
       actions: contentActionTypes,
+      isAuthenticated,
     }
   },
 })

@@ -12,12 +12,20 @@ $cyan:    #0dcaf0;
 
 // base colors
 $base-background-color: #d3d3d3;
-// $base-background-color: #000;
 $base-background-linear1: #ffffff;
 $base-background-linear2: #787878;
 $base-color: black;
 
 // grid system
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
 $grid-breakpoint-sm: map-get($grid-breakpoints, sm);
 $grid-breakpoint-md: map-get($grid-breakpoints, md);
 $grid-breakpoint-lg: map-get($grid-breakpoints, lg);

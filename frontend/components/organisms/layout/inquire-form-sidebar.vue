@@ -30,7 +30,7 @@ import InquireFormResult from '@/components/organisms/inquire/inquire-form-resul
 export const sidebarIdName = 'inquire-form-sidebar'
 
 export default defineComponent({
-  name: 'ContactFormSidebar',
+  name: 'InquireFormSidebar',
   components: {
     InquireForm,
     InquireFormResult,

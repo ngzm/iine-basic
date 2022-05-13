@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -65,8 +65,8 @@ import { useContactData } from '@/composable/use-contact-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
-import ImageSetter from '@/components/molecules/image-setter.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ImageSetter from '@/components/molecules/edit/image-setter.vue'
+import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1ContactDetail',

@@ -53,7 +53,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { formatLocalDate, sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/contact-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -62,8 +62,8 @@ import { useNewsData } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
-import ImageSetter from '@/components/molecules/image-setter.vue'
-import ContentEditActivator from '@/components/organisms/layout/content-edit-activator.vue'
+import ImageSetter from '@/components/molecules/edit/image-setter.vue'
+import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
 
 export default defineComponent({
   name: 'Type1NewsDetail',
