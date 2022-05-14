@@ -22,7 +22,7 @@ export default defineComponent({
     const { customer } = useCurrentCustomer()
     const templateName = `${customer?.template}Index`
 
-    const topButtonImage = require('@/assets/image/arrow-up4.png')
+    const topButtonImage = '/image/arrow-up4.png'
 
     return {
       templateName,
