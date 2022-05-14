@@ -12,6 +12,7 @@ services:
       IINE_DB_PASSWORD: ${MONGO_IINE_PASSWORD}
       BUCKET_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       BUCKET_SECRET_KEY: ${MINIO_SECRET_KEY}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     build: ./backend
     tty: true
     stdin_open: true

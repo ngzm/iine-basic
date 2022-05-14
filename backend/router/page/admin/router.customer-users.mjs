@@ -8,6 +8,7 @@ import customerStore from '../../../db/mongo/store.customer.mjs'
 import customerUserStore from '../../../db/mongo/store.customer-user.mjs'
 import accountStore from '../../../db/mongo/store.account.mjs'
 import { validateParamsId } from '../../middleware.validators.mjs'
+import { checkAuthorized } from './router.admin-login.mjs'
 
 // ########################
 // Validators
@@ -64,6 +65,9 @@ const checkAccount = async (request, response, next) => {
 // ########################
 
 const router = express.Router();
+
+// システム管理者認証チェック
+router.use(checkAuthorized)
 
 /**
  * 顧客ユーザ情報削除

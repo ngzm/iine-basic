@@ -6,6 +6,7 @@ import AppError from '../../../lib/app-error.mjs'
 import { isPresent, isInt } from '../../../lib/utils.mjs'
 import customerStore from '../../../db/mongo/store.customer.mjs'
 import { validateParamsId } from '../../middleware.validators.mjs'
+import { checkAuthorized } from './router.admin-login.mjs'
 
 // ########################
 // Validators
@@ -47,6 +48,9 @@ const checkExistUrls = async (request, response, next) => {
 // ########################
 
 const router = express.Router();
+
+// システム管理者認証チェック
+router.use(checkAuthorized)
 
 /**
  * 顧客情報削除
