@@ -43,9 +43,7 @@
       />
     </template>
     <template v-if="notFound" #overlay>
-      <div class="text-center">
-        <p class="my-3">情報が登録されていません</p>
-      </div>
+      <content-notfound :type="types.news" :action="actions.create" />
     </template>
   </contents-card>
 </template>
@@ -64,6 +62,7 @@ import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ImageSetter from '@/components/molecules/edit/image-setter.vue'
 import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1NewsDetail',
@@ -73,6 +72,7 @@ export default defineComponent({
     SectionEyecatcher,
     ImageSetter,
     ContentEditActivator,
+    ContentNotfound,
   },
   props: {
     contentId: {

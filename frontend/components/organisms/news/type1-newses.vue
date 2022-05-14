@@ -24,15 +24,7 @@
     </template>
 
     <template v-if="notFound" #overlay>
-      <div class="text-center">
-        <h4 class="my-3">情報が登録されていません</h4>
-        <p class="my-3">情報を登録してください</p>
-        <content-edit-activator
-          :type="types.news"
-          :action="actions.create"
-          button
-        />
-      </div>
+      <content-notfound :type="types.news" :action="actions.create" />
     </template>
   </contents-card>
 </template>
@@ -48,6 +40,7 @@ import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import NewsList from '@/components/molecules/news-list.vue'
 import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1Newses',
@@ -56,6 +49,7 @@ export default defineComponent({
     ContentsCardBody,
     NewsList,
     ContentEditActivator,
+    ContentNotfound,
   },
   props: {
     limit: {

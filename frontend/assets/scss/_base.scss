@@ -55,8 +55,16 @@ p {
 }
 div {
   margin: 0;
-  // padding: 0; --> これを設定すると b-form-checkbox の位置が狂う！
 }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  margin: 0;
+} 
 
 a {
   color: #0033ff;
@@ -86,6 +94,7 @@ $nav-header-height: 120px;
   margin-bottom: 4rem;
 }
 
+// 画面サイズに応じて表示したり非表示にしたりする
 .g-block-lg {
   display: block;
 }
@@ -97,6 +106,7 @@ $nav-header-height: 120px;
   display: none;
 }
 
+// 画面サイズに応じて text align を変更する
 .g-text-cl {
   text-align: center;
 }

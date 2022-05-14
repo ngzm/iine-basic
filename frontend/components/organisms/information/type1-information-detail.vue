@@ -45,15 +45,7 @@
     </template>
 
     <template v-if="notFound" #overlay>
-      <div class="text-center">
-        <h4 class="my-3">記事が登録されていません</h4>
-        <p class="my-3">記事を作成してください</p>
-        <content-edit-activator
-          :type="types.information"
-          :action="actions.create"
-          button
-        />
-      </div>
+      <content-notfound :type="types.information" :action="actions.create" />
     </template>
   </contents-card>
 </template>
@@ -70,8 +62,9 @@ import { useInformationData } from '@/composable/use-information-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
-import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
 import ImageSetter from '@/components/molecules/edit/image-setter.vue'
+import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1IformationDetail',
@@ -81,6 +74,7 @@ export default defineComponent({
     SectionEyecatcher,
     ImageSetter,
     ContentEditActivator,
+    ContentNotfound,
   },
   props: {
     contentId: {
