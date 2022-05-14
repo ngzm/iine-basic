@@ -17,7 +17,7 @@
         <p class="type1-news-detail__publish">
           <small>{{ jstDateString }}</small>
         </p>
-        <h5 class="type1-news-detail__title">
+        <h5 class="g-text-cl type1-news-detail__title">
           <span>{{ news.title }}</span>
         </h5>
 
@@ -43,9 +43,7 @@
       />
     </template>
     <template v-if="notFound" #overlay>
-      <div class="text-center">
-        <p class="my-3">情報が登録されていません</p>
-      </div>
+      <content-notfound :type="types.news" :action="actions.create" />
     </template>
   </contents-card>
 </template>
@@ -53,7 +51,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { formatLocalDate, sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -64,6 +62,7 @@ import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ImageSetter from '@/components/molecules/edit/image-setter.vue'
 import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1NewsDetail',
@@ -73,6 +72,7 @@ export default defineComponent({
     SectionEyecatcher,
     ImageSetter,
     ContentEditActivator,
+    ContentNotfound,
   },
   props: {
     contentId: {
@@ -133,7 +133,6 @@ export default defineComponent({
   }
   &__title {
     margin-bottom: 1.5rem;
-    text-align: center;
     span {
       font-weight: bold;
     }

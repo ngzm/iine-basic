@@ -1,10 +1,6 @@
 <template>
   <b-sidebar :id="sidebarIdName" title="お問い合せ" right shadow backdrop>
     <div class="px-3 py-2">
-      <div
-        :style="{ 'background-image': `url(${contact.image})` }"
-        class="inquire-form-sidebar__eyecatch"
-      />
       <div class="inquire-form-sidebar__address">
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div v-html="contactBody" />
@@ -97,15 +93,6 @@ const formMode = () => {
 
 <style lang="scss" scoped>
 .inquire-form-sidebar {
-  &__eyecatch {
-    width: 100%;
-    height: 10rem;
-    background-position: center center;
-    background-size: cover;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 0 auto 1rem auto;
-  }
   &__address {
     padding: 1rem 0;
     margin-bottom: 1rem;

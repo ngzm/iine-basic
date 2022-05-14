@@ -11,8 +11,15 @@ const serviceSchema = new Schema({
   title: { type: String, required: true },
   subtitle: { type: String },
   body: { type: String, required: true },
-  image: { type: Schema.Types.Mixed, required: true },
-  position: { type: Number, required: true },
+  image: {
+    url: { type: String, required: true },
+    lgSize: { type: String },
+    smSize: { type: String },
+    lgPosition: { type: String },
+    smPosition: { type: String },
+  },
+  position: { type: Number },
+  tags: [{ type: String }],
 },{
   versionKey: false,
   timestamp: true

@@ -1,15 +1,15 @@
 <template>
   <div v-if="isAuthenticated" class="image-settings">
     <!-- Large画面 -->
-    <div class="image-settings__lg">
-      <div class="image-settings__lg--row">
-        <div class="ml-3 mb-2">
+    <ul class="g-block-lg image-settings">
+      <li>
+        <div class="ml-1 mb-2">
           <b-form-checkbox v-model="autoLg" switch>
             <small>画像自動調整</small>
           </b-form-checkbox>
         </div>
-      </div>
-      <div class="image-settings__lg--row">
+      </li>
+      <li>
         <p><small>サイズ</small></p>
         <div>
           <b-form-input
@@ -20,8 +20,8 @@
             :disabled="autoLg"
           />
         </div>
-      </div>
-      <div class="image-settings__lg--row">
+      </li>
+      <li>
         <p><small>横位置</small></p>
         <div>
           <b-form-input
@@ -32,8 +32,8 @@
             :disabled="autoLg"
           />
         </div>
-      </div>
-      <div class="image-settings__lg--row">
+      </li>
+      <li>
         <p><small>縦位置</small></p>
         <div>
           <b-form-input
@@ -44,18 +44,18 @@
             :disabled="autoLg"
           />
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
     <!-- Small画面 -->
-    <div class="image-settings__sm">
-      <div class="image-settings__sm--row">
-        <div class="ml-3 mb-2">
+    <ul class="g-block-sm image-settings">
+      <li>
+        <div class="ml-1 mb-2">
           <b-form-checkbox v-model="autoSm" switch>
             <small>画像自動調整</small>
           </b-form-checkbox>
         </div>
-      </div>
-      <div class="image-settings__sm--row">
+      </li>
+      <li>
         <p><small>サイズ</small></p>
         <div>
           <b-form-input
@@ -66,8 +66,8 @@
             :disabled="autoSm"
           />
         </div>
-      </div>
-      <div class="image-settings__sm--row">
+      </li>
+      <li>
         <p><small>横位置</small></p>
         <div>
           <b-form-input
@@ -78,8 +78,8 @@
             :disabled="autoSm"
           />
         </div>
-      </div>
-      <div class="image-settings__sm--row">
+      </li>
+      <li>
         <p><small>縦位置</small></p>
         <div>
           <b-form-input
@@ -90,8 +90,8 @@
             :disabled="autoSm"
           />
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -265,41 +265,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/style.scss';
-
-.image-settings {
-  width: 16rem;
-  padding: 0.5rem;
-  &__lg,
-  &__sm {
-    &--row {
-      display: flex;
-      justify-content: stretch;
-      p {
-        flex-basis: auto;
-        width: 4rem;
-        text-align: center;
-      }
-      div {
-        flex-grow: 1;
-      }
+ul.image-settings {
+  padding: 0.8rem;
+  li {
+    width: 14rem;
+    display: flex;
+    justify-content: stretch;
+    p {
+      width: 3rem;
     }
-  }
-  &__lg {
-    display: block;
-  }
-  &__sm {
-    display: none;
-  }
-}
-
-@media only screen and (max-width: $grid-breakpoint-md) {
-  .image-settings {
-    &__lg {
-      display: none;
-    }
-    &__sm {
-      display: block;
+    div {
+      flex-grow: 1;
     }
   }
 }

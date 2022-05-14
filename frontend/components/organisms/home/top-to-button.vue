@@ -21,7 +21,7 @@ export default defineComponent({
   props: {
     src: {
       type: String,
-      default: require('@/assets/image/arrow-up1.png'),
+      default: '/image/arrow-up1.png',
     },
   },
   setup() {

@@ -37,15 +37,7 @@
     </template>
 
     <template v-if="notFound" #overlay>
-      <div class="text-center">
-        <h4 class="my-3">Services コンテンツが登録されていません</h4>
-        <p class="my-3">コンテンツを作成してください</p>
-        <content-edit-activator
-          :type="types.service"
-          :action="actions.create"
-          button
-        />
-      </div>
+      <content-notfound :type="types.service" :action="actions.create" />
     </template>
   </contents-wrap>
 </template>
@@ -63,6 +55,7 @@ import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentsGrid from '@/components/molecules/contents-grid.vue'
 import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1Services',
@@ -71,6 +64,7 @@ export default defineComponent({
     ContentsGrid,
     SectionContentEyecatcher,
     ContentEditActivator,
+    ContentNotfound,
   },
   setup() {
     const {

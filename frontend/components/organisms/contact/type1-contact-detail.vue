@@ -3,9 +3,15 @@
     <template #default>
       <section-eyecatcher :image="contactImage">
         <template #default>
-          <h4 class="type1-contact__header--title">
+          <h4 class="g-text-cl type1-contact__header--title">
             {{ contact.title }}
           </h4>
+          <p
+            v-if="contact.subtitle && contact.subtitle.length > 0"
+            class="g-text-cl type1-contact__header--subtitle"
+          >
+            {{ contact.subtitle }}
+          </p>
         </template>
         <template #actions>
           <image-setter
@@ -40,15 +46,7 @@
     </template>
 
     <template v-if="notFound" #overlay>
-      <div class="text-center">
-        <h4 class="my-3">コンタクト情報が登録されていません</h4>
-        <p class="my-3">情報を作成してください</p>
-        <content-edit-activator
-          :type="types.contact"
-          :action="actions.create"
-          button
-        />
-      </div>
+      <content-notfound :type="types.contact" :action="actions.create" />
     </template>
   </contents-card>
 </template>
@@ -56,7 +54,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/layout/inquire-form-sidebar.vue'
+import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -67,6 +65,7 @@ import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
 import ImageSetter from '@/components/molecules/edit/image-setter.vue'
 import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1ContactDetail',
@@ -76,6 +75,7 @@ export default defineComponent({
     SectionEyecatcher,
     ImageSetter,
     ContentEditActivator,
+    ContentNotfound,
   },
   props: {
     contentId: {
@@ -126,12 +126,17 @@ export default defineComponent({
 <style lang="scss" scoped>
 .type1-contact {
   &__header {
-    &--title {
+    &--title,
+    &--subtitle {
       font-size: 1.25rem;
       font-weight: bold;
       text-shadow: 1px 1px 6px black;
       margin: 0;
       padding: 0;
+    }
+    &--subtitle {
+      font-size: 1rem;
+      margin-top: 0.5rem;
     }
   }
   &__action {

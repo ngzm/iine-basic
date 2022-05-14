@@ -35,8 +35,8 @@ html {
   margin: 0;
   padding: 0;
   color: $base-color;
-  // font-size: 62.5%; // 16 * 62.5 = 10px
   font-size: 100%;  // 16px
+  // font-size: 62.5%; // 16 * 62.5 = 10px
 }
 
 body {
@@ -49,10 +49,22 @@ body {
   overflow-y: scroll;
 }
 
-div, p {
+p {
   margin: 0;
   padding: 0;
 }
+div {
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  margin: 0;
+} 
 
 a {
   color: #0033ff;
@@ -80,4 +92,38 @@ $nav-header-height: 120px;
 @mixin page-article-gap {
   padding-top: calc($nav-header-height + 3rem);
   margin-bottom: 4rem;
+}
+
+// 画面サイズに応じて表示したり非表示にしたりする
+.g-block-lg {
+  display: block;
+}
+.g-inline-block-lg {
+  display: inline-block;
+}
+.g-block-sm,
+.g-inline-block-sm {
+  display: none;
+}
+
+// 画面サイズに応じて text align を変更する
+.g-text-cl {
+  text-align: center;
+}
+
+@media only screen and (max-width: $grid-breakpoint-md) {
+  .g-block-sm {
+    display: block;
+  }
+  .g-inline-block-sm {
+    display: inline-block;
+  }
+  .g-block-lg,
+  .g-inline-block-lg {
+    display: none;
+  }
+
+  .g-text-cl {
+    text-align: left;
+  }
 }

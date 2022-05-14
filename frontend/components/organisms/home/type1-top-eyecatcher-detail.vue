@@ -31,15 +31,7 @@
     </template>
 
     <template v-else #overlay>
-      <div class="text-center">
-        <h4 class="my-3">トップ画像コンテンツが登録されていません</h4>
-        <p class="my-3">コンテンツを作成してください</p>
-        <content-edit-activator
-          :type="types.eyecatch"
-          :action="actions.create"
-          button
-        />
-      </div>
+      <content-notfound :type="types.eyecatch" :action="actions.create" />
     </template>
   </contents-wrap>
 </template>
@@ -53,8 +45,9 @@ import {
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
-import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
 import ImageSetter from '@/components/molecules/edit/image-setter.vue'
+import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
+import ContentNotfound from '~/components/molecules/edit/content-notfound.vue'
 
 export default defineComponent({
   name: 'Type1TopEyecatcherDetail',
@@ -63,6 +56,7 @@ export default defineComponent({
     TopEyecatcher,
     ImageSetter,
     ContentEditActivator,
+    ContentNotfound,
   },
   props: {
     contentId: {
@@ -123,6 +117,7 @@ export default defineComponent({
       font-size: 2rem;
     }
     &--subtitle {
+      margin-top: 0.5rem;
       font-size: 1.4rem;
     }
   }
