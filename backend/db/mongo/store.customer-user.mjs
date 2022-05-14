@@ -1,7 +1,7 @@
 'use strict'
 
 import { CustomerUserModel } from './model/model.customer-user.mjs'
-import { modelToObject, modelToArrayObject } from './db.handler.mjs'
+import { modelToObject } from './db.handler.mjs'
 
 /**
  * 顧客管理ユーザ取得

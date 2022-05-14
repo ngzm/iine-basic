@@ -10,6 +10,7 @@ import logger, { setLogLevel } from './lib/logger.mjs'
 import { mongooseConnect, tryMongoose } from './db/mongo/db.handler.mjs'
 
 // Admin pages Routers
+import adminLoginRouter from './router/page/admin/router.admin-login.mjs'
 import adminCustomersRouter from './router/page/admin/router.customers.mjs'
 import adminCustomerUsersRouter from './router/page/admin/router.customer-users.mjs'
 
@@ -77,6 +78,7 @@ app.use((request, response, next) => {
 // ********************************
 // Admin pages Routers
 // ********************************
+app.use('/admin/customers/login', adminLoginRouter)
 app.use('/admin/customers', adminCustomersRouter)
 app.use('/admin/customers', adminCustomerUsersRouter)
 
