@@ -7,6 +7,8 @@
       '--background-size-sm': image.smSize || 'cover',
       '--background-position-lg': image.lgPosition || 'center',
       '--background-position-sm': image.smPosition || 'center',
+      '--background-parallax-lg': image.lgParallax ? 'fixed' : 'scroll',
+      '--background-parallax-sm': image.smParallax ? 'fixed' : 'scroll',
     }"
   >
     <div v-if="$slots.default" class="section-eyecatcher__titles">
@@ -37,22 +39,23 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
 
-$eyecatcher-height: 450px;
-$eyecatcher-height-sm: 680px;
+$eyecatcher-height: 500px;
+$eyecatcher-height-sm: 600px;
 
 .section-eyecatcher {
-  height: 35vh;
+  height: 30vh;
   max-height: $eyecatcher-height;
-  min-height: calc($eyecatcher-height * 0.75);
+  min-height: calc($eyecatcher-height * 0.5);
   position: relative;
   display: flex;
   justify-content: center;
   align-content: center;
   align-items: center;
+  background-repeat: no-repeat;
   background-image: var(--background-image);
   background-size: var(--background-size-lg);
   background-position: var(--background-position-lg);
-  background-repeat: no-repeat;
+  background-attachment: var(--background-parallax-lg);
   &__titles {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
@@ -70,9 +73,14 @@ $eyecatcher-height-sm: 680px;
   .section-eyecatcher {
     height: 50vh;
     max-height: $eyecatcher-height-sm;
-    min-height: calc($eyecatcher-height-sm * 0.75);
+    min-height: calc($eyecatcher-height-sm * 0.5);
     background-size: var(--background-size-sm);
     background-position: var(--background-position-sm);
+    background-attachment: var(--background-parallax-sm);
+    &__actions {
+      bottom: 1rem;
+      right: 1rem;
+    }
   }
 }
 </style>

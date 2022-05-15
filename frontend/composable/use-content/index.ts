@@ -34,6 +34,8 @@ export function useContent<T extends ContentType>(
     smSize: 'cover',
     lgPosition: 'center',
     smPosition: 'center',
+    lgParallax: false,
+    smParallax: false,
   })
 
   // current customer
@@ -108,6 +110,8 @@ export function useContent<T extends ContentType>(
         smSize: 'cover',
         lgPosition: 'center',
         smPosition: 'center',
+        lgParallax: false,
+        smParallax: false,
       } as ImageSetting
     }
 
@@ -144,6 +148,8 @@ export function useContent<T extends ContentType>(
         smSize: 'cover',
         lgPosition: 'center',
         smPosition: 'center',
+        lgParallax: false,
+        smParallax: false,
       } as ImageSetting
     }
 

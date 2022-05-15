@@ -3,9 +3,16 @@
     <!-- Large画面 -->
     <ul class="g-block-lg image-settings">
       <li>
-        <div class="ml-1 mb-2">
+        <div class="ml-1 mb-1">
+          <b-form-checkbox v-model="parallaxLg" switch>
+            <small>固定表示</small>
+          </b-form-checkbox>
+        </div>
+      </li>
+      <li>
+        <div class="ml-1 mb-1">
           <b-form-checkbox v-model="autoLg" switch>
-            <small>画像自動調整</small>
+            <small>自動調整</small>
           </b-form-checkbox>
         </div>
       </li>
@@ -49,9 +56,16 @@
     <!-- Small画面 -->
     <ul class="g-block-sm image-settings">
       <li>
-        <div class="ml-1 mb-2">
+        <div class="ml-1 mb-1">
+          <b-form-checkbox v-model="parallaxSm" switch>
+            <small>固定表示</small>
+          </b-form-checkbox>
+        </div>
+      </li>
+      <li>
+        <div class="ml-1 mb-1">
           <b-form-checkbox v-model="autoSm" switch>
-            <small>画像自動調整</small>
+            <small>自動調整</small>
           </b-form-checkbox>
         </div>
       </li>
@@ -115,9 +129,15 @@ export default defineComponent({
   setup(props, { emit }) {
     const { isAuthenticated } = useAuthenticated()
 
-    const { lgSize, smSize, lgPosition, smPosition } = toRefs(
-      props.imageSetting
-    )
+    const { lgSize, smSize, lgPosition, smPosition, lgParallax, smParallax } =
+      toRefs(props.imageSetting)
+
+    const parallaxLg = computed({
+      get: () => lgParallax.value,
+      set: (value: boolean) => {
+        emit('change', { lgParallax: value })
+      },
+    })
 
     const autoLg = computed({
       get: () => lgSize.value === 'cover',
@@ -181,6 +201,13 @@ export default defineComponent({
         if (autoLg.value) return
         const positionLg = `${pxLg.value.toString()}% ${value.toString()}%`
         emit('change', { lgPosition: positionLg })
+      },
+    })
+
+    const parallaxSm = computed({
+      get: () => smParallax.value,
+      set: (value: boolean) => {
+        emit('change', { smParallax: value })
       },
     })
 
@@ -251,10 +278,12 @@ export default defineComponent({
 
     return {
       isAuthenticated,
+      parallaxLg,
       autoLg,
       sizeLg,
       pxLg,
       pyLg,
+      parallaxSm,
       autoSm,
       sizeSm,
       pxSm,

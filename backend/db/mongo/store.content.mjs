@@ -102,7 +102,6 @@ export default class ContentStore {
     const contentModel = await this.Model.findOne({ id }).exec()
     if (!contentModel) return null
 
-    console.log('imageSetting', imageSetting)
     Object.assign(contentModel, { image: imageSetting })
     return modelToObject(await contentModel.save())
   }
@@ -115,7 +114,6 @@ export default class ContentStore {
     const contents = await this.Model.find(filter).sort({ id: -1 }).limit(1).exec()
     if (!isDefined(contents) || contents.length <= 0) return null
 
-    console.log('contents', contents)
     return modelToObject(contents[0])
   }
 }

@@ -4,6 +4,8 @@ export interface ImageSetting {
   smSize: string | 'cover'
   lgPosition: string | 'center'
   smPosition: string | 'center'
+  lgParallax: boolean
+  smParallax: boolean
 }
 
 /**

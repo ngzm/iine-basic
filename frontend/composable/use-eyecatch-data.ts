@@ -16,6 +16,8 @@ const initEyecatch = (): EyecatchType => ({
     smSize: 'cover',
     lgPosition: 'center',
     smPosition: 'center',
+    lgParallax: false,
+    smParallax: false,
   },
 })
 
