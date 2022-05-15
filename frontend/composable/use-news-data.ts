@@ -16,6 +16,8 @@ const initNews = (): NewsType => ({
     smSize: 'cover',
     lgPosition: 'center',
     smPosition: 'center',
+    lgParallax: false,
+    smParallax: false,
   },
   category: '',
   publishOn: new Date(),

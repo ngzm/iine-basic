@@ -17,6 +17,8 @@ const initContact = () => ({
     smSize: 'cover',
     lgPosition: 'center',
     smPosition: 'center',
+    lgParallax: false,
+    smParallax: false,
   },
   position: 0,
 })

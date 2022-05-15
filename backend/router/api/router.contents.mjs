@@ -1,6 +1,7 @@
 'use strict'
 
 import passport from 'passport'
+import logger from '../../lib/logger.mjs'
 import AppError from '../../lib/app-error.mjs'
 import {
   validateQueryCustomerId,
@@ -81,7 +82,8 @@ export default function(router, store) {
   router.put('/:id/image-setting', passport.authenticate('bearer', { session: false }), validateParamsId, validateBodyRequired, async(request, response, next) => {
     try {
       const content = await store.updateContentImageSetting(request.id, request.body)
-      console.log('content', content)
+      logger.trace('content:', content)
+
       response.json(content)
     } catch (error) {
       next(error)

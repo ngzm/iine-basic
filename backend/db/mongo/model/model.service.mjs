@@ -17,6 +17,8 @@ const serviceSchema = new Schema({
     smSize: { type: String },
     lgPosition: { type: String },
     smPosition: { type: String },
+    lgParallax: { type: Boolean },
+    smParallax: { type: Boolean },
   },
   position: { type: Number },
   tags: [{ type: String }],

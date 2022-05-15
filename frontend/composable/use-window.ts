@@ -15,7 +15,7 @@ export const useWindow = () => {
 
     const getScrollY = debounce(() => {
       scrollY.value = window.scrollY
-    }, 200)
+    }, 20)
 
     onMounted(() => {
       getWindowHeight()

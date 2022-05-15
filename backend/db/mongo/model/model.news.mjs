@@ -17,6 +17,8 @@ const newsSchema = new Schema({
     smSize: { type: String },
     lgPosition: { type: String },
     smPosition: { type: String },
+    lgParallax: { type: Boolean },
+    smParallax: { type: Boolean },
   },
   category: { type: String, required: true },
   publishOn: { type: Date,  required: true, index: true },

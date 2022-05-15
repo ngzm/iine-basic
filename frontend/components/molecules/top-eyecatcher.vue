@@ -7,6 +7,8 @@
       '--background-size-sm': image.smSize || 'cover',
       '--background-position-lg': image.lgPosition || 'center',
       '--background-position-sm': image.smPosition || 'center',
+      '--background-parallax-lg': image.lgParallax ? 'fixed' : 'scroll',
+      '--background-parallax-sm': image.smParallax ? 'fixed' : 'scroll',
     }"
   >
     <div class="top-eye-catcher__titles">
@@ -39,10 +41,11 @@ export default defineComponent({
   height: 100vh;
   min-height: 400px;
   position: relative;
+  background-repeat: no-repeat;
   background-image: var(--background-image);
   background-size: var(--background-size-lg);
   background-position: var(--background-position-lg);
-  background-repeat: no-repeat;
+  background-attachment: var(--background-parallax-lg);
   &__titles {
     position: absolute;
     display: inline-block;
@@ -60,9 +63,14 @@ export default defineComponent({
 
 @media only screen and (max-width: $grid-breakpoint-md) {
   .top-eye-catcher {
-    height: 90vh;
+    height: 100vh;
     background-size: var(--background-size-sm);
     background-position: var(--background-position-sm);
+    background-attachment: var(--background-parallax-sm);
+    &__actions {
+      bottom: 1rem;
+      right: 1rem;
+    }
   }
 }
 </style>
