@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  frontend:
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      BASE_URL: ${BASE_URL}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - BASE_URL=${BASE_URL}
+    tty: true
+    stdin_open: true
+    ports:
+      - '4000:4000'
+
+  backend:
+    depends_on:
+      - 'mongo'
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      IINE_DATABASE: ${MONGO_INITDB_DATABASE}
+      IINE_DB_UERNAME: ${MONGO_IINE_UERNAME}
+      IINE_DB_PASSWORD: ${MONGO_IINE_PASSWORD}
+      BUCKET_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      BUCKET_SECRET_KEY: ${MINIO_SECRET_KEY}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    build: ./backend
+    tty: true
+    stdin_open: true
+    ports:
+      - '3003:3003'
+  
+  mongo:
+    image: 'mongo:5.0'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_IINE_UERNAME: ${MONGO_IINE_UERNAME}
+      MONGO_IINE_PASSWORD: ${MONGO_IINE_PASSWORD}
+    ports:
+      - '27017:27017'
