@@ -10,7 +10,13 @@ export const mongooseConnect = async function(url, options) {
     user: options.user,
     pass: options.pass,
     retryWrites: false
-  });
+  })
+
+  process.on('SIGINT', () => {
+    mongoose.disconnect().then(() => {
+      process.exit()
+    })
+  })
 }
 
 /**
@@ -18,7 +24,7 @@ export const mongooseConnect = async function(url, options) {
  */
 export const tryMongoose = function() {
   if (!mongoose.connection.readyState) {
-    throw new Error(`Mongoose Connection not ready: readyState is ${mongoose.connection.readyState}`);
+    throw new Error(`Mongoose Connection not ready: readyState is ${mongoose.connection.readyState}`)
   }
 }
 
