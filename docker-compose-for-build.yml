@@ -31,14 +31,3 @@ services:
     stdin_open: true
     ports:
       - '3003:3003'
-  
-  mongo:
-    image: 'mongo:5.0'
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-      MONGO_IINE_UERNAME: ${MONGO_IINE_UERNAME}
-      MONGO_IINE_PASSWORD: ${MONGO_IINE_PASSWORD}
-    ports:
-      - '27017:27017'
