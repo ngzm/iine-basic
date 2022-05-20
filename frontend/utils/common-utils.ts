@@ -59,3 +59,13 @@ export const sanitizer = (htmlText: string | undefined) =>
  * no image assets 画像読み込み
  */
 export const noImage = require('@/assets/image/no-image.jpg')
+
+/**
+ * iphone かどうか判別
+ * @returns iPhone の場合 true
+ */
+let isIos: boolean | null = null
+export const isIOS = () => {
+  if (isIos === null) isIos = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  return isIos
+}

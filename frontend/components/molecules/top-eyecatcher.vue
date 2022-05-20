@@ -7,8 +7,10 @@
       '--background-size-sm': image.smSize || 'cover',
       '--background-position-lg': image.lgPosition || 'center',
       '--background-position-sm': image.smPosition || 'center',
-      '--background-parallax-lg': image.lgParallax ? 'fixed' : 'scroll',
-      '--background-parallax-sm': image.smParallax ? 'fixed' : 'scroll',
+      '--background-parallax-lg':
+        image.lgParallax && !isIos ? 'fixed' : 'scroll',
+      '--background-parallax-sm':
+        image.smParallax && !isIos ? 'fixed' : 'scroll',
     }"
   >
     <div class="top-eye-catcher__titles">
@@ -21,7 +23,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  PropType,
+} from '@nuxtjs/composition-api'
+import { isIOS } from '@/utils/common-utils'
 import { ImageSetting } from '@/types/content-types'
 
 export default defineComponent({
@@ -31,6 +39,15 @@ export default defineComponent({
       type: Object as PropType<ImageSetting>,
       default: {} as ImageSetting,
     },
+  },
+  setup() {
+    const isIos = ref(false)
+    onMounted(() => {
+      if (process.client) {
+        isIos.value = isIOS()
+      }
+    })
+    return { isIos }
   },
 })
 </script>
