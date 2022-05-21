@@ -12,13 +12,10 @@
       @dragover.prevent="onDragOver"
       @drop.prevent="onDropFile"
     >
-      <div v-if="buzy" class="file-input__drag-drop--img">
-        <div class="on-buzy">
-          <b-spinner type="grow" variant="primary" label="processing ..." />
-        </div>
-      </div>
-      <div v-else class="file-input__drag-drop--img">
-        <img :src="displayImage" :alt="displayImage" />
+      <div class="file-input__drag-drop--img">
+        <overlay-wrapper :overlay="buzy">
+          <img :src="displayImage" :alt="displayImage" />
+        </overlay-wrapper>
       </div>
       <div class="file-input__drag-drop--nav">
         <p>ここに画像ファイルを<br />ドラッグ＆ドロップできます</p>
@@ -41,9 +38,11 @@ import {
   onMounted,
 } from '@nuxtjs/composition-api'
 import { noImage } from '@/utils/common-utils'
+import OverlayWrapper from '@/components/atoms/overlay-wrapper.vue'
 
 export default defineComponent({
   name: 'FileInput',
+  components: { OverlayWrapper },
   props: {
     imageUrl: {
       type: String,
