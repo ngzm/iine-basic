@@ -7,6 +7,7 @@
           id="service-form-input-image"
           :image-url="serviceForm.image.$value"
           :state="validStateImage"
+          :buzy="compressing"
           @change-image-file="onChangeImageFile"
         />
         <b-form-invalid-feedback :state="validStateImage">
@@ -55,6 +56,7 @@
           <b-button
             v-show="action === 'create'"
             variant="info"
+            :disabled="compressing"
             @click="onCreate"
           >
             作成する
@@ -62,6 +64,7 @@
           <b-button
             v-show="action === 'update' || action === 'moddel'"
             variant="success"
+            :disabled="compressing"
             @click="onUpdate"
           >
             更新する
@@ -101,6 +104,7 @@ import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/utils/form-validators'
 import { useServiceData } from '@/composable/use-service-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { useImageCompression } from '@/composable/use-image-compression'
 import {
   contentActionTypes,
   ContentActionType,
@@ -125,6 +129,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { action, dataId } = props
     const { customerId } = useCurrentCustomer()
+    const { compressing, compress } = useImageCompression()
     const {
       service,
       loading,
@@ -190,9 +195,12 @@ export default defineComponent({
       serviceForm.body.$value = service.body || ''
     })
 
-    const onChangeImageFile = (imageFile: File) => {
-      serviceForm.imageFile.$value = imageFile
-      serviceForm.image.$value = URL.createObjectURL(imageFile)
+    const onChangeImageFile = async (imageFile: File) => {
+      const { compressedImageFile, compressedImageUrl } = await compress(
+        imageFile
+      )
+      serviceForm.imageFile.$value = compressedImageFile
+      serviceForm.image.$value = compressedImageUrl
     }
 
     const onCreate = async () => {
@@ -252,8 +260,9 @@ export default defineComponent({
       onUpdate,
       onDelete,
       onCancel,
-      loading,
       confirmDelete,
+      loading,
+      compressing,
     }
   },
 })

@@ -14,7 +14,7 @@ import StrageHandler from '../../strage/aws-s3/strage.s3handler.mjs'
 // Middlewares 
 // ********************************
 const uploadDir = 'uploads/'
-const lgMax = 300000
+const lgMax = 600000
 // const smMax = 150000 
 
 /**

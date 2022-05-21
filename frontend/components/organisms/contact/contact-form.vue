@@ -7,6 +7,7 @@
           id="contact-form-input-image"
           :image-url="contactForm.image.$value"
           :state="validStateImage"
+          :buzy="compressing"
           @change-image-file="onChangeImageFile"
         />
         <b-form-invalid-feedback :state="validStateImage">
@@ -55,12 +56,18 @@
         </b-form-invalid-feedback>
       </div>
       <div class="contact-form__action">
-        <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+        <b-button
+          v-show="action === 'create'"
+          variant="info"
+          :disabled="compressing"
+          @click="onCreate"
+        >
           作成する
         </b-button>
         <b-button
           v-show="action === 'update' || action === 'moddel'"
           variant="success"
+          :disabled="compressing"
           @click="onUpdate"
         >
           更新する
@@ -83,6 +90,7 @@ import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/utils/form-validators'
 import { useContactData } from '@/composable/use-contact-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { useImageCompression } from '@/composable/use-image-compression'
 import {
   contentActionTypes,
   ContentActionType,
@@ -107,6 +115,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { action, dataId } = props
     const { customerId } = useCurrentCustomer()
+    const { compressing, compress } = useImageCompression()
     const {
       contact,
       loading,
@@ -187,9 +196,12 @@ export default defineComponent({
       contactForm.body.$value = contact.body || ''
     })
 
-    const onChangeImageFile = (imageFile: File) => {
-      contactForm.imageFile.$value = imageFile
-      contactForm.image.$value = URL.createObjectURL(imageFile)
+    const onChangeImageFile = async (imageFile: File) => {
+      const { compressedImageFile, compressedImageUrl } = await compress(
+        imageFile
+      )
+      contactForm.imageFile.$value = compressedImageFile
+      contactForm.image.$value = compressedImageUrl
     }
 
     const onCreate = async () => {
@@ -241,6 +253,7 @@ export default defineComponent({
       onUpdate,
       onCancel,
       loading,
+      compressing,
     }
   },
 })

@@ -12,13 +12,18 @@
       @dragover.prevent="onDragOver"
       @drop.prevent="onDropFile"
     >
-      <div class="file-input__drag-drop--img">
+      <div v-if="buzy" class="file-input__drag-drop--img">
+        <div class="on-buzy">
+          <b-spinner type="grow" variant="primary" label="processing ..." />
+        </div>
+      </div>
+      <div v-else class="file-input__drag-drop--img">
         <img :src="displayImage" :alt="displayImage" />
       </div>
       <div class="file-input__drag-drop--nav">
         <p>ここに画像ファイルを<br />ドラッグ＆ドロップできます</p>
         <div class="file-input__drag-drop--nav-action">
-          <b-button variant="primary" @click="onClick">
+          <b-button variant="primary" :disabled="buzy" @click="onClick">
             背景画像ファイルを選択
           </b-button>
         </div>
@@ -47,6 +52,10 @@ export default defineComponent({
     state: {
       type: Boolean,
       default: null,
+    },
+    buzy: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, { emit, refs }) {
@@ -124,6 +133,14 @@ export default defineComponent({
         width: 240px;
         height: 200px;
         object-fit: cover;
+      }
+      .on-buzy {
+        width: 240px;
+        height: 200px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     &--nav {

@@ -7,6 +7,7 @@
           id="news-form-input-image"
           :image-url="newsForm.image.$value"
           :state="validStateImage"
+          :buzy="compressing"
           @change-image-file="onChangeImageFile"
         />
         <b-form-invalid-feedback :state="validStateImage">
@@ -85,6 +86,7 @@
           <b-button
             v-show="action === 'create'"
             variant="info"
+            :disabled="compressing"
             @click="onCreate"
           >
             作成する
@@ -92,6 +94,7 @@
           <b-button
             v-show="action === 'update' || action === 'moddel'"
             variant="success"
+            :disabled="compressing"
             @click="onUpdate"
           >
             更新する
@@ -132,6 +135,7 @@ import { formatLocalDate, localDate } from '@/utils/common-utils'
 import { required, maximunLength } from '@/utils/form-validators'
 import { useNewsData } from '@/composable/use-news-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { useImageCompression } from '@/composable/use-image-compression'
 import {
   contentActionTypes,
   ContentActionType,
@@ -156,6 +160,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { action, dataId } = props
     const { customerId } = useCurrentCustomer()
+    const { compressing, compress } = useImageCompression()
     const {
       news,
       loading,
@@ -255,9 +260,12 @@ export default defineComponent({
       newsForm.body.$value = news.body
     })
 
-    const onChangeImageFile = (imageFile: File) => {
-      newsForm.imageFile.$value = imageFile
-      newsForm.image.$value = URL.createObjectURL(imageFile)
+    const onChangeImageFile = async (imageFile: File) => {
+      const { compressedImageFile, compressedImageUrl } = await compress(
+        imageFile
+      )
+      newsForm.imageFile.$value = compressedImageFile
+      newsForm.image.$value = compressedImageUrl
     }
 
     const onCreate = async () => {
@@ -320,8 +328,9 @@ export default defineComponent({
       onDelete,
       onCancel,
       categoryOptions,
-      loading,
       confirmDelete,
+      loading,
+      compressing,
     }
   },
 })

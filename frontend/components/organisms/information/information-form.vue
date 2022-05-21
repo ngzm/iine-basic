@@ -7,6 +7,7 @@
           id="information-form-input-image"
           :image-url="informationForm.image.$value"
           :state="validStateImage"
+          :buzy="compressing"
           @change-image-file="onChangeImageFile"
         />
         <b-form-invalid-feedback :state="validStateImage">
@@ -58,12 +59,18 @@
         </b-form-invalid-feedback>
       </div>
       <div class="information-form__action">
-        <b-button v-show="action === 'create'" variant="info" @click="onCreate">
+        <b-button
+          v-show="action === 'create'"
+          variant="info"
+          :disabled="compressing"
+          @click="onCreate"
+        >
           作成する
         </b-button>
         <b-button
           v-show="action === 'update' || action === 'moddel'"
           variant="success"
+          :disabled="compressing"
           @click="onUpdate"
         >
           更新する
@@ -87,6 +94,7 @@ import { required, maximunLength } from '@/utils/form-validators'
 import { InformationType } from '@/types/content-types'
 import { useInformationData } from '@/composable/use-information-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
+import { useImageCompression } from '@/composable/use-image-compression'
 import {
   contentActionTypes,
   ContentActionType,
@@ -111,6 +119,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { action, dataId } = props
     const { customerId } = useCurrentCustomer()
+    const { compressing, compress } = useImageCompression()
     const {
       information,
       loadInformation,
@@ -189,9 +198,12 @@ export default defineComponent({
       !informationForm.body.$dirty ? null : !informationForm.body.$anyInvalid
     )
 
-    const onChangeImageFile = (imageFile: File) => {
-      informationForm.imageFile.$value = imageFile
-      informationForm.image.$value = URL.createObjectURL(imageFile)
+    const onChangeImageFile = async (imageFile: File) => {
+      const { compressedImageFile, compressedImageUrl } = await compress(
+        imageFile
+      )
+      informationForm.imageFile.$value = compressedImageFile
+      informationForm.image.$value = compressedImageUrl
     }
 
     const onCreate = async () => {
@@ -243,6 +255,7 @@ export default defineComponent({
       onUpdate,
       onCancel,
       loading,
+      compressing,
     }
   },
 })
