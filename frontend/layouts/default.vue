@@ -35,6 +35,18 @@ export default defineComponent({
     MakeToast,
     ContentEditModal,
   },
+  head() {
+    return {
+      title: 'Long Live Net',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Long Live Net Website',
+        },
+      ],
+    }
+  },
 })
 </script>
 

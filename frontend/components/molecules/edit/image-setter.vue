@@ -2,7 +2,7 @@
   <div v-if="isAuthenticated" class="image-settings">
     <!-- Large画面 -->
     <ul class="g-block-lg image-settings">
-      <li v-if="!isIos">
+      <li v-if="!isIOS">
         <div class="ml-1 mb-1">
           <b-form-checkbox v-model="parallaxLg" switch>
             <small>固定表示</small>
@@ -55,7 +55,7 @@
     </ul>
     <!-- Small画面 -->
     <ul class="g-block-sm image-settings">
-      <li v-if="!isIos">
+      <li v-if="!isIOS">
         <div class="ml-1 mb-1">
           <b-form-checkbox v-model="parallaxSm" switch>
             <small>固定表示</small>
@@ -112,14 +112,12 @@
 <script lang="ts">
 import {
   defineComponent,
-  ref,
   toRefs,
   computed,
-  onMounted,
   PropType,
 } from '@nuxtjs/composition-api'
-import { isIOS } from '@/utils/common-utils'
 import { ImageSetting } from '@/types/content-types'
+import { useDetectIOS } from '@/composable/use-window'
 import { useAuthenticated } from '@/composable/use-authenticated'
 
 export default defineComponent({
@@ -134,13 +132,6 @@ export default defineComponent({
 
     const { lgSize, smSize, lgPosition, smPosition, lgParallax, smParallax } =
       toRefs(props.imageSetting)
-
-    const isIos = ref(false)
-    onMounted(() => {
-      if (process.client) {
-        isIos.value = isIOS()
-      }
-    })
 
     const parallaxLg = computed({
       get: () => lgParallax.value,
@@ -286,6 +277,8 @@ export default defineComponent({
       },
     })
 
+    const { isIOS } = useDetectIOS()
+
     return {
       isAuthenticated,
       parallaxLg,
@@ -298,7 +291,7 @@ export default defineComponent({
       sizeSm,
       pxSm,
       pySm,
-      isIos,
+      isIOS,
     }
   },
 })

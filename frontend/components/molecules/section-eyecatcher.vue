@@ -8,9 +8,9 @@
       '--background-position-lg': image.lgPosition || 'center',
       '--background-position-sm': image.smPosition || 'center',
       '--background-parallax-lg':
-        image.lgParallax && !isIos ? 'fixed' : 'scroll',
+        image.lgParallax && !isIOS ? 'fixed' : 'scroll',
       '--background-parallax-sm':
-        image.smParallax && !isIos ? 'fixed' : 'scroll',
+        image.smParallax && !isIOS ? 'fixed' : 'scroll',
     }"
   >
     <div v-if="$slots.default" class="section-eyecatcher__titles">
@@ -24,14 +24,9 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  PropType,
-} from '@nuxtjs/composition-api'
-import { isIOS } from '@/utils/common-utils'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { ImageSetting } from '@/types/content-types'
+import { useDetectIOS } from '@/composable/use-window'
 
 export default defineComponent({
   name: 'SectionEyecatcher',
@@ -42,13 +37,8 @@ export default defineComponent({
     },
   },
   setup() {
-    const isIos = ref(false)
-    onMounted(() => {
-      if (process.client) {
-        isIos.value = isIOS()
-      }
-    })
-    return { isIos }
+    const { isIOS } = useDetectIOS()
+    return { isIOS }
   },
 })
 </script>

@@ -1,4 +1,4 @@
-import { ref, onMounted } from '@nuxtjs/composition-api'
+import { Ref, ref, onMounted } from '@nuxtjs/composition-api'
 import debounce from 'lodash/debounce'
 
 /**
@@ -31,4 +31,20 @@ export const useWindow = () => {
     windowHeight,
     scrollY,
   }
+}
+
+/**
+ * use isIOS
+ */
+const isIOS: Ref<boolean | null> = ref(null)
+export const useDetectIOS = () => {
+  onMounted(() => {
+    if (process.client) {
+      if (isIOS.value === null) {
+        isIOS.value = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      }
+    }
+  })
+
+  return { isIOS }
 }
