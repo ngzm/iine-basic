@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
 import DefaultHeader from '@/components/organisms/layout/default-header.vue'
 import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
@@ -35,14 +36,29 @@ export default defineComponent({
     MakeToast,
     ContentEditModal,
   },
+  setup() {
+    const { headInfo } = useCurrentCustomer()
+    return {
+      title: headInfo.title,
+      content: headInfo.content,
+      favicon: headInfo.favicon,
+    }
+  },
   head() {
     return {
-      title: 'Long Live Net',
+      title: `${this.title}`,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: 'Long Live Net Website',
+          content: `${this.content}`,
+        },
+      ],
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: `/${this.favicon}`,
         },
       ],
     }

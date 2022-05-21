@@ -19,13 +19,11 @@ export default defineComponent({
     longlivenetIndex,
   },
   setup() {
-    const { customer } = useCurrentCustomer()
-    const templateName = `${customer?.template}Index`
-
+    const { template } = useCurrentCustomer()
     const topButtonImage = '/image/arrow-up4.png'
 
     return {
-      templateName,
+      templateName: `${template}Index`,
       topButtonImage,
     }
   },
