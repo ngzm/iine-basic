@@ -85,7 +85,7 @@ app.use('/admin/customers', adminCustomerUsersRouter)
 // ********************************
 // Auth pages Routers
 // ********************************
-app.use('/member/login', authCustomerUsersRouter)
+app.use('/member', authCustomerUsersRouter)
 
 // ********************************
 // Api Routers

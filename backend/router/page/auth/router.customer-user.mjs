@@ -74,7 +74,7 @@ const router = express.Router();
 
     logger.info('Customer user logouted.', `user: ${account.username}`)
     response.clearCookie('token')
-    response.redirect('/member/login?result=11')
+    response.redirect('/member?result=11')
   } catch(error) {
     next(error)
   }
@@ -131,20 +131,20 @@ router.post('/:id/password', validateParamsId, checkAuthorized, async(request, r
 
     const { password, passwordConfirm } = request.body
     if (password !== passwordConfirm) {
-      response.redirect(`/member/login/${user.id}/password?result=1`)
+      response.redirect(`/member/${user.id}/password?result=1`)
       return
     }
     if (password.length < 8) {
-      response.redirect(`/member/login/${user.id}/password?result=2`)
+      response.redirect(`/member/${user.id}/password?result=2`)
       return
     }
     if (!passwordComplexity(password)) {
-      response.redirect(`/member/login/${user.id}/password?result=3`)
+      response.redirect(`/member/${user.id}/password?result=3`)
       return
     }
 
     await accountStore.updatePassword(account.username, password)
-    response.redirect(`/member/login/${account.userId}`)
+    response.redirect(`/member/${account.userId}`)
   } catch(error) {
     next(error)
   }
@@ -160,10 +160,10 @@ router.post('/', async(request, response, next) => {
     if (account) {
       logger.info('Customer user login success.', `user: ${account.username}`)
       response.cookie ('token', account.token)
-      response.redirect(`/member/login/${account.userId}`)
+      response.redirect(`/member/${account.userId}`)
     } else {
       logger.warn('Customer user login failure.', `input username: ${username}`)
-      response.redirect('/member/login?result=1')
+      response.redirect('/member?result=1')
     }
   } catch(error) {
     next(error)
