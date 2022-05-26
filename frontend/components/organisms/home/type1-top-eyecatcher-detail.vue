@@ -112,8 +112,6 @@ export default defineComponent({
       text-align: center;
       white-space: nowrap;
       font-weight: bold;
-      color: white;
-      text-shadow: 1px 1px 6px black;
       font-size: 2rem;
     }
     &--subtitle {

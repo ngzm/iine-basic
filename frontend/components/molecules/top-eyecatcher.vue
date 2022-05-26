@@ -59,6 +59,8 @@ export default defineComponent({
     bottom: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.5);
   }
   &__actions {
     position: absolute;

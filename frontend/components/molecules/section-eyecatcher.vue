@@ -66,7 +66,8 @@ $eyecatcher-height-sm: 600px;
   &__titles {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 1rem;
+    padding: 1.5rem 2.5rem;
+    border-radius: 9999px;
   }
   &__actions {
     position: absolute;
