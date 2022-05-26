@@ -48,12 +48,12 @@
         >
           Contact
         </nav-link>
-        <customer-user-tools v-show="$auth.loggedIn" class="ml-2" />
+        <customer-user-tools v-show="isAuthenticated" class="ml-2" />
       </div>
     </template>
     <template #narrow>
       <div>
-        <customer-user-tools v-show="$auth.loggedIn" :with-name="false" />
+        <customer-user-tools v-show="isAuthenticated" :with-name="false" />
         <b-button variant="light" @click="openSidebar">
           <b-icon
             icon="list"
@@ -144,6 +144,7 @@ import {
   computed,
   useRoute,
 } from '@nuxtjs/composition-api'
+import { useAuthenticated } from '@/composable/use-authenticated'
 import NavBar from '@/components/atoms/nav-bar.vue'
 import NavLink from '@/components/atoms/nav-link.vue'
 import CustomerUserTools from '@/components/organisms/layout/customer-user-tools.vue'
@@ -156,6 +157,7 @@ export default defineComponent({
     CustomerUserTools,
   },
   setup() {
+    const { isAuthenticated } = useAuthenticated()
     const route = useRoute()
     const isIndex = computed(() => route.value.name === 'index')
     const indexLinkTo = (hash: string) =>
@@ -180,6 +182,7 @@ export default defineComponent({
     }
 
     return {
+      isAuthenticated,
       toTop,
       toInformation,
       toNews,

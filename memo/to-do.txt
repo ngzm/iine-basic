@@ -25,20 +25,19 @@
 [済][5/15] news list コンポーネントを list コンポーネントに汎用化
 [済][5/21] iphone パララックスできない問題
 [済][5/21] iphone 大きい画像がアップロードできない問題 画像compress
+[中止][5/26] eyecatch mix-blend-mode 対応 https://wk-partners.co.jp/homepage/blog/hpseisaku/htmlcss/mix-blend-mode/  --> これは背景画像により設定の変更が必須となるので一概にサポートするのは難しいと判断！
+[済][5/26] スマホ対応 プレビュー切り替え
 
-** eyecatch mix-blend-mode 対応 https://wk-partners.co.jp/homepage/blog/hpseisaku/htmlcss/mix-blend-mode/ 
-** スマホ対応 プレビュー切り替え
 ** スマホ対応  ドラッグ移動モード切り替え
 ** スマホサイズヘッダ部分がダサいので見直し
 ** ヘッダメニュー顧客ごと可変対応
 ** テーマ対応 まずは default (longlivenet)と dark (states向け) を分離
-
+** コンテンツタイトル文字色の変更 カラーピッカー https://github.com/saintplay/vue-swatches
 
 ** SNS 部品埋め込み
 ** TAG 機能追加
 ** Reccomend 機能追加
 * メールとアイキャッチと別のコンテンツとの切り離し
-* コンテンツタイトル文字色の変更 カラーピッカー https://github.com/saintplay/vue-swatches
 
 #### Back
 

@@ -13,6 +13,7 @@
     <inquire-form-sidebar />
     <make-toast />
     <content-edit-modal />
+    <on-preview />
   </div>
 </template>
 
@@ -22,9 +23,10 @@ import { useCurrentCustomer } from '@/composable/use-current-customer'
 import DefaultHeader from '@/components/organisms/layout/default-header.vue'
 import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
-import ContentEditModal from '@/components/molecules/edit/content-edit-modal.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
 import InquireFormSidebar from '@/components/organisms/inquire/inquire-form-sidebar.vue'
+import ContentEditModal from '@/components/molecules/edit/content-edit-modal.vue'
+import OnPreview from '@/components/molecules/edit/on-preview.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
@@ -35,6 +37,7 @@ export default defineComponent({
     InquireFormSidebar,
     MakeToast,
     ContentEditModal,
+    OnPreview,
   },
   setup() {
     const { headInfo } = useCurrentCustomer()

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isAuthenticated">
+    <div v-if="isEditable">
       <p class="text-center">
         <small>ドラッグドロップで位置を変更できます</small>
       </p>
@@ -42,6 +42,7 @@ import {
   ServiceType,
   WorkType,
 } from '@/types/content-types'
+import { useAuthenticated } from '@/composable/use-authenticated'
 
 type ColsType = ContentType | NewsType | ServiceType | WorkType
 
@@ -53,19 +54,20 @@ export default defineComponent({
       type: Array as PropType<ColsType[]>,
       required: true,
     },
-    isAuthenticated: {
-      type: Boolean,
-      default: false,
-    },
   },
   setup(props, { emit }) {
+    const { isEditable } = useAuthenticated()
+
     const draggableList = computed({
       get: () => props.contentsList,
       set: (list) => {
         emit('change', list)
       },
     })
-    return { draggableList }
+    return {
+      isEditable,
+      draggableList,
+    }
   },
 })
 </script>

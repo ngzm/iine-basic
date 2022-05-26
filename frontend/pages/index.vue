@@ -8,7 +8,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import TopToButton from '@/components/organisms/home/top-to-button.vue'
+import TopToButton from '@/components/molecules/top-to-button.vue'
 
 import longlivenetIndex from '@/components/templates/longlivenet/index.vue'
 

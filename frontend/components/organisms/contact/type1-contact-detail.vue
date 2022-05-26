@@ -130,7 +130,6 @@ export default defineComponent({
     &--subtitle {
       font-size: 1.25rem;
       font-weight: bold;
-      text-shadow: 1px 1px 6px black;
       margin: 0;
       padding: 0;
     }
