@@ -10,9 +10,13 @@ import debounce from 'lodash/debounce'
 import { ContentSynchronizer } from './syncronizer'
 import { useContentLoading } from './loading'
 import { useContentNotFound } from './not-found'
-import { ContentType, ContentPosition } from '@/types/content-types'
+import {
+  ContentType,
+  ContentPosition,
+  ImageSetting,
+} from '@/types/content-types'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import { ImageSetting } from '~/types/content-types'
+import { useAuthenticated } from '@/composable/use-authenticated'
 
 type IntilizerFunc<T> = () => T
 
@@ -24,7 +28,8 @@ export function useContent<T extends ContentType>(
   initializer: IntilizerFunc<T>,
   syncronizer: ContentSynchronizer<T>
 ) {
-  const { $axios, $auth } = useContext()
+  const { $axios } = useContext()
+  const { isAuthenticated } = useAuthenticated()
   const dataReactive = reactive<T>(initializer())
   const listRef = ref<T[]>([]) as Ref<T[]>
   const listLimit = ref(10)
@@ -92,7 +97,7 @@ export function useContent<T extends ContentType>(
   }
 
   const createData = async (newData: T, imageFile: File | null) => {
-    if (!$auth.loggedIn) return
+    if (!isAuthenticated) return
 
     startLoading()
     const sendData = { ...newData }
@@ -129,7 +134,7 @@ export function useContent<T extends ContentType>(
     modData: T,
     imageFile: File | null
   ) => {
-    if (!$auth.loggedIn) return
+    if (!isAuthenticated) return
 
     startLoading()
     resetNotFound()
@@ -164,7 +169,7 @@ export function useContent<T extends ContentType>(
   }
 
   const deleteData = async (dataId: number) => {
-    if (!$auth.loggedIn) return
+    if (!isAuthenticated) return
 
     startLoading()
     await $axios.delete(`${apiEndpoint}/${dataId}`, {
@@ -181,7 +186,7 @@ export function useContent<T extends ContentType>(
     const positions: ContentPosition[] = changedList.map(
       (d, i) => ({ id: d.id, position: i + 1 } as ContentPosition)
     )
-    if ($auth.loggedIn) {
+    if (isAuthenticated) {
       listRef.value = await $axios.$put(`${apiEndpoint}/positions`, positions, {
         params: { customerId },
       })
@@ -191,7 +196,7 @@ export function useContent<T extends ContentType>(
 
   const changeImageSetting = debounce(
     async (dataId: number, imageSetting: ImageSetting) => {
-      if (!$auth.loggedIn) return
+      if (!isAuthenticated) return
 
       resetNotFound()
       const response = await $axios.$put(

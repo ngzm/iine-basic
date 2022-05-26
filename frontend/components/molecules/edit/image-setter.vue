@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isAuthenticated" class="image-settings">
+  <div v-if="isEditable" class="image-settings">
     <!-- Large画面 -->
     <ul class="g-block-lg image-settings">
       <li v-if="!isIOS">
@@ -128,7 +128,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const { isAuthenticated } = useAuthenticated()
+    const { isEditable } = useAuthenticated()
 
     const { lgSize, smSize, lgPosition, smPosition, lgParallax, smParallax } =
       toRefs(props.imageSetting)
@@ -280,7 +280,7 @@ export default defineComponent({
     const { isIOS } = useDetectIOS()
 
     return {
-      isAuthenticated,
+      isEditable,
       parallaxLg,
       autoLg,
       sizeLg,

@@ -16,12 +16,8 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  toRefs,
-  useContext,
-} from '@nuxtjs/composition-api'
+import { defineComponent, computed, toRefs } from '@nuxtjs/composition-api'
+import { useAuthenticated } from '@/composable/use-authenticated'
 import {
   contentDataTypes,
   contentActionTypes,
@@ -54,12 +50,12 @@ export default defineComponent({
     ContactForm,
   },
   setup() {
-    const { $auth } = useContext()
     const { show, type, action, id } = toRefs(getActivator())
+    const { isEditable } = useAuthenticated()
     const formComponentName = computed(() => editType2Component[type.value])
 
     const showModal = computed({
-      get: () => $auth.loggedIn && show.value,
+      get: () => isEditable.value && show.value,
       set: (value: boolean) => {
         show.value = value
       },

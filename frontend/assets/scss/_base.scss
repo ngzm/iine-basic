@@ -90,7 +90,7 @@ small {
 $nav-header-height: 120px;
 
 @mixin page-article-gap {
-  padding-top: calc($nav-header-height + 3rem);
+  padding-top: calc(#{$nav-header-height} + 3rem);
   margin-bottom: 4rem;
 }
 

@@ -2,7 +2,6 @@
   <contents-wrap :overlay="loading || notFound">
     <contents-grid
       :contents-list="serviceList"
-      :is-authenticated="isAuthenticated"
       @change="(list) => changeServicesPosition(list)"
     >
       <template #default="{ content }">
@@ -50,7 +49,6 @@ import {
   contentActionTypes,
 } from '~/composable/content-helper'
 import { useServiceList } from '@/composable/use-service-data'
-import { useAuthenticated } from '@/composable/use-authenticated'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
 import ContentsGrid from '@/components/molecules/contents-grid.vue'
@@ -81,8 +79,6 @@ export default defineComponent({
 
     const serviceBodyHtml = (body: string) => sanitizer(body)
 
-    const { isAuthenticated } = useAuthenticated()
-
     return {
       serviceList,
       serviceBodyHtml,
@@ -91,7 +87,6 @@ export default defineComponent({
       changeServicesPosition,
       types: contentDataTypes,
       actions: contentActionTypes,
-      isAuthenticated,
     }
   },
 })

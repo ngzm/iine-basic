@@ -1,6 +1,6 @@
 <template>
   <div class="frame-wrap">
-    <div v-if="status === 'authorizing'">
+    <div v-if="status == 'authorizing' || 'authOk'">
       <p>管理ユーザ権限を確認中です・・・</p>
     </div>
     <div v-else class="infomation-card">
@@ -20,8 +20,8 @@ import {
   onMounted,
   useRoute,
   useRouter,
-  useContext,
 } from '@nuxtjs/composition-api'
+import { useAuthenticated } from '@/composable/use-authenticated'
 
 export default defineComponent({
   name: 'AuthCustomerUser',
@@ -29,17 +29,18 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const { $auth } = useContext()
+    const { login } = useAuthenticated()
     const status = ref('authorizing')
 
     onMounted(async () => {
-      if (route.value.query && route.value.query.code) {
-        const code = route.value.query ? route.value.query.code : ''
+      if (route.value.query?.code) {
         router.replace({ query: {} })
 
-        await $auth.loginWith('local', { data: { code } }).catch(() => {
-          status.value = 'authError'
-        })
+        status.value = await login(
+          { code: route.value.query.code as string },
+          'authOk',
+          'authError'
+        )
       } else {
         status.value = 'authError'
       }

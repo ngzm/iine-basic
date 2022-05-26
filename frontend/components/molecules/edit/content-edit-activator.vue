@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isAuthenticated" class="content-edit-activator">
+  <div v-if="isEditable" class="content-edit-activator">
     <template v-if="button">
       <b-button :variant="activatorVariant" @click="activateToEdit">
         作成する
@@ -79,7 +79,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { isAuthenticated } = useAuthenticated()
+    const { isEditable } = useAuthenticated()
     const { type, action, contentId, size, variant } = toRefs(props)
 
     const action2icon = {
@@ -115,7 +115,7 @@ export default defineComponent({
       activatorVariant,
       activatorSize,
       activateToEdit,
-      isAuthenticated,
+      isEditable,
     }
   },
 })
