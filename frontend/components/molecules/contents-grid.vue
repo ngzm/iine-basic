@@ -1,9 +1,7 @@
 <template>
   <div>
     <div v-if="isEditable">
-      <p class="text-center">
-        <small>ドラッグドロップで位置を変更できます</small>
-      </p>
+      <p class="draggable-notion">ドラッグドロップで位置を変更できます</p>
       <draggable v-model="draggableList" tag="div" class="contents-grid">
         <section
           v-for="content in draggableList"
@@ -14,6 +12,9 @@
 
           <div class="edit-activator">
             <slot name="editActivator" :content="content" />
+          </div>
+          <div class="edit-position">
+            <b-icon icon="arrows-move" variant="primary" />
           </div>
         </section>
       </draggable>
@@ -42,7 +43,7 @@ import {
   ServiceType,
   WorkType,
 } from '@/types/content-types'
-import { useAuthenticated } from '@/composable/use-authenticated'
+import { usePreviewControll } from '@/composable/use-edit-controll'
 
 type ColsType = ContentType | NewsType | ServiceType | WorkType
 
@@ -56,7 +57,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const { isEditable } = useAuthenticated()
+    const { isEditable } = usePreviewControll()
 
     const draggableList = computed({
       get: () => props.contentsList,
@@ -84,21 +85,37 @@ export default defineComponent({
   max-width: 90rem;
   min-height: 18rem;
   &__column {
-    position: relative;
     padding: 1rem;
-    width: 100%;
+    width: 95%;
     text-align: center;
-    .edit-activator {
-      position: absolute;
-      top: 0;
-      left: 2rem;
-    }
   }
   .column-draggable {
+    position: relative;
+    width: 75%;
     cursor: grab;
+    background-color: lightsteelblue;
+    border-radius: 6px;
+    box-shadow: 0 0 8px royalblue;
+    .edit-activator {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    .edit-position {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+    }
   }
   .column-draggable:active {
     cursor: grabbing;
   }
+}
+
+.draggable-notion {
+  text-align: center;
+  font-size: small;
+  font-weight: bold;
+  color: blue;
 }
 </style>

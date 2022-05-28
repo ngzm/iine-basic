@@ -10,7 +10,6 @@
         </h5>
         <section-content-eyecatcher
           :image="content.image"
-          height="14rem"
           circle
           class="type2-services__content-eyecatcher"
         />
@@ -23,20 +22,27 @@
       </template>
       <template #editActivator="{ content }">
         <content-edit-activator
-          :type="types.service"
-          :action="actions.moddel"
-          :content-id="content.id"
+          :edit-props="{
+            type: types.service,
+            action: actions.moddel,
+            id: content.id,
+          }"
           size="1.6rem"
         />
       </template>
     </contents-grid>
 
     <template v-if="!notFound" #editActivator>
-      <content-edit-activator :type="types.service" :action="actions.create" />
+      <content-edit-activator
+        :edit-props="{
+          type: types.service,
+          action: actions.create,
+        }"
+      />
     </template>
 
     <template v-if="notFound" #overlay>
-      <content-notfound :type="types.service" :action="actions.create" />
+      <content-notfound :type="types.service" />
     </template>
   </contents-wrap>
 </template>
@@ -44,10 +50,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { sanitizer } from '@/utils/common-utils'
-import {
-  contentDataTypes,
-  contentActionTypes,
-} from '~/composable/content-helper'
+import { editTypes, editActions } from '@/composable/use-edit-controll'
 import { useServiceList } from '@/composable/use-service-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import SectionContentEyecatcher from '@/components/molecules/section-content-eyecatcher.vue'
@@ -85,8 +88,8 @@ export default defineComponent({
       loading,
       notFound,
       changeServicesPosition,
-      types: contentDataTypes,
-      actions: contentActionTypes,
+      types: editTypes,
+      actions: editActions,
     }
   },
 })
@@ -103,7 +106,7 @@ export default defineComponent({
   }
   &__content-eyecatcher {
     margin-top: 0.5rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
   }
   &__content-body {
     text-align: left;

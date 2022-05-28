@@ -8,8 +8,8 @@
     <template v-else>
       <b-avatar
         button
-        :icon="avatorIcon"
-        :size="activatorSize"
+        :icon="activatorIcon"
+        :size="size"
         :variant="activatorVariant"
         @click="activateToEdit"
       />
@@ -18,52 +18,19 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
 import {
-  defineComponent,
-  PropType,
-  toRefs,
-  reactive,
-  computed,
-} from '@nuxtjs/composition-api'
-import {
-  contentDataTypes,
-  contentActionTypes,
-  ContentDataType,
-  ContentActionType,
-} from '@/composable/content-helper'
-import { useAuthenticated } from '@/composable/use-authenticated'
-
-const activator = reactive({
-  show: false,
-  type: contentDataTypes.none as ContentDataType,
-  action: contentActionTypes.none as ContentActionType,
-  id: 0,
-})
-
-export const getActivator = () => activator
-export const inactivate = () => {
-  Object.assign(activator, {
-    show: false,
-    type: contentDataTypes.none as ContentDataType,
-    action: contentActionTypes.none as ContentActionType,
-    id: 0,
-  })
-}
+  EditProps,
+  useEditControll,
+  usePreviewControll,
+} from '@/composable/use-edit-controll'
 
 export default defineComponent({
   name: 'ContentEditActivator',
   props: {
-    type: {
-      type: String as PropType<ContentDataType>,
+    editProps: {
+      type: Object as PropType<EditProps>,
       required: true,
-    },
-    action: {
-      type: String as PropType<ContentActionType>,
-      required: true,
-    },
-    contentId: {
-      type: Number,
-      default: 0,
     },
     size: {
       type: String,
@@ -79,43 +46,21 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { isEditable } = useAuthenticated()
-    const { type, action, contentId, size, variant } = toRefs(props)
+    const { isEditable } = usePreviewControll()
+    const { activate, getActivatorIcon, getActivatorColor } = useEditControll()
 
-    const action2icon = {
-      [contentActionTypes.create]: 'plus-circle',
-      [contentActionTypes.update]: 'pencil-square',
-      [contentActionTypes.moddel]: 'pencil-fill',
-      [contentActionTypes.none]: 'exclamation-triangle',
-    } as const
-    const action2variant = {
-      [contentActionTypes.create]: 'info',
-      [contentActionTypes.update]: 'success',
-      [contentActionTypes.moddel]: 'success',
-      [contentActionTypes.none]: 'danger',
-    } as const
-
-    const avatorIcon = computed(() => action2icon[action.value])
-    const activatorVariant = computed(
-      () => variant.value || action2variant[action.value]
-    )
-    const activatorSize = computed(() => size.value)
+    const activatorIcon = computed(() => getActivatorIcon(props.editProps))
+    const activatorVariant = computed(() => getActivatorColor(props.editProps))
 
     const activateToEdit = () => {
-      Object.assign(activator, {
-        show: true,
-        type: type.value,
-        action: action.value,
-        id: contentId.value,
-      })
+      activate(props.editProps)
     }
 
     return {
-      avatorIcon,
-      activatorVariant,
-      activatorSize,
-      activateToEdit,
       isEditable,
+      activatorIcon,
+      activatorVariant,
+      activateToEdit,
     }
   },
 })

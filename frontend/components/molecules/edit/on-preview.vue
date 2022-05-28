@@ -8,12 +8,12 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { useAuthenticated } from '@/composable/use-authenticated'
+import { usePreviewControll } from '@/composable/use-edit-controll'
 
 export default defineComponent({
   name: 'OnPreview',
   setup() {
-    const { isOnPreview, togglePreview } = useAuthenticated()
+    const { isOnPreview, togglePreview } = usePreviewControll()
     return {
       isOnPreview,
       togglePreview,

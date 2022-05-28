@@ -45,7 +45,7 @@
       <div class="service-form__action">
         <div class="service-form__action--left">
           <b-button
-            v-show="action === 'moddel'"
+            v-show="isDelete"
             variant="outline-danger"
             @click="confirmDelete = true"
           >
@@ -54,7 +54,7 @@
         </div>
         <div class="service-form__action--right">
           <b-button
-            v-show="action === 'create'"
+            v-show="isCreate"
             variant="info"
             :disabled="compressing"
             @click="onCreate"
@@ -62,7 +62,7 @@
             作成する
           </b-button>
           <b-button
-            v-show="action === 'update' || action === 'moddel'"
+            v-show="isUpdate"
             variant="success"
             :disabled="compressing"
             @click="onUpdate"
@@ -102,13 +102,10 @@ import {
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/utils/form-validators'
+import { EditProps, useEditControll } from '@/composable/use-edit-controll'
 import { useServiceData } from '@/composable/use-service-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { useImageCompression } from '@/composable/use-image-compression'
-import {
-  contentActionTypes,
-  ContentActionType,
-} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -117,17 +114,15 @@ export default defineComponent({
   name: 'ServiceForm',
   components: { ContentsformWrap, FileInput, WysiwsgEditor },
   props: {
-    action: {
-      type: String as PropType<ContentActionType>,
-      required: true,
-    },
-    dataId: {
-      type: Number,
+    editProps: {
+      type: Object as PropType<EditProps>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    const { action, dataId } = props
+    const contentId = props.editProps.id ?? 0
+    const { isCreateAction, isUpdateAction, isDeleteAction } = useEditControll()
+
     const { customerId } = useCurrentCustomer()
     const { compressing, compress } = useImageCompression()
     const {
@@ -185,11 +180,11 @@ export default defineComponent({
     )
 
     onMounted(async () => {
-      if (action === contentActionTypes.create) {
+      if (isCreate.value) {
         endLoading()
         return
       }
-      await loadService(dataId)
+      await loadService(contentId)
       serviceForm.title.$value = service.title || ''
       serviceForm.image.$value = service.image.url
       serviceForm.body.$value = service.body || ''
@@ -227,7 +222,7 @@ export default defineComponent({
 
       const formData = serviceForm.toObject()
       const serviceData = {
-        id: dataId,
+        id: contentId,
         customerId,
         title: formData.title,
         body: formData.body,
@@ -235,13 +230,13 @@ export default defineComponent({
         position: service.position,
       }
       const imageFile = (formData.imageFile as File) || null
-      await updateService(dataId, serviceData, imageFile)
+      await updateService(contentId, serviceData, imageFile)
       emit('close')
     }
 
     const confirmDelete = ref(false)
     const onDelete = async () => {
-      await deleteService(dataId)
+      await deleteService(contentId)
       confirmDelete.value = false
       emit('close')
     }
@@ -249,6 +244,10 @@ export default defineComponent({
     const onCancel = () => {
       emit('close')
     }
+
+    const isCreate = computed(() => isCreateAction(props.editProps.action))
+    const isUpdate = computed(() => isUpdateAction(props.editProps.action))
+    const isDelete = computed(() => isDeleteAction(props.editProps.action))
 
     return {
       serviceForm,
@@ -263,6 +262,9 @@ export default defineComponent({
       confirmDelete,
       loading,
       compressing,
+      isCreate,
+      isUpdate,
+      isDelete,
     }
   },
 })

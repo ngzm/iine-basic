@@ -7,18 +7,7 @@
     <article id="index-information-article">
       <section class="article-margin">
         <h4 class="section-title"><span>Message</span></h4>
-        <information-detail>
-          <template #action>
-            <b-button
-              v-scroll-to="{ el: '#index-contact-article', offset: -180 }"
-              :to="{ name: 'index' }"
-              variant="primary"
-            >
-              お問合せ
-              <b-icon icon="info-square" />
-            </b-button>
-          </template>
-        </information-detail>
+        <information-detail />
       </section>
     </article>
 

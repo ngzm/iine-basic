@@ -118,7 +118,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { ImageSetting } from '@/types/content-types'
 import { useDetectIOS } from '@/composable/use-window'
-import { useAuthenticated } from '@/composable/use-authenticated'
+import { usePreviewControll } from '@/composable/use-edit-controll'
 
 export default defineComponent({
   props: {
@@ -128,7 +128,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const { isEditable } = useAuthenticated()
+    const { isEditable } = usePreviewControll()
 
     const { lgSize, smSize, lgPosition, smPosition, lgParallax, smParallax } =
       toRefs(props.imageSetting)
