@@ -13,7 +13,7 @@
 
 次の感じでOK
 ```
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 #### (3) 初回起動時 mongodb のアプリケーション用 db と ユーザ作成
