@@ -27,7 +27,7 @@
         <div class="type1-news-detail__action">
           <slot name="action">
             <b-button v-b-toggle="sidebarIdName" variant="primary">
-              <b-icon icon="hand-index" />
+              <b-icon icon="envelope" />
               お問い合せ
             </b-button>
           </slot>

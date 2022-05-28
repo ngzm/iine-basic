@@ -24,7 +24,6 @@ export default defineComponent({
 .nav-bar {
   display: flex;
   justify-content: space-between;
-  align-content: center;
   align-items: center;
 }
 </style>

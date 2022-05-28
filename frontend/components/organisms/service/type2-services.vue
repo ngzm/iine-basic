@@ -101,17 +101,11 @@ export default defineComponent({
     text-align: center;
     font-weight: bold;
     font-size: 1.1rem;
-    padding: 0;
-    margin: 0;
-  }
-  &__content-eyecatcher {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   &__content-body {
     text-align: left;
-    margin: 0;
-    padding: 0;
+    margin-top: 1rem;
   }
 }
 </style>

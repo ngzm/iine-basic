@@ -30,7 +30,7 @@
           <slot name="action">
             <b-button v-b-toggle="sidebarIdName" variant="primary">
               <b-icon icon="envelope" />
-              メールでのお問合せ
+              お問合せ
             </b-button>
           </slot>
         </div>
