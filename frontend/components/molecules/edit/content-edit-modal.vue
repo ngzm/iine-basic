@@ -1,44 +1,31 @@
 <template>
   <b-modal
     v-model="showModal"
-    :title="modalTitle"
+    :title="formTitle"
     centered
     size="lg"
     hide-footer
   >
     <component
       :is="formComponentName"
-      :action="action"
-      :data-id="dataId"
-      @close="close"
+      :edit-props="editProps"
+      @close="inactivate"
     />
   </b-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, toRefs } from '@nuxtjs/composition-api'
-import { useAuthenticated } from '@/composable/use-authenticated'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 import {
-  contentDataTypes,
-  contentActionTypes,
-} from '@/composable/content-helper'
-import { getActivator } from '@/components/molecules/edit/content-edit-activator.vue'
+  useEditControll,
+  usePreviewControll,
+} from '@/composable/use-edit-controll'
 import EyecatcherForm from '@/components/organisms/home/eyecatcher-form.vue'
 import InformationForm from '@/components/organisms/information/information-form.vue'
 import NewsForm from '@/components/organisms/news/news-form.vue'
 import ServiceForm from '@/components/organisms/service/service-form.vue'
 import ContactForm from '@/components/organisms/contact/contact-form.vue'
-
-const editType2Component = {
-  [contentDataTypes.eyecatch]: 'EyecatcherForm',
-  [contentDataTypes.information]: 'InformationForm',
-  [contentDataTypes.news]: 'NewsForm',
-  [contentDataTypes.service]: 'ServiceForm',
-  [contentDataTypes.work]: 'InformationForm',
-  [contentDataTypes.contact]: 'ContactForm',
-  [contentDataTypes.menu]: 'InformationForm',
-  [contentDataTypes.none]: 'NoneForm',
-} as const
+import NoneForm from '@/components/atoms/do-none.vue'
 
 export default defineComponent({
   name: 'ContentEditModal',
@@ -48,38 +35,35 @@ export default defineComponent({
     NewsForm,
     ServiceForm,
     ContactForm,
+    NoneForm,
   },
   setup() {
-    const { show, type, action, id } = toRefs(getActivator())
-    const { isEditable } = useAuthenticated()
-    const formComponentName = computed(() => editType2Component[type.value])
+    const { isEditable } = usePreviewControll()
+    const {
+      getActivator,
+      inactivate,
+      setActivatorShow,
+      getFormComponent,
+      getFormTitle,
+    } = useEditControll()
+
+    const activator = getActivator()
+    const formComponentName = computed(() => getFormComponent(activator))
+    const formTitle = computed(() => getFormTitle(activator))
 
     const showModal = computed({
-      get: () => isEditable.value && show.value,
+      get: () => isEditable.value && (activator.show ?? false),
       set: (value: boolean) => {
-        show.value = value
+        setActivatorShow(value)
       },
     })
 
-    const modalTitle = computed(() =>
-      action.value === contentActionTypes.create
-        ? 'コンテンツの追加'
-        : action.value === contentActionTypes.moddel
-        ? 'コンテンツの編集・削除'
-        : 'コンテンツの編集'
-    )
-
-    const close = () => {
-      show.value = false
-    }
-
     return {
       showModal,
-      action,
-      dataId: id,
+      editProps: activator,
       formComponentName,
-      modalTitle,
-      close,
+      formTitle,
+      inactivate,
     }
   },
 })

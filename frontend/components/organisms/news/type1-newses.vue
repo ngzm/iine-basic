@@ -17,9 +17,11 @@
         </template>
         <template #editActivator="{ content }">
           <content-edit-activator
-            :type="types.news"
-            :action="actions.moddel"
-            :content-id="content.id"
+            :edit-props="{
+              type: types.news,
+              action: actions.moddel,
+              id: content.id,
+            }"
             size="1.6rem"
             class="mr-2"
           />
@@ -34,22 +36,24 @@
     </contents-card-body>
 
     <template v-if="!notFound" #editActivator>
-      <content-edit-activator :type="types.news" :action="actions.create" />
+      <content-edit-activator
+        :edit-props="{
+          type: types.news,
+          action: actions.create,
+        }"
+      />
     </template>
 
     <template v-if="notFound" #overlay>
-      <content-notfound :type="types.news" :action="actions.create" />
+      <content-notfound :type="types.news" />
     </template>
   </contents-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import {
-  contentDataTypes,
-  contentActionTypes,
-} from '@/composable/content-helper'
 import { formatLocalDate } from '@/utils/common-utils'
+import { editTypes, editActions } from '@/composable/use-edit-controll'
 import { useNewsList } from '@/composable/use-news-data'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
@@ -96,8 +100,8 @@ export default defineComponent({
       notFound,
       loadMoreNewsList,
       jstDateString,
-      types: contentDataTypes,
-      actions: contentActionTypes,
+      types: editTypes,
+      actions: editActions,
     }
   },
 })

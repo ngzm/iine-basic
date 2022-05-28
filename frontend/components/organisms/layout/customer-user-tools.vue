@@ -18,6 +18,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { useAuthenticated } from '@/composable/use-authenticated'
+import { usePreviewControll } from '@/composable/use-edit-controll'
 
 export default defineComponent({
   name: 'CostomerUserTools',
@@ -28,7 +29,8 @@ export default defineComponent({
     },
   },
   setup() {
-    const { loginUser, togglePreview, logout } = useAuthenticated()
+    const { loginUser, logout } = useAuthenticated()
+    const { togglePreview } = usePreviewControll()
     return {
       loginUser,
       togglePreview,

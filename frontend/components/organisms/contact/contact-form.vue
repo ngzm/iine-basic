@@ -57,7 +57,7 @@
       </div>
       <div class="contact-form__action">
         <b-button
-          v-show="action === 'create'"
+          v-show="isCreate"
           variant="info"
           :disabled="compressing"
           @click="onCreate"
@@ -65,7 +65,7 @@
           作成する
         </b-button>
         <b-button
-          v-show="action === 'update' || action === 'moddel'"
+          v-show="isUpdate"
           variant="success"
           :disabled="compressing"
           @click="onUpdate"
@@ -88,13 +88,10 @@ import {
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/utils/form-validators'
+import { EditProps, useEditControll } from '@/composable/use-edit-controll'
 import { useContactData } from '@/composable/use-contact-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { useImageCompression } from '@/composable/use-image-compression'
-import {
-  contentActionTypes,
-  ContentActionType,
-} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -103,17 +100,14 @@ export default defineComponent({
   name: 'ContactForm',
   components: { ContentsformWrap, FileInput, WysiwsgEditor },
   props: {
-    action: {
-      type: String as PropType<ContentActionType>,
-      required: true,
-    },
-    dataId: {
-      type: Number,
+    editProps: {
+      type: Object as PropType<EditProps>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    const { action, dataId } = props
+    const contentId = props.editProps.id ?? 0
+    const { isCreateAction, isUpdateAction } = useEditControll()
     const { customerId } = useCurrentCustomer()
     const { compressing, compress } = useImageCompression()
     const {
@@ -185,11 +179,11 @@ export default defineComponent({
     )
 
     onMounted(async () => {
-      if (action === contentActionTypes.create) {
+      if (isCreate.value) {
         endLoading()
         return
       }
-      await loadContact(dataId)
+      await loadContact(contentId)
       contactForm.title.$value = contact.title || ''
       contactForm.subtitle.$value = contact.subtitle || ''
       contactForm.image.$value = contact.image?.url || ''
@@ -227,20 +221,23 @@ export default defineComponent({
 
       const formData = contactForm.toObject()
       const contactData = {
-        id: dataId,
+        id: contentId,
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null
-      await updateContact(dataId, contactData, imageFile)
+      await updateContact(contentId, contactData, imageFile)
       emit('close')
     }
 
     const onCancel = () => {
       emit('close')
     }
+
+    const isCreate = computed(() => isCreateAction(props.editProps.action))
+    const isUpdate = computed(() => isUpdateAction(props.editProps.action))
 
     return {
       contactForm,
@@ -254,6 +251,8 @@ export default defineComponent({
       onCancel,
       loading,
       compressing,
+      isCreate,
+      isUpdate,
     }
   },
 })

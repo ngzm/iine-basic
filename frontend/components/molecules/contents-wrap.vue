@@ -40,7 +40,7 @@ export default defineComponent({
     },
     activatorPositionRight: {
       type: [Number, String],
-      default: '2rem',
+      default: '1rem',
     },
   },
 })
@@ -61,7 +61,7 @@ export default defineComponent({
   &__edit-activator {
     position: absolute;
     top: 0;
-    right: 2rem;
+    right: 1rem;
   }
 }
 

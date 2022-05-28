@@ -37,28 +37,27 @@
     </template>
 
     <template v-if="!notFound" #editActivator>
-      <content-edit-activator
-        :type="types.information"
-        :action="actions.update"
-        :content-id="information.id"
-      />
+      <content-edit-activator :edit-props="editProps" />
     </template>
 
     <template v-if="notFound" #overlay>
-      <content-notfound :type="types.information" :action="actions.create" />
+      <content-notfound :type="editProps.type" />
     </template>
   </contents-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
-import { sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import {
-  contentDataTypes,
-  contentActionTypes,
-} from '@/composable/content-helper'
+  defineComponent,
+  onMounted,
+  reactive,
+  computed,
+} from '@nuxtjs/composition-api'
+
+import { sanitizer } from '@/utils/common-utils'
+import { editTypes, editActions } from '@/composable/use-edit-controll'
 import { useInformationData } from '@/composable/use-information-data'
+import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
@@ -93,9 +92,16 @@ export default defineComponent({
       changeImageSetting,
     } = useInformationData()
 
+    const editProps = reactive({
+      type: editTypes.information,
+      action: editActions.update,
+      id: props.contentId,
+    })
+
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
       if (currentId) {
+        editProps.id = currentId
         await loadInformation(currentId)
       }
     })
@@ -114,8 +120,7 @@ export default defineComponent({
       onChangeImageSetting,
       loading,
       notFound,
-      types: contentDataTypes,
-      actions: contentActionTypes,
+      editProps,
       sidebarIdName,
     }
   },

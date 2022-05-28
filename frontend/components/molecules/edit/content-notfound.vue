@@ -1,13 +1,13 @@
 <template>
   <div class="text-center">
     <h4 class="my-3">コンテンツが登録されていません</h4>
-    <content-edit-activator :type="type" :action="action" button />
+    <content-edit-activator :edit-props="editProps" button />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api'
-import { ContentDataType, ContentActionType } from '@/composable/content-helper'
+import { EditTypeKey, editActions } from '@/composable/use-edit-controll'
 import ContentEditActivator from '@/components/molecules/edit/content-edit-activator.vue'
 
 export default defineComponent({
@@ -15,13 +15,17 @@ export default defineComponent({
   components: { ContentEditActivator },
   props: {
     type: {
-      type: String as PropType<ContentDataType>,
+      type: String as PropType<EditTypeKey>,
       required: true,
     },
-    action: {
-      type: String as PropType<ContentActionType>,
-      required: true,
-    },
+  },
+  setup(props) {
+    return {
+      editProps: {
+        type: props.type,
+        action: editActions.create,
+      },
+    }
   },
 })
 </script>

@@ -60,7 +60,7 @@
       </div>
       <div class="information-form__action">
         <b-button
-          v-show="action === 'create'"
+          v-show="isCreate"
           variant="info"
           :disabled="compressing"
           @click="onCreate"
@@ -68,7 +68,7 @@
           作成する
         </b-button>
         <b-button
-          v-show="action === 'update' || action === 'moddel'"
+          v-show="isUpdate"
           variant="success"
           :disabled="compressing"
           @click="onUpdate"
@@ -91,14 +91,11 @@ import {
 } from '@vue/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/utils/form-validators'
+import { EditProps, useEditControll } from '@/composable/use-edit-controll'
 import { InformationType } from '@/types/content-types'
 import { useInformationData } from '@/composable/use-information-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { useImageCompression } from '@/composable/use-image-compression'
-import {
-  contentActionTypes,
-  ContentActionType,
-} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 import WysiwsgEditor from '@/components/atoms/wysiwsg-editor.vue'
@@ -107,17 +104,15 @@ export default defineComponent({
   name: 'InformationForm',
   components: { ContentsformWrap, FileInput, WysiwsgEditor },
   props: {
-    action: {
-      type: String as PropType<ContentActionType>,
+    editProps: {
+      type: Object as PropType<EditProps>,
       required: true,
-    },
-    dataId: {
-      type: Number,
-      default: 0,
     },
   },
   setup(props, { emit }) {
-    const { action, dataId } = props
+    const contentId = props.editProps.id ?? 0
+    const { isCreateAction, isUpdateAction } = useEditControll()
+
     const { customerId } = useCurrentCustomer()
     const { compressing, compress } = useImageCompression()
     const {
@@ -172,11 +167,11 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      if (action === contentActionTypes.create) {
+      if (isCreate.value) {
         endLoading()
         return
       }
-      await loadInformation(dataId)
+      await loadInformation(contentId)
       informationForm.title.$value = information.title || ''
       informationForm.subtitle.$value = information.subtitle || ''
       informationForm.image.$value = information.image?.url || ''
@@ -229,20 +224,23 @@ export default defineComponent({
 
       const formData = informationForm.toObject()
       const infomationData: InformationType = {
-        id: dataId,
+        id: contentId,
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         body: formData.body,
       }
       const imageFile = (formData.imageFile as File) || null
-      await updateInformation(dataId, infomationData, imageFile)
+      await updateInformation(contentId, infomationData, imageFile)
       emit('close')
     }
 
     const onCancel = () => {
       emit('close')
     }
+
+    const isCreate = computed(() => isCreateAction(props.editProps.action))
+    const isUpdate = computed(() => isUpdateAction(props.editProps.action))
 
     return {
       informationForm,
@@ -256,6 +254,8 @@ export default defineComponent({
       onCancel,
       loading,
       compressing,
+      isCreate,
+      isUpdate,
     }
   },
 })

@@ -47,7 +47,7 @@
       </div>
       <div class="eyecatcher-form__action">
         <b-button
-          v-show="action === 'create'"
+          v-show="isCreate"
           variant="info"
           :disabled="compressing"
           @click="onCreate"
@@ -55,7 +55,7 @@
           作成する
         </b-button>
         <b-button
-          v-show="action === 'update' || action === 'moddel'"
+          v-show="isUpdate"
           variant="success"
           :disabled="compressing"
           @click="onUpdate"
@@ -78,13 +78,10 @@ import {
 } from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
 import { required, maximunLength } from '@/utils/form-validators'
+import { EditProps, useEditControll } from '@/composable/use-edit-controll'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { useImageCompression } from '@/composable/use-image-compression'
-import {
-  contentActionTypes,
-  ContentActionType,
-} from '@/composable/content-helper'
 import ContentsformWrap from '@/components/molecules/contentsform-wrap.vue'
 import FileInput from '@/components/atoms/file-input.vue'
 
@@ -92,17 +89,15 @@ export default defineComponent({
   name: 'EyeCatcherForm',
   components: { ContentsformWrap, FileInput },
   props: {
-    action: {
-      type: String as PropType<ContentActionType>,
+    editProps: {
+      type: Object as PropType<EditProps>,
       required: true,
-    },
-    dataId: {
-      type: Number,
-      default: 0,
     },
   },
   setup(props, { emit }) {
-    const { action, dataId } = props
+    const contentId = props.editProps.id ?? 0
+    const { isCreateAction, isUpdateAction } = useEditControll()
+
     const { customerId } = useCurrentCustomer()
     const { compressing, compress } = useImageCompression()
     const {
@@ -146,11 +141,11 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      if (action === contentActionTypes.create) {
+      if (isCreate.value) {
         endLoading()
         return
       }
-      await loadEyecatch(dataId)
+      await loadEyecatch(contentId)
       eyecatcherForm.title.$value = eyecatch.title || ''
       eyecatcherForm.subtitle.$value = eyecatch.subtitle || ''
       eyecatcherForm.image.$value = eyecatch.image.url || ''
@@ -199,20 +194,23 @@ export default defineComponent({
 
       const formData = eyecatcherForm.toObject()
       const ecData = {
-        id: dataId,
+        id: contentId,
         customerId,
         title: formData.title,
         subtitle: formData.subtitle,
         image: eyecatch.image,
       }
       const imageFile = (formData.imageFile as File) || null
-      await updateEyecatch(dataId, ecData, imageFile)
+      await updateEyecatch(contentId, ecData, imageFile)
       emit('close')
     }
 
     const onCancel = () => {
       emit('close')
     }
+
+    const isCreate = computed(() => isCreateAction(props.editProps.action))
+    const isUpdate = computed(() => isUpdateAction(props.editProps.action))
 
     return {
       eyecatcherForm,
@@ -225,6 +223,8 @@ export default defineComponent({
       onCancel,
       loading,
       compressing,
+      isCreate,
+      isUpdate,
     }
   },
 })

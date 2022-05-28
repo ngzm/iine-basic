@@ -36,27 +36,26 @@
     </template>
 
     <template v-if="!notFound" #editActivator>
-      <content-edit-activator
-        :type="types.news"
-        :action="actions.moddel"
-        :content-id="news.id"
-      />
+      <content-edit-activator :edit-props="editProps" />
     </template>
     <template v-if="notFound" #overlay>
-      <content-notfound :type="types.news" :action="actions.create" />
+      <content-notfound :type="editProps.type" />
     </template>
   </contents-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
-import { formatLocalDate, sanitizer } from '@/utils/common-utils'
-import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import {
-  contentDataTypes,
-  contentActionTypes,
-} from '@/composable/content-helper'
+  defineComponent,
+  onMounted,
+  reactive,
+  computed,
+} from '@nuxtjs/composition-api'
+
+import { formatLocalDate, sanitizer } from '@/utils/common-utils'
+import { editTypes, editActions } from '@/composable/use-edit-controll'
 import { useNewsData } from '@/composable/use-news-data'
+import { sidebarIdName } from '@/components/organisms/inquire/inquire-form-sidebar.vue'
 import ContentsCard from '@/components/molecules/contents-card.vue'
 import ContentsCardBody from '@/components/molecules/contents-card-body.vue'
 import SectionEyecatcher from '@/components/molecules/section-eyecatcher.vue'
@@ -91,9 +90,16 @@ export default defineComponent({
       changeImageSetting,
     } = useNewsData()
 
+    const editProps = reactive({
+      type: editTypes.news,
+      action: editActions.update,
+      id: props.contentId,
+    })
+
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
       if (currentId) {
+        editProps.id = currentId
         await loadNews(currentId)
       }
     })
@@ -117,8 +123,7 @@ export default defineComponent({
       jstDateString,
       loading,
       notFound,
-      types: contentDataTypes,
-      actions: contentActionTypes,
+      editProps,
     }
   },
 })

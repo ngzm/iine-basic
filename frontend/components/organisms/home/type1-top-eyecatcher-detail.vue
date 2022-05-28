@@ -23,25 +23,18 @@
     </top-eyecatcher>
 
     <template v-if="!notFound" #editActivator>
-      <content-edit-activator
-        :type="types.eyecatch"
-        :action="actions.update"
-        :content-id="eyecatch.id"
-      />
+      <content-edit-activator :edit-props="editProps" />
     </template>
 
     <template v-else #overlay>
-      <content-notfound :type="types.eyecatch" :action="actions.create" />
+      <content-notfound :type="editProps.type" />
     </template>
   </contents-wrap>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import {
-  contentDataTypes,
-  contentActionTypes,
-} from '@/composable/content-helper'
+import { defineComponent, reactive, onMounted } from '@nuxtjs/composition-api'
+import { editTypes, editActions } from '@/composable/use-edit-controll'
 import { useEyecatchData } from '@/composable/use-eyecatch-data'
 import ContentsWrap from '@/components/molecules/contents-wrap.vue'
 import TopEyecatcher from '@/components/molecules/top-eyecatcher.vue'
@@ -75,9 +68,16 @@ export default defineComponent({
       changeImageSetting,
     } = useEyecatchData()
 
+    const editProps = reactive({
+      type: editTypes.eyecatch,
+      action: editActions.update,
+      id: props.contentId,
+    })
+
     onMounted(async () => {
       const currentId = props.contentId ?? (await getRecentData())?.id
       if (currentId) {
+        editProps.id = currentId
         await loadEyecatch(currentId)
       }
     })
@@ -93,8 +93,7 @@ export default defineComponent({
       onChangeImageSetting,
       loading,
       notFound,
-      types: contentDataTypes,
-      actions: contentActionTypes,
+      editProps,
     }
   },
 })

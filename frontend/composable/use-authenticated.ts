@@ -1,7 +1,5 @@
 import { ref, onMounted, computed, useContext } from '@nuxtjs/composition-api'
 
-const isPreview = ref(false)
-
 export const useAuthenticated = () => {
   const { $auth } = useContext()
 
@@ -13,12 +11,6 @@ export const useAuthenticated = () => {
   const loginUser = computed(() =>
     $auth.loggedIn ? $auth.user?.name ?? 'no-name' : 'no-login'
   )
-
-  const isEditable = computed(() => isAuthenticated.value && !isPreview.value)
-  const isOnPreview = computed(() => isAuthenticated.value && isPreview.value)
-  const togglePreview = () => {
-    isPreview.value = !isPreview.value
-  }
 
   const login = async (
     payload: { [key: string]: string },
@@ -44,8 +36,5 @@ export const useAuthenticated = () => {
     logout,
     isAuthenticated,
     loginUser,
-    isEditable,
-    isOnPreview,
-    togglePreview,
   }
 }

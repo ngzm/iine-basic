@@ -21,10 +21,6 @@ export default defineComponent({
       type: Object as PropType<ImageSetting>,
       default: {} as ImageSetting,
     },
-    height: {
-      type: String,
-      default: '16rem',
-    },
     circle: {
       type: Boolean,
       default: false,
@@ -39,13 +35,13 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .section-content-eyecatcher {
-  height: 16rem;
   background-image: var(--background-image);
   background-size: var(--background-size);
   background-position: var(--background-position);
   background-repeat: no-repeat;
   margin: 0;
   padding: 0;
+  aspect-ratio: 6 / 5;
 }
 .circle {
   border-radius: 50%;
