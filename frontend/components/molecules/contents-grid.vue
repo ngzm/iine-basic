@@ -91,7 +91,7 @@ export default defineComponent({
   }
   .column-draggable {
     position: relative;
-    width: 75%;
+    width: 75% !important;
     cursor: grab;
     background-color: lightsteelblue;
     border-radius: 6px;

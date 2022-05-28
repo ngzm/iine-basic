@@ -40,6 +40,7 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 .top-to-button {
+  z-index: 10;
   position: fixed;
   right: 2rem;
   bottom: 3rem;
@@ -71,8 +72,8 @@ export default defineComponent({
     right: 1rem;
     bottom: 1.8rem;
     &__avatar {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 3rem;
+      height: 3rem;
     }
   }
   .top-to-button::after {

@@ -1,53 +1,11 @@
 <template>
   <nav-bar class="default-header">
     <template #title>
-      <h2 class="default-header__title">
-        <nav-link
-          :scroll-to="toTop.scrollTo"
-          :to="toTop.to"
-          class="default-header__title-link"
-        >
-          ロングリブネット
-        </nav-link>
-      </h2>
+      <component :is="titleTemplateName" />
     </template>
     <template #wide>
-      <div>
-        <nav-link
-          :scroll-to="toTop.scrollTo"
-          :to="toTop.to"
-          class="default-header__nav-link mr-2"
-        >
-          <b-icon icon="house-fill" font-scale="1.5" />
-        </nav-link>
-        <nav-link
-          :scroll-to="toInformation.scrollTo"
-          :to="toInformation.to"
-          class="default-header__nav-link mr-2"
-        >
-          Message
-        </nav-link>
-        <nav-link
-          :scroll-to="toNews.scrollTo"
-          :to="toNews.to"
-          class="default-header__nav-link mr-2"
-        >
-          News
-        </nav-link>
-        <nav-link
-          :scroll-to="toServices.scrollTo"
-          :to="toServices.to"
-          class="default-header__nav-link mr-2"
-        >
-          Services
-        </nav-link>
-        <nav-link
-          :scroll-to="toContact.scrollTo"
-          :to="toContact.to"
-          class="default-header__nav-link mr-2"
-        >
-          Contact
-        </nav-link>
+      <div class="default-header__wide-menu">
+        <component :is="wideMenuTemplateName" />
         <customer-user-tools v-show="isAuthenticated" class="ml-2" />
       </div>
     </template>
@@ -69,109 +27,35 @@
         shadow
         backdrop
       >
-        <div class="default-header__sidebar">
-          <h4 class="default-header__sidebar--title">
-            <nav-link
-              :scroll-to="toTop.scrollTo"
-              :to="toTop.to"
-              class="default-header__title-link"
-              @click.native="closeSidebar"
-            >
-              ロングリブネット
-            </nav-link>
-          </h4>
-          <div class="default-header__sidebar--item">
-            <nav-link
-              :scroll-to="toTop.scrollTo"
-              :to="toTop.to"
-              class="default-header__nav-link mr-2"
-              @click.native="closeSidebar"
-            >
-              <b-icon icon="house-fill" font-scale="1.5" />
-              Home
-            </nav-link>
-          </div>
-          <div class="default-header__sidebar--item">
-            <nav-link
-              :scroll-to="toInformation.scrollTo"
-              :to="toInformation.to"
-              class="default-header__nav-link mr-2"
-              @click.native="closeSidebar"
-            >
-              Message
-            </nav-link>
-          </div>
-          <div class="default-header__sidebar--item">
-            <nav-link
-              :scroll-to="toNews.scrollTo"
-              :to="toNews.to"
-              class="default-header__nav-link mr-2"
-              @click.native="closeSidebar"
-            >
-              News
-            </nav-link>
-          </div>
-          <div class="default-header__sidebar--item">
-            <nav-link
-              :scroll-to="toServices.scrollTo"
-              :to="toServices.to"
-              class="default-header__nav-link mr-2"
-              @click.native="closeSidebar"
-            >
-              Services
-            </nav-link>
-          </div>
-          <div class="default-header__sidebar--item">
-            <nav-link
-              :scroll-to="toContact.scrollTo"
-              :to="toContact.to"
-              class="default-header__nav-link mr-2"
-              @click.native="closeSidebar"
-            >
-              Contact
-            </nav-link>
-          </div>
-        </div>
+        <component :is="narrowMenuTemplateName" @close="closeSidebar" />
       </b-sidebar>
     </template>
   </nav-bar>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  useRoute,
-} from '@nuxtjs/composition-api'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
 import { useAuthenticated } from '@/composable/use-authenticated'
 import NavBar from '@/components/atoms/nav-bar.vue'
-import NavLink from '@/components/atoms/nav-link.vue'
 import CustomerUserTools from '@/components/organisms/layout/customer-user-tools.vue'
+
+import longlivenetHeaderTitle from '@/components/templates/longlivenet/layout/header/title.vue'
+import longlivenetHeaderWideMenu from '@/components/templates/longlivenet/layout/header/wide-menu.vue'
+import longlivenetHeaderNarrowMenu from '@/components/templates/longlivenet/layout/header/narrow-menu.vue'
 
 export default defineComponent({
   name: 'DefaultHeader',
   components: {
     NavBar,
-    NavLink,
     CustomerUserTools,
+    longlivenetHeaderTitle,
+    longlivenetHeaderWideMenu,
+    longlivenetHeaderNarrowMenu,
   },
   setup() {
+    const { template } = useCurrentCustomer()
     const { isAuthenticated } = useAuthenticated()
-    const route = useRoute()
-    const isIndex = computed(() => route.value.name === 'index')
-    const indexLinkTo = (hash: string) =>
-      isIndex.value
-        ? { scrollTo: { el: hash, offset: -180 }, to: { name: 'index' } }
-        : { scrollTo: {}, to: { name: 'index', hash } }
-
-    const toTop = computed(() => indexLinkTo('#index-top-position'))
-    const toInformation = computed(() =>
-      indexLinkTo('#index-information-article')
-    )
-    const toNews = computed(() => indexLinkTo('#index-news-article'))
-    const toServices = computed(() => indexLinkTo('#index-services-article'))
-    const toContact = computed(() => indexLinkTo('#index-contact-article'))
 
     const sidebar = ref(false)
     const openSidebar = () => {
@@ -182,12 +66,10 @@ export default defineComponent({
     }
 
     return {
+      titleTemplateName: `${template}HeaderTitle`,
+      wideMenuTemplateName: `${template}HeaderWideMenu`,
+      narrowMenuTemplateName: `${template}HeaderNarrowMenu`,
       isAuthenticated,
-      toTop,
-      toInformation,
-      toNews,
-      toServices,
-      toContact,
       sidebar,
       openSidebar,
       closeSidebar,
@@ -202,36 +84,9 @@ export default defineComponent({
 .default-header {
   background-color: rgba(64, 64, 64, 0.5);
   padding: 40px 1.5rem;
-  &__title {
-    margin: 0;
-    &-link {
-      font-weight: bold;
-      font-size: 1.2rem;
-      ::v-deep a {
-        color: yellow;
-      }
-      ::v-deep a:hover {
-        color: hotpink;
-      }
-    }
-  }
-  &__nav-link {
-    font-weight: bold;
-    ::v-deep a {
-      color: white;
-    }
-    ::v-deep a:hover {
-      color: orange;
-    }
-  }
-  &__sidebar {
-    padding: 1rem 1.5rem 1rem 1.5rem;
-    &--title {
-      margin-bottom: 2rem;
-    }
-    &--item {
-      margin-top: 1rem;
-    }
+  &__wide-menu {
+    display: flex;
+    align-items: center;
   }
 }
 </style>
