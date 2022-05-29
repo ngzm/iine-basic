@@ -15,7 +15,7 @@ import adminCustomersRouter from './router/page/admin/router.customers.mjs'
 import adminCustomerUsersRouter from './router/page/admin/router.customer-users.mjs'
 
 // Auth Pages Routers
-import authCustomerUsersRouter from './router/page/auth/router.customer-user.mjs'
+import customerUsersRouter from './router/page/customer/router.customer-user.mjs'
 
 // API Routers
 import authRouter from './router/api/router.auth.mjs'
@@ -64,6 +64,19 @@ app.use(cors())
 app.use(passport.initialize());
 
 /**
+ * Debug print Access Path & Method
+ */
+app.use((request, response, next) => {
+  try {
+    logger.debug('====== path', request.path) 
+    logger.debug('===== method', request.method) 
+    next()
+  } catch (error) {
+    next(error)
+  }
+})
+
+/**
  * check is DB Connected middleware function
  */
 app.use((request, response, next) => {
@@ -85,7 +98,7 @@ app.use('/admin/customers', adminCustomerUsersRouter)
 // ********************************
 // Auth pages Routers
 // ********************************
-app.use('/member', authCustomerUsersRouter)
+app.use('/member', customerUsersRouter)
 
 // ********************************
 // Api Routers

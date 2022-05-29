@@ -10,6 +10,27 @@ import accountStore from '../../../db/mongo/store.account.mjs'
 import { validateParamsId } from '../../middleware.validators.mjs'
 
 // ########################
+// Functions
+// ########################
+
+/**
+ * 認証されているかどうかをチェックする 
+ * 認証ユーザが有効かどうかも確認する
+ */
+const authorizedChecker = async (token) => {
+  const account = await accountStore.authorize(token || '')
+  if (!account) throw new AppError('ユーザ認証できませんでした', 401)
+
+  const user = await customerUserStore.getCustomerUserByEmail(account.username)
+  if (!user) throw new AppError('ユーザは見つかりませんでした', 404)
+
+  const customer = await customerStore.getCustomer(user.customerId)
+  if (!customer) throw new AppError('顧客情報は見つかりませんでした', 404)
+
+  return { account, user, customer }
+}
+
+// ########################
 // Validators
 // ########################
 
@@ -19,15 +40,7 @@ import { validateParamsId } from '../../middleware.validators.mjs'
  */
  const checkAuthorized = async (request, response, next) => {
   try {
-    const account = await accountStore.authorize(request.cookies.token || '')
-    if (!account) throw new AppError('ユーザ認証できませんでした', 401)
-
-    const user = await customerUserStore.getCustomerUserByEmail(account.username)
-    if (!user) throw new AppError('ユーザは見つかりませんでした', 404)
-
-    const customer = await customerStore.getCustomer(user.customerId)
-    if (!customer) throw new AppError('顧客情報は見つかりませんでした', 404)
-
+    const { account, user, customer } = await authorizedChecker(request.cookies.token)
     request.authorizedUserInfo = { account, user, customer }
     next()
   } catch (error) {
@@ -112,10 +125,20 @@ router.get('/:id', validateParamsId, checkAuthorized, async (request, response, 
 /**
  * 顧客ユーザログイン画面表示
  */
-router.get('/', (request, response, next) => {
+router.get('/', async (request, response, next) => {
   try {
-    const result = request.query.result || null
-    response.render('auth/customer-user-login', { result })
+    try {
+      // すでに認証済みかどうかをチェック
+      const { account } = await authorizedChecker(request.cookies.token)
+
+      // エラーにならなかったので認証済み
+      // 顧客ユーザ画面にリダイレクトする
+      response.redirect(`/member/${account.userId}`)
+    } catch(_e) {
+      // 認証されていなかったのでログイン画面を表示する
+      const result = request.query.result || null
+      response.render('auth/customer-user-login', { result })
+    }
   } catch(error) {
     next(error)
   }
