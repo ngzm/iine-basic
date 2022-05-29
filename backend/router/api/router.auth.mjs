@@ -40,9 +40,9 @@ const router = express.Router();
  * 認証コードから認証済みユーザを検索してそのtokenを返す
  */
 router.post('/customer-user', async(request, response, next) => {
-  try {
-    console.log('request.body', request.body)
+  logger.trace('request.body', request.body)
 
+  try {
     if (!isDefined(request.body) || !isPresent(request.body.code)) {
       throw new AppError('Bad Request - No Body', 400)
     }
@@ -69,7 +69,7 @@ router.post('/customer-user', async(request, response, next) => {
  */
 router.get('/customer-user', passport.authenticate('bearer', { session: false }), async(request, response, next) => {
   try {
-    console.log('request.user', request.user)
+    logger.trace('request.user', request.user)
 
     const user = await customerUserStore.getCustomerUserByEmail(request.user.username)
     if (!user) throw new AppError('ユーザは見つかりませんでした', 401)
@@ -89,10 +89,13 @@ router.delete('/customer-user', (request, response, next) => {
   // 処理をカスタマイズする
   const logoutFunc = async (err, user /* , info */) => {
     try {
-      if (err) throw new AppError(err.message, 400)
-      if (!user) throw new AppError('ユーザは見つかりませんでした', 404)
-
-      await accountStore.logout(user.token)
+      if (err) {
+        logger.warn(err.message)
+      } else if (!user) {
+        logger.warn('logoutFunc: ユーザは見つかりませんでした')
+      } else {
+        await accountStore.logout(user.token)
+      }
       response.status(204).send()
 
     } catch (error) {
