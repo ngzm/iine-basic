@@ -1,12 +1,14 @@
 <template>
   <div>
     <div v-if="isEditable">
-      <p class="draggable-notion">ドラッグドロップで位置を変更できます</p>
+      <p class="draggable-notion g-theme-contets-item__draggable--notion">
+        ドラッグドロップで位置を変更できます
+      </p>
       <draggable v-model="draggableList" tag="div" class="contents-grid">
         <section
           v-for="content in draggableList"
           :key="content.id"
-          class="contents-grid__column column-draggable"
+          class="contents-grid__column column-draggable g-theme-contets-item__draggable"
         >
           <slot :content="content" />
 
@@ -92,10 +94,8 @@ export default defineComponent({
   .column-draggable {
     position: relative;
     width: 75% !important;
-    cursor: grab;
-    background-color: lightsteelblue;
     border-radius: 6px;
-    box-shadow: 0 0 8px royalblue;
+    cursor: grab;
     .edit-activator {
       position: absolute;
       top: 10px;
@@ -116,6 +116,5 @@ export default defineComponent({
   text-align: center;
   font-size: small;
   font-weight: bold;
-  color: blue;
 }
 </style>

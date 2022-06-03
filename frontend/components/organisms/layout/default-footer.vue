@@ -1,5 +1,5 @@
 <template>
-  <div class="default-footer">
+  <div class="default-footer g-theme-footer">
     <component :is="templateName" />
     <!-- TODO nuxt3 移行後に改めて実装を検討する -->
     <!-- <div class="default-footer__customer-user">
@@ -33,8 +33,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .default-footer {
   position: relative;
-  background-color: white;
-  color: dimgray;
   &__customer-user {
     position: absolute;
     left: 1rem;

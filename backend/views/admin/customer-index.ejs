@@ -15,6 +15,7 @@
           <strong><%= customer.name %></strong>
         </a>,
         <%= customer.template %>,
+        <%= customer.theme %>,
         <%= customer.note %>,
         <%= customer.urls && customer.urls.map((u) => u.url).join(' / ') %>
       </p>

@@ -9,6 +9,7 @@
     <component
       :is="formComponentName"
       :edit-props="editProps"
+      class="g-theme-edit-contents"
       @close="inactivate"
     />
   </b-modal>

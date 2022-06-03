@@ -1,5 +1,5 @@
 <template>
-  <div class="contents-card">
+  <div class="contents-card g-theme-contents-card">
     <b-overlay :show="overlay">
       <div class="contents-card__innner">
         <slot />
@@ -40,7 +40,6 @@ $contents-card-lg-max-width: 1140px;
   width: 100%;
   min-width: 18rem;
   margin: 0 auto;
-  background-color: white;
   &__inner {
     margin: 0;
     padding: 0;
