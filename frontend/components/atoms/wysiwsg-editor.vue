@@ -1,5 +1,5 @@
 <template>
-  <div class="wysiwyg-editor" :class="classByStates">
+  <div class="wysiwyg-editor g-theme-wysiwyg-editor" :class="classByStates">
     <client-only>
       <div class="wysiwyg-editor__editor">
         <vue-editor
@@ -126,5 +126,26 @@ export default defineComponent({
 
 ::v-deep .ql-container.ql-snow {
   border-color: transparent !important;
+}
+
+.g-theme-wysiwyg-editor {
+  ::v-deep .ql-toolbar.ql-snow {
+    .ql-stroke {
+      stroke: var(--theme-wysiwyg-editor-toolbar-color);
+    }
+    .ql-fill {
+      fill: var(--theme-wysiwyg-editor-toolbar-color);
+    }
+  }
+  ::v-deep .ql-toolbar.ql-snow {
+    .ql-active {
+      .ql-stroke {
+        stroke: var(--theme-wysiwyg-editor-toolbar-active-color);
+      }
+      .ql-fill {
+        fill: var(--theme-wysiwyg-editor-toolbar-active-color);
+      }
+    }
+  }
 }
 </style>

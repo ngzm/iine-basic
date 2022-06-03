@@ -4,7 +4,7 @@
       <contets-list :contents="newsList">
         <template #default="{ content }">
           <div class="news-item">
-            <div class="news-item__header">
+            <div class="news-item__header g-theme-contets-item__header">
               <span>{{ jstDateString(content.publishOn) }}</span>
               <news-category-badge :category="content.category" class="ml-2" />
             </div>
@@ -125,7 +125,6 @@ export default defineComponent({
       text-align: center;
       width: 14rem;
       min-width: 14rem;
-      background-color: #ccccff;
     }
     &__title {
       padding: 0.2rem;

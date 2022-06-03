@@ -16,6 +16,7 @@ export const useCurrentCustomer = () => {
     customer,
     customerId: customer.id,
     template: customer.template,
+    theme: customer.theme,
     headInfo,
   }
 }

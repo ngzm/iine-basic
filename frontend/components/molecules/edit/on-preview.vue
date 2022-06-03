@@ -1,6 +1,7 @@
 <template>
   <div v-if="isOnPreview" class="on-preview">
-    <b-button variant="warning" size="sm" @click="togglePreview()">
+    <b-button variant="warning" @click="togglePreview()">
+      <b-icon icon="eye-fill" />
       プレビュー中
     </b-button>
   </div>

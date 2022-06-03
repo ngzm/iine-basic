@@ -1,5 +1,5 @@
 <template>
-  <nav-bar class="default-header">
+  <nav-bar class="default-header g-theme-header">
     <template #title>
       <component :is="titleTemplateName" />
     </template>
@@ -10,7 +10,7 @@
       </div>
     </template>
     <template #narrow>
-      <div>
+      <div class="default-header__narrow-menu">
         <customer-user-tools v-show="isAuthenticated" :with-name="false" />
         <b-button variant="light" @click="openSidebar">
           <b-icon
@@ -82,7 +82,6 @@ export default defineComponent({
 @import '@/assets/scss/style.scss';
 
 .default-header {
-  background-color: rgba(64, 64, 64, 0.5);
   padding: 40px 1.5rem;
   &__wide-menu {
     display: flex;

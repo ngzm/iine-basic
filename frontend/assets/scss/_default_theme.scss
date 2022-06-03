@@ -1,0 +1,30 @@
+.default-theme {
+  .g-theme-header {
+    background-color: rgba(64, 64, 64, 0.5);
+  }
+  .g-theme-footer {
+    background-color: white;
+    color: dimgray;
+  }
+  .g-theme-contents-card {
+    background-color: white;
+  }
+  .g-theme-contets-item {
+    &__header {
+      background-color: #ccccff;
+    }
+    &__draggable {
+      background-color: lightsteelblue;
+      box-shadow: 0 0 8px royalblue;
+      &--notion {
+        color: blue;
+      }
+    }
+  }
+  .g-theme-edit-contents {
+    color: black;
+  }
+  .g-theme-wysiwyg-editor {
+    background-color: whitesmoke;
+  }
+}

@@ -40,7 +40,14 @@ export default defineComponent({
     OnPreview,
   },
   setup() {
-    const { headInfo } = useCurrentCustomer()
+    const { theme, headInfo } = useCurrentCustomer()
+
+    if (process.client) {
+      console.log('theme===', theme)
+      document.body.className = `${theme}-theme`
+      console.log('className===', `${theme}-theme`)
+    }
+
     return {
       title: headInfo.title,
       content: headInfo.content,

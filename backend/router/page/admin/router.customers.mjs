@@ -116,6 +116,7 @@ router.post('/:id', validateParamsId, checkExistUrls, async(request, response, n
     const customer = await customerStore.updateCustomer(request.id, {
       name: request.body.name,
       template: request.body.template,
+      theme: request.body.theme,
       note: request.body.note,
     })
     if (!customer) throw new AppError('変更する顧客は見つかりませんでした', 404)
@@ -137,6 +138,7 @@ router.post('/', checkCustomer, checkExistUrls, async(request, response, next) =
     const customer = await customerStore.createCustomer({
       name: request.body.name,
       template: request.body.template,
+      theme: request.body.theme,
       note: request.body.note,
     })
     customer.urls = await customerStore.addCustomerUrl(customer.id, request.urls)

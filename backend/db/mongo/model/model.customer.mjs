@@ -16,6 +16,7 @@ const customerSchema = new Schema({
   id: { type: Number, required: true, index: true, unique: true },
   name: { type: String, required: true },
   template: { type: String, required: true },
+  theme: { type: String, required: true },
   note: { type: String },
 }, {
   versionKey: false,
