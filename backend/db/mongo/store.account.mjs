@@ -56,8 +56,7 @@ const login = async (username, password) => {
 
   accountModel.token = `${uuidv4()}-${uuidv4()}` 
   accountModel.tokenExpired = dayjs().add(1, 'day').toDate()
-  accountModel.exchangeCode = null
-  return modelToObject(await accountModel.save())
+   return modelToObject(await accountModel.save())
 }
 
 /**
@@ -69,8 +68,6 @@ const login = async (username, password) => {
 
   accountModel.token = `${uuidv4()}-${uuidv4()}` 
   accountModel.tokenExpired = null
-  accountModel.exchangeCode = null
-  accountModel.codeExpired = null
   return modelToObject(await accountModel.save())
 }
 
@@ -87,8 +84,6 @@ const authorize = async (token) => {
   if (nowDate.isAfter(tokenExpired)) {
     accountModel.token = `${uuidv4()}-${uuidv4()}` 
     accountModel.tokenExpired = null
-    accountModel.exchangeCode = null
-    accountModel.codeExpired = null
     await accountModel.save()
     return null
   }
@@ -96,40 +91,6 @@ const authorize = async (token) => {
   return modelToObject(accountModel)
 }
 
-/**
- * 一時コードを発行する、コードを使用して token と交換できる
- */
-const generateExchangeCode = async (token) => {
-  const accountModel = await AccountModel.findOne({ token }).exec()
-  if (!accountModel) return null
-
-  accountModel.exchangeCode = uuidv4()
-  accountModel.codeExpired = dayjs().add(10, 'minute').toDate()
-  return modelToObject(await accountModel.save())
-}
-
-/**
- * 一時コードからtokenを交換する
- */
-const exchangeToken = async (code) => {
-  const accountModel = await AccountModel.findOne({ exchangeCode: code }).exec()
-  if (!accountModel) return null
-
-  const codeExpired = dayjs(accountModel.codeExpired)
-  const nowDate = dayjs()
-  if (nowDate.isAfter(codeExpired)) {
-    accountModel.token = `${uuidv4()}-${uuidv4()}` 
-    accountModel.tokenExpired = null
-    accountModel.exchangeCode = null
-    accountModel.codeExpired = null
-    await accountModel.save()
-    return null
-  }
-
-  accountModel.exchangeCode = null
-  accountModel.codeExpired = null
-  return modelToObject(await accountModel.save())
-}
 
 export default {
   getAccount,
@@ -139,6 +100,4 @@ export default {
   deleteAccount,
   login,
   logout,
-  generateExchangeCode,
-  exchangeToken
 }

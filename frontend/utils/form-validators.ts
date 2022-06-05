@@ -17,3 +17,11 @@ export const phoneValidator = (v: string) => {
   const format = /^\d{2,5}-\d{1,4}-\d{4}$/
   return v ? format.test(v) : true
 }
+
+export const passwordComplexity = (v: string) => {
+  if (v === null || v === undefined || v.length <= 0) return false
+  if (!/[a-z]/.test(v)) return false
+  if (!/[A-Z]/.test(v)) return false
+  if (!/\d/.test(v)) return false
+  return true
+}

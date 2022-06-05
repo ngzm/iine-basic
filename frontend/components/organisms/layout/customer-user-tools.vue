@@ -9,6 +9,10 @@
     <b-dropdown-item-button @click="togglePreview()">
       プレビュー
     </b-dropdown-item-button>
+    <b-dropdown-divider />
+    <b-dropdown-item-button @click="toChengePassword()">
+      パスワード変更
+    </b-dropdown-item-button>
     <b-dropdown-item-button @click="logout()">
       ログアウト
     </b-dropdown-item-button>
@@ -16,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import { useAuthenticated } from '@/composable/use-authenticated'
 import { usePreviewControll } from '@/composable/use-edit-controll'
 
@@ -31,10 +35,17 @@ export default defineComponent({
   setup() {
     const { loginUser, logout } = useAuthenticated()
     const { togglePreview } = usePreviewControll()
+
+    const router = useRouter()
+    const toChengePassword = () => {
+      router.push({ name: 'auth-change-password' })
+    }
+
     return {
       loginUser,
       togglePreview,
       logout,
+      toChengePassword,
     }
   },
 })
