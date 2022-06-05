@@ -1,7 +1,7 @@
 import { ref, onMounted, computed, useContext } from '@nuxtjs/composition-api'
 
 export const useAuthenticated = () => {
-  const { $auth } = useContext()
+  const { $auth, $axios } = useContext()
 
   const isMounted = ref(false)
   onMounted(() => {
@@ -23,7 +23,6 @@ export const useAuthenticated = () => {
       console.log('#### login error ####', e)
       status = statusNg
     })
-
     return status
   }
 
@@ -31,9 +30,16 @@ export const useAuthenticated = () => {
     $auth.logout()
   }
 
+  const changePassword = async (password: string) => {
+    await $axios.$put('/auth/customer-user/password', {
+      password,
+    })
+  }
+
   return {
     login,
     logout,
+    changePassword,
     isAuthenticated,
     loginUser,
   }

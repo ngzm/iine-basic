@@ -65,7 +65,7 @@ export default {
     cookie: false,
     redirect: {
       callback: false,
-      login: '/auth/logout',
+      login: '/auth/login',
       logout: false,
       home: '/',
     },

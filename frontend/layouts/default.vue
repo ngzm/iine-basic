@@ -1,14 +1,14 @@
 <template>
   <div id="application-base-body">
     <header>
-      <default-header />
+      <base-header />
     </header>
     <main>
       <nuxt />
     </main>
     <footer>
       <bread-crumb-nav />
-      <default-footer />
+      <base-footer />
     </footer>
     <inquire-form-sidebar />
     <make-toast />
@@ -20,8 +20,8 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { useCurrentCustomer } from '@/composable/use-current-customer'
-import DefaultHeader from '@/components/organisms/layout/default-header.vue'
-import DefaultFooter from '@/components/organisms/layout/default-footer.vue'
+import BaseHeader from '~/components/organisms/layout/base-header.vue'
+import BaseFooter from '~/components/organisms/layout/base-footer.vue'
 import BreadCrumbNav from '@/components/molecules/bread-crumb-nav.vue'
 import MakeToast from '@/components/molecules/make-toast.vue'
 import InquireFormSidebar from '@/components/organisms/inquire/inquire-form-sidebar.vue'
@@ -31,8 +31,8 @@ import OnPreview from '@/components/molecules/edit/on-preview.vue'
 export default defineComponent({
   name: 'DefaultLayout',
   components: {
-    DefaultHeader,
-    DefaultFooter,
+    BaseHeader,
+    BaseFooter,
     BreadCrumbNav,
     InquireFormSidebar,
     MakeToast,
@@ -41,11 +41,8 @@ export default defineComponent({
   },
   setup() {
     const { theme, headInfo } = useCurrentCustomer()
-
     if (process.client) {
-      console.log('theme===', theme)
       document.body.className = `${theme}-theme`
-      console.log('className===', `${theme}-theme`)
     }
 
     return {

@@ -26,7 +26,7 @@ import InformationForm from '@/components/organisms/information/information-form
 import NewsForm from '@/components/organisms/news/news-form.vue'
 import ServiceForm from '@/components/organisms/service/service-form.vue'
 import ContactForm from '@/components/organisms/contact/contact-form.vue'
-import NoneForm from '@/components/atoms/do-none.vue'
+import NoneForm from '~/components/atoms/do-nothing.vue'
 
 export default defineComponent({
   name: 'ContentEditModal',

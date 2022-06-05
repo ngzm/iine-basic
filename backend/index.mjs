@@ -14,9 +14,6 @@ import adminLoginRouter from './router/page/admin/router.admin-login.mjs'
 import adminCustomersRouter from './router/page/admin/router.customers.mjs'
 import adminCustomerUsersRouter from './router/page/admin/router.customer-users.mjs'
 
-// Auth Pages Routers
-import customerUsersRouter from './router/page/customer/router.customer-user.mjs'
-
 // API Routers
 import authRouter from './router/api/router.auth.mjs'
 import uploadsRouter from './router/api/router.uploads.mjs'
@@ -94,11 +91,6 @@ app.use((request, response, next) => {
 app.use('/admin/customers/login', adminLoginRouter)
 app.use('/admin/customers', adminCustomersRouter)
 app.use('/admin/customers', adminCustomerUsersRouter)
-
-// ********************************
-// Auth pages Routers
-// ********************************
-app.use('/member', customerUsersRouter)
 
 // ********************************
 // Api Routers

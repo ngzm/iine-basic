@@ -6,7 +6,7 @@ import BearerStrategy from 'passport-http-bearer'
 
 import logger from '../../lib/logger.mjs'
 import AppError from '../../lib/app-error.mjs'
-import { isDefined, isPresent } from '../../lib/utils.mjs'
+import { isDefined, isPresent, passwordComplexity } from '../../lib/utils.mjs'
 import customerStore from '../../db/mongo/store.customer.mjs'
 import customerUserStore from '../../db/mongo/store.customer-user.mjs'
 import accountStore from '../../db/mongo/store.account.mjs'
@@ -37,18 +37,19 @@ passport.use(new BearerStrategy(
 const router = express.Router();
 
 /**
- * 認証コードから認証済みユーザを検索してそのtokenを返す
+ * 顧客ユーザログイン認証処理
  */
 router.post('/customer-user', async(request, response, next) => {
   logger.trace('request.body', request.body)
 
+  // ここでは 401エラーを返さないこと
   try {
-    if (!isDefined(request.body) || !isPresent(request.body.code)) {
+    if (!isDefined(request.body) || !isPresent(request.body.username) || !isPresent(request.body.customerId)) {
       throw new AppError('Bad Request - No Body', 400)
     }
+    const { customerId, username, password } = request.body
 
-    // ここでは 401エラーを返さないこと
-    const account = await accountStore.exchangeToken(request.body.code)
+    const account = await accountStore.login(username, password)
     if (!account) throw new AppError('ユーザ認証できませんでした', 400)
 
     const user = await customerUserStore.getCustomerUserByEmail(account.username)
@@ -56,10 +57,32 @@ router.post('/customer-user', async(request, response, next) => {
 
     const customer = await customerStore.getCustomer(user.customerId)
     if (!customer) throw new AppError('顧客情報は見つかりませんでした', 400)
+    if (parseInt(customerId) !== customer.id) throw new AppError('顧客IDが一致しませんでした', 400)
 
     logger.trace('account:', { ...account, password: '!!MASK!!' });
     response.json({ token: account.token })
-  } catch (error) {
+
+  } catch(error) {
+    next(error)
+  }
+})
+
+/**
+ * 顧客ユーザパスワード変更
+ */
+router.put('/customer-user/password', passport.authenticate('bearer', { session: false }), async(request, response, next) => {
+  try {
+    const { username } = request.user
+    const { password } = request.body
+
+    if (!username) throw new AppError('ユーザ認証に問題がありました', 401)
+    if (!password || password.length < 8) throw new AppError('password が不正です', 400)
+    if (!passwordComplexity(password)) throw new AppError('password が不正です', 400)
+
+    await accountStore.updatePassword(username, password)
+    response.status(204).send()
+
+  } catch(error) {
     next(error)
   }
 })
