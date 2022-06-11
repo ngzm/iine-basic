@@ -54,7 +54,7 @@ export default function(router, store) {
   /**
    * Content追加
    */
-  router.post('/', passport.authenticate('bearer', { session: false }), validateQueryCustomerId, async (request, response, next) => {
+  router.post('/', passport.authenticate('bearer', { session: false }), validateQueryCustomerId, validateBodyRequired, async (request, response, next) => {
       try {
         const content = await store.createContent(request.body)
         response.json(content)
