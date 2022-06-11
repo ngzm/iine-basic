@@ -115,6 +115,7 @@ router.post('/:id', validateParamsId, checkExistUrls, async(request, response, n
   try {
     const customer = await customerStore.updateCustomer(request.id, {
       name: request.body.name,
+      defaultEmail: request.body.defaultEmail,
       template: request.body.template,
       theme: request.body.theme,
       note: request.body.note,
@@ -137,6 +138,7 @@ router.post('/', checkCustomer, checkExistUrls, async(request, response, next) =
   try {
     const customer = await customerStore.createCustomer({
       name: request.body.name,
+      defaultEmail: request.body.defaultEmail,
       template: request.body.template,
       theme: request.body.theme,
       note: request.body.note,

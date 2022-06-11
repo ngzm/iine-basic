@@ -6,7 +6,7 @@
         <div v-html="contactBody" />
       </div>
       <div class="inquire-form-sidebar__form">
-        <inquire-form v-if="isFormMode" @submit="sendInquirMail" />
+        <inquire-form v-if="isFormMode" @submitted="onSubmitted" />
         <inquire-form-result v-else @ok="setFormMode" />
       </div>
     </div>
@@ -18,9 +18,7 @@ import { defineComponent, ref, computed, onMounted } from '@vue/composition-api'
 import { sanitizer } from '@/utils/common-utils'
 import useMakeToast, { ToastParams } from '@/composable/use-make-toast'
 import { useContactData } from '@/composable/use-contact-data'
-import InquireForm, {
-  InquireFormType,
-} from '@/components/organisms/inquire/inquire-form.vue'
+import InquireForm from '@/components/organisms/inquire/inquire-form.vue'
 import InquireFormResult from '@/components/organisms/inquire/inquire-form-result.vue'
 
 export const sidebarIdName = 'inquire-form-sidebar'
@@ -50,9 +48,7 @@ export default defineComponent({
     })
 
     const { addToast } = useMakeToast()
-    const sendInquirMail = (data: InquireFormType) => {
-      console.log(data)
-
+    const onSubmitted = () => {
       setResultMode()
       addToast({
         title: '送信完了',
@@ -65,7 +61,7 @@ export default defineComponent({
       sidebarIdName,
       contact,
       contactBody,
-      sendInquirMail,
+      onSubmitted,
       isFormMode,
       setFormMode,
       setResultMode,

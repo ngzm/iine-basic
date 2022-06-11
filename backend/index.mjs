@@ -23,6 +23,7 @@ import informationsRouter from './router/api/router.informations.mjs'
 import newsesRouter from './router/api/router.newses.mjs'
 import servicesRouter from './router/api/router.services.mjs'
 import contactsRouter from './router/api/router.contacts.mjs'
+import inquireRouter from './router/api/router.inquire.mjs'
 
 /**
  * Log4j - set log level
@@ -103,6 +104,7 @@ app.use('/informations', informationsRouter)
 app.use('/newses', newsesRouter)
 app.use('/services', servicesRouter)
 app.use('/contacts', contactsRouter)
+app.use('/inquire', inquireRouter)
 
 /**
  * 共通エラーハンドラー

@@ -69,8 +69,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  useContext,
+} from '@nuxtjs/composition-api'
 import { useValidation } from 'vue-composable'
+import { useCurrentCustomer } from '@/composable/use-current-customer'
 import {
   required,
   emailValidator,
@@ -144,12 +150,18 @@ export default defineComponent({
       inquireForm.$reset()
     }
 
-    const onSubmit = () => {
+    const { $axios } = useContext()
+    const { customerId } = useCurrentCustomer()
+    const onSubmit = async () => {
       inquireForm.$touch()
       if (inquireForm.$anyInvalid) return
 
       const inquireData: InquireFormType = inquireForm.toObject()
-      emit('submit', inquireData)
+      await $axios.$post('/inquire', inquireData, {
+        params: { customerId },
+      })
+
+      emit('submitted')
       onReset()
     }
 
